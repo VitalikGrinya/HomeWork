@@ -1,0 +1,30 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int age;
+            string name;
+            string zodiacSign;
+            string workingPlace;
+            string favoriteBookName;
+
+            Console.Write("Как вас зовут? ");
+            name = Console.ReadLine();
+            Console.Write("Сколько вам лет? ");
+            age = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Кто вы по знаку зодиака? ");
+            zodiacSign = Console.ReadLine();
+            Console.Write("Где вы работаете? ");
+            workingPlace = Console.ReadLine();
+            Console.Write("Какая ваша любимая книга? ");
+            favoriteBookName = Console.ReadLine();
+
+            Console.Write("Вас зовут " + name + " ,вам " + age + ", вы работаете " + workingPlace + " и ваша любимая книга - " + favoriteBookName);
+        }
+    }
+}

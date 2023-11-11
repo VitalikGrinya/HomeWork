@@ -7,16 +7,16 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            int developer = 12;
-            int gameDesigner;
-            float developerComputer;
+            int age = 12;
+            char a = 'A';
+            byte slotAtEquipment; 
             float gameDesignerWorkPlace = 12f;
-            double developerFactor;
             double goldPrice;
-            string workShop;
-            string helloWorld;
-            bool enable;
-            bool disable;
+            string name;
+            bool isAlive;
+            short HP;
+            long damage;
+            double maxWeight = 99.99;
         }   
     }
 }

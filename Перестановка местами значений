@@ -13,7 +13,8 @@ namespace CSLight
             name = "Bugler";
             surname = "Tom";
             Console.WriteLine("Ваше имя - " + name + " ,ваша фамилия - " + surname);
-            Console.WriteLine("Ваше имя - " + surname + " ,ваша фамилия - " + name);
+            (name, surname) = (surname, name);
+            Console.WriteLine("Ваше имя - " + name + " ,ваша фамилия - " + surname);
 
         }
     }

@@ -1,0 +1,22 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int developer;
+            int gameDesigner;
+            float developerComputer;
+            float gameDesignerWorkPlace;
+            double developerFactor;
+            double goldPrice;
+            string workShop;
+            string helloWorld;
+            bool enable;
+            bool disable;
+        }   
+    }
+}

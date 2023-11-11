@@ -1,0 +1,20 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string name;
+            string surname;
+
+            name = "Bugler";
+            surname = "Tom";
+            Console.WriteLine("Ваше имя - " + name + " ,ваша фамилия - " + surname);
+            Console.WriteLine("Ваше имя - " + surname + " ,ваша фамилия - " + name);
+
+        }
+    }
+}

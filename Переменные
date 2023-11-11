@@ -7,10 +7,10 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            int developer;
+            int developer = 12;
             int gameDesigner;
             float developerComputer;
-            float gameDesignerWorkPlace;
+            float gameDesignerWorkPlace = 12f;
             double developerFactor;
             double goldPrice;
             string workShop;

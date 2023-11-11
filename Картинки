@@ -1,0 +1,22 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int rowPicture;
+            int numberOfPicture;
+            int filledAlbum;
+            int unfilledAlbum;
+
+            rowPicture = 3;
+            numberOfPicture = 52;
+            filledAlbum = numberOfPicture / rowPicture;
+            unfilledAlbum = numberOfPicture % rowPicture;
+            Console.Write("Альбом заполнен на " + filledAlbum + " рядов. Свободных мест для картинок осталось " + unfilledAlbum);
+        }
+    }
+}

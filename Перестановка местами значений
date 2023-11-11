@@ -15,7 +15,6 @@ namespace CSLight
             Console.WriteLine("Ваше имя - " + name + " ,ваша фамилия - " + surname);
             (name, surname) = (surname, name);
             Console.WriteLine("Ваше имя - " + name + " ,ваша фамилия - " + surname);
-
         }
     }
 }

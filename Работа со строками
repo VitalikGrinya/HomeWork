@@ -24,7 +24,8 @@ namespace CSLight
             Console.Write("Какая ваша любимая книга? ");
             favoriteBookName = Console.ReadLine();
 
-            Console.Write("Вас зовут " + name + " ,вам " + age + ", вы работаете " + workingPlace + " и ваша любимая книга - " + favoriteBookName);
+            Console.Write("Вас зовут " + name + " ,вам " + age + ", ваш знак зодиака - " + zodiacSign +
+                ", вы работаете " + workingPlace + " и ваша любимая книга - " + favoriteBookName);
         }
     }
 }

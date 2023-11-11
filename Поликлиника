@@ -1,0 +1,28 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int numberOfGranny;
+            int chillTime = 10;
+            int userChillTime;
+            int minute = 60;
+            int hour = 0;
+            bool convertTime;
+
+            Console.WriteLine("Время ожидания одного пациента - " + chillTime);
+            Console.WriteLine("Сколько в очереди бабуль?");
+            numberOfGranny = Convert.ToInt32(Console.ReadLine());
+            userChillTime = chillTime * numberOfGranny;
+            convertTime = userChillTime >= minute;
+            minute *= Convert.ToInt32(convertTime);
+            userChillTime -= minute;
+            hour += Convert.ToInt32(convertTime);
+            Console.WriteLine("Время ожидание составит - " + hour + " часов "+ userChillTime + " минут.");
+        }
+    }
+}

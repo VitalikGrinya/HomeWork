@@ -1,0 +1,28 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int userGold;
+            int crystal;
+            int crystalPrice = 5;
+            bool payAbility;
+
+            Console.WriteLine("Цена за алмаз состовляет - " + crystalPrice + " золота");
+            Console.WriteLine("Сколько золота у тебя имеется, путник?");
+            userGold = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Сколько алмазов тебе требуется?");
+            crystal = Convert.ToInt32(Console.ReadLine());
+
+            payAbility = userGold >= crystal * crystalPrice;
+            crystal *= Convert.ToInt32(payAbility);
+            userGold -= crystal * crystalPrice;
+            Console.WriteLine("У вас осталось - " + userGold + " золота. Приобретено алмазов - " + crystal + ".");
+
+        }
+    }
+}

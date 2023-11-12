@@ -8,15 +8,15 @@ namespace CSLight
         static void Main(string[] args)
         {
             int age = 12;
-            char a = 'A';
-            byte slotAtEquipment; 
+            char symbol = 'A';
+            byte slotAtEquipment;
             float gameDesignerWorkPlace = 12f;
             double goldPrice;
             string name;
             bool isAlive;
-            short HP;
+            short hp;
             long damage;
             double maxWeight = 99.99;
-        }   
+        }
     }
 }

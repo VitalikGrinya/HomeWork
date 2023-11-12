@@ -7,22 +7,20 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            int numberOfGranny;
-            int chillTime = 10;
-            int userChillTime;
-            int minute = 60;
-            int hour = 0;
-            bool convertTime;
+            int patients;
+            int visitMinutes = 10;
+            int userVisitTime;
+            int minutesInHour = 60;
+            int waitingHour;
+            int waitingMinutes;
 
-            Console.WriteLine("Время ожидания одного пациента - " + chillTime);
+            Console.WriteLine("Время ожидания одного пациента - " + visitMinutes);
             Console.WriteLine("Сколько в очереди бабуль?");
-            numberOfGranny = Convert.ToInt32(Console.ReadLine());
-            userChillTime = chillTime * numberOfGranny;
-            convertTime = userChillTime >= minute;
-            minute *= Convert.ToInt32(convertTime);
-            userChillTime -= minute;
-            hour += Convert.ToInt32(convertTime);
-            Console.WriteLine("Время ожидание составит - " + hour + " часов "+ userChillTime + " минут.");
+            patients = Convert.ToInt32(Console.ReadLine());
+            userVisitTime = visitMinutes * patients;
+            waitingMinutes = userVisitTime % minutesInHour;
+            waitingHour = userVisitTime / minutesInHour;
+            Console.WriteLine("Время ожидание составит - " + waitingHour + " часов "+ waitingMinutes + " минут.");
         }
     }
 }

@@ -11,16 +11,16 @@ namespace CSLight
             int visitMinutes = 10;
             int userVisitTime;
             int minutesInHour = 60;
-            int waitingHour;
-            int waitingMinutes;
+            int hourInLine;
+            int minytesInLine;
 
             Console.WriteLine("Время ожидания одного пациента - " + visitMinutes);
             Console.WriteLine("Сколько в очереди бабуль?");
             patients = Convert.ToInt32(Console.ReadLine());
             userVisitTime = visitMinutes * patients;
-            waitingMinutes = userVisitTime % minutesInHour;
-            waitingHour = userVisitTime / minutesInHour;
-            Console.WriteLine("Время ожидание составит - " + waitingHour + " часов "+ waitingMinutes + " минут.");
+            minytesInLine = userVisitTime % minutesInHour;
+            hourInLine = userVisitTime / minutesInHour;
+            Console.WriteLine("Время ожидание составит - " + hourInLine + " часов "+ minytesInLine + " минут.");
         }
     }
 }

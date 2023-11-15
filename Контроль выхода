@@ -1,0 +1,24 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string breakComand = "Exit";
+            string messange;
+            
+            while (true)
+            {
+                Console.WriteLine("Поговорим?");
+                messange = Console.ReadLine();
+                if (breakComand == messange)
+                {
+                    break;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int firstNumber = -2;
+            int differenceInNumbers = 6;
+            int lastNumber = 96;
+
+            while (firstNumber++ < lastNumber)
+            {
+                firstNumber += differenceInNumbers;
+                Console.WriteLine(firstNumber);
+            }
+        }
+    }
+}

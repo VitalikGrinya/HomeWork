@@ -8,17 +8,16 @@ namespace CSLight
         static void Main(string[] args)
         {
             string userMessage;
-            int numbersOfMessages;
+            int countOfMessages;
 
             Console.Write("Введите ваше сообщение: ");
             userMessage = Console.ReadLine();
             Console.Write("Сколько раз его повторить: ");
-            numbersOfMessages = Convert.ToInt32(Console.ReadLine());
+            countOfMessages = Convert.ToInt32(Console.ReadLine());
 
-            while (numbersOfMessages > 0)
+            for(int i = 1; i <= countOfMessages; i++)
             {
                 Console.WriteLine(userMessage);
-                numbersOfMessages--;
             }
         }
     }

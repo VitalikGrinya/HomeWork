@@ -8,13 +8,13 @@ namespace CSLight
         static void Main(string[] args)
         {
             int firstNumber = -2;
-            int differenceInNumbers = 6;
+            int differenceInNumbers = 4;
             int lastNumber = 96;
 
-            while (firstNumber++ < lastNumber)
+            for(int i = 0; i++ < lastNumber; i++)
             {
-                firstNumber += differenceInNumbers;
-                Console.WriteLine(firstNumber);
+                i += differenceInNumbers;
+                Console.WriteLine(i++);
             }
         }
     }

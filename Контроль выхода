@@ -18,11 +18,9 @@ namespace CSLight
 
                 if (messange == breakComand)
                 {
-                    break;
+                    exit = false;
                 }
             }
-
-            Console.WriteLine("Вы завершили цикл.");
         }
     }
 }

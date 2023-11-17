@@ -1,0 +1,34 @@
+using System.Globalization;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random random= new Random();
+            int randomNumber;
+            int sum;
+
+            randomNumber = random.Next(0,100);
+            Console.WriteLine("Ваше число: " + randomNumber);
+            Console.WriteLine("Числа кратные трём: ");
+
+            for (int i = 0; i <= randomNumber; i += 3)
+            {
+                Console.WriteLine(i);
+            }
+           
+            Console.WriteLine("Числа кратные пяти: ");
+
+            for (int j = 0; j <= randomNumber; j += 5)
+            {
+                Console.WriteLine(j);
+            }
+
+            Console.WriteLine("Сумма чисел = "); // Вот тут я и не знаю какое условие сделать
+        }
+    }
+}

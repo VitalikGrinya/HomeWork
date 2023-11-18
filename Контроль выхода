@@ -9,16 +9,16 @@ namespace CSLight
         {
             string breakComand = "Exit";
             string messange;
-            bool isExit = true;
+            bool isExit = false;
 
-            while (isExit)
+            while (!isExit)
             {
                 Console.WriteLine("Поговорим?");
                 messange = Console.ReadLine();
 
                 if (messange == breakComand)
                 {
-                    isExit = false;
+                    isExit = true;
                 }
             }
         }

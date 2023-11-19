@@ -10,25 +10,34 @@ namespace CSLight
         {
             Random random= new Random();
             int randomNumber;
+            int firstRandomNumber = 0;
+            int lastRandomNumber = 100;
+            int firstDivisor = 3;
+            int secondDivisor = 5;
+            int halfOfSum = 2;
             int sum;
+            int sumFirstProgression;
+            int countingNumberFirstProgression;
+            int sumSecondProgression;
+            int countingNumberSecondProgression;
 
-            randomNumber = random.Next(0,100);
+            randomNumber = random.Next(firstRandomNumber, lastRandomNumber);
             Console.WriteLine("Ваше число: " + randomNumber);
-            Console.WriteLine("Числа кратные трём: ");
 
-            for (int i = 0; i <= randomNumber; i += 3)
-            {
-                Console.WriteLine(i);
-            }
-           
-            Console.WriteLine("Числа кратные пяти: ");
+            countingNumberFirstProgression = ((randomNumber - (randomNumber % firstDivisor)) + firstRandomNumber) / firstDivisor;
+            Console.WriteLine("Количество членов первой прогрессии: " + countingNumberFirstProgression);
 
-            for (int j = 0; j <= randomNumber; j += 5)
-            {
-                Console.WriteLine(j);
-            }
+            countingNumberSecondProgression = ((randomNumber - (randomNumber % secondDivisor)) + firstRandomNumber) / secondDivisor;
+            Console.WriteLine("Количество членов второй прогрессии: " + countingNumberSecondProgression);
 
-            Console.WriteLine("Сумма чисел = "); // Вот тут я и не знаю какое условие сделать
+            sumFirstProgression = ((firstDivisor + (randomNumber - randomNumber % firstDivisor)) * countingNumberFirstProgression) / halfOfSum;
+            Console.WriteLine("Сумма первой прогрессии равна: " + sumFirstProgression);
+
+            sumSecondProgression = ((secondDivisor + (randomNumber - randomNumber % secondDivisor)) * countingNumberSecondProgression) / halfOfSum;
+            Console.WriteLine("Сумма второй прогрессии равна: " + sumSecondProgression);
+
+            sum = sumFirstProgression + sumSecondProgression;
+            Console.WriteLine("Сумма выбранных чисел равна: " + sum);
         }
     }
 }

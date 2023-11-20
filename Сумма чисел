@@ -8,36 +8,25 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            Random random= new Random();
+            Random random = new Random();
             int randomNumber;
+            int sum = 0;
             int firstRandomNumber = 0;
             int lastRandomNumber = 100;
-            int firstDivisor = 3;
-            int secondDivisor = 5;
-            int halfOfSum = 2;
-            int sum;
-            int sumFirstProgression;
-            int countingNumberFirstProgression;
-            int sumSecondProgression;
-            int countingNumberSecondProgression;
 
             randomNumber = random.Next(firstRandomNumber, lastRandomNumber);
             Console.WriteLine("Ваше число: " + randomNumber);
+            Console.WriteLine("Последовательность чисел: ");
 
-            countingNumberFirstProgression = ((randomNumber - (randomNumber % firstDivisor)) + firstRandomNumber) / firstDivisor;
-            Console.WriteLine("Количество членов первой прогрессии: " + countingNumberFirstProgression);
-
-            countingNumberSecondProgression = ((randomNumber - (randomNumber % secondDivisor)) + firstRandomNumber) / secondDivisor;
-            Console.WriteLine("Количество членов второй прогрессии: " + countingNumberSecondProgression);
-
-            sumFirstProgression = ((firstDivisor + (randomNumber - randomNumber % firstDivisor)) * countingNumberFirstProgression) / halfOfSum;
-            Console.WriteLine("Сумма первой прогрессии равна: " + sumFirstProgression);
-
-            sumSecondProgression = ((secondDivisor + (randomNumber - randomNumber % secondDivisor)) * countingNumberSecondProgression) / halfOfSum;
-            Console.WriteLine("Сумма второй прогрессии равна: " + sumSecondProgression);
-
-            sum = sumFirstProgression + sumSecondProgression;
-            Console.WriteLine("Сумма выбранных чисел равна: " + sum);
+            for (int i = 1; i <= randomNumber; i++)
+            {
+                if(i % 3 == 0 || i % 5 == 0) 
+                {
+                    Console.WriteLine(i);
+                    sum += i++;
+                }
+            }
+            Console.WriteLine("Сумма равна: " + sum);
         }
     }
 }

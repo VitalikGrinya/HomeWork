@@ -25,7 +25,7 @@ namespace CSLight
                 if(i % firstDivisor == 0 || i % secondDivisor == 0) 
                 {
                     Console.WriteLine(i);
-                    sum += i++;
+                    sum += i;
                 }
             }
 

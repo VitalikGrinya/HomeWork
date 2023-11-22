@@ -31,6 +31,7 @@ namespace CSLight
             const string ConvertionRubToEur  = "рубли в евро";
             const string ConvertionEurToUsd  = "евро в доллары";
             const string ConvertionEurToRub  = "евро в рубли";
+            const string ConvertionExit  = "выйти";
 
             Console.WriteLine("Что будем конвертировать?");
             convertion = Console.ReadLine();
@@ -89,6 +90,10 @@ namespace CSLight
                     rubUser += eurToRub * eur;
                     eurUser -= eur;
                     Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
+                    break;
+
+                case ConvertionExit:
+                    Console.WriteLine("До свидания!");
                     break;
 
                 default:

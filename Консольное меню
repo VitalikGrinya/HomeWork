@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            const string CommandSetName = "создать имя";
+            const string CommandChangeConsoleColor = "сменить цвет консоли";
+            const string CommandChangeFontColor = "сменить цвет шрифта";
+            const string CommandSetPassword = "установить пароль";
+            const string CommandEsc = "выйти";
+            string menu;
+            string name;
+            string parol;
+            string end = "до свидание!";
+
+            Console.WriteLine("Что вам угодно?");
+            menu = Console.ReadLine();
+
+            while(menu != end)
+            {
+                switch (menu)
+                {
+                    case CommandSetName:
+                        Console.WriteLine("Как вас зовут?");
+                        name = Convert.ToString(Console.ReadLine());
+                        Console.WriteLine("Вас зовут: " + name);
+                        Console.WriteLine("Далее: ");
+                        menu = Convert.ToString(Console.ReadLine());
+                        break;
+
+                    case CommandChangeConsoleColor:
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Цвет изменен.");
+                        Console.WriteLine("Далее: ");
+                        menu = Convert.ToString(Console.ReadLine());
+                        break;
+
+                    case CommandChangeFontColor:
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine("Цвет изменен.");
+                        Console.WriteLine("Далее: ");
+                        menu = Convert.ToString(Console.ReadLine());
+                        break;
+
+                    case CommandSetPassword:
+                        Console.WriteLine("Создайте пароль: ");
+                        parol = Convert.ToString(Console.ReadLine());
+                        Console.WriteLine("Ваш пароль: " + parol);
+                        Console.WriteLine("Далее: ");
+                        menu = Convert.ToString(Console.ReadLine());
+                        break;
+
+                    case CommandEsc:
+                        Console.WriteLine("до свидание!");
+                        break;
+
+                    default:
+                        Console.WriteLine("Я не знаю такой команды. Попропуй другую.");
+                        menu = Convert.ToString(Console.ReadLine());
+                        break;
+                }
+
+                if(end == "до свидание!")
+                {
+                    break;
+                }
+            }
+        }
+    }
+}

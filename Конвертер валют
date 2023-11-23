@@ -11,11 +11,12 @@ namespace CSLight
         {
             const string ConvertionUsdToRub = "доллары в рубли";
             const string ConvertionUsdToEur = "доллары в евро";
-            const string ConvertionRubToUsd  = "рубли в доллары";
-            const string ConvertionRubToEur  = "рубли в евро";
-            const string ConvertionEurToUsd  = "евро в доллары";
-            const string ConvertionEurToRub  = "евро в рубли";
-            const string ConvertionExit  = "выйти";
+            const string ConvertionRubToUsd = "рубли в доллары";
+            const string ConvertionRubToEur = "рубли в евро";
+            const string ConvertionEurToUsd = "евро в доллары";
+            const string ConvertionEurToRub = "евро в рубли";
+            const string ConvertionExit = "выйти";
+
             int numbersOfUsdToConversion;
             int numbersOfRubToConversion;
             int numbersOfEurToConversion;
@@ -29,65 +30,72 @@ namespace CSLight
             float eurToUsd = 1.05f;
             float eurToRub = 80;
             string convertion;
-            bool payAbility;
+            bool isPayAbility;
 
             Console.WriteLine("Что будем конвертировать?");
             convertion = Console.ReadLine();
 
-            switch(convertion)
+            switch (convertion)
             {
                 case ConvertionUsdToRub:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
-                    payAbility = usdUser >= numbersOfUsdToConversion;
-                    usdUser -= numbersOfUsdToConversion * Convert.ToInt32(payAbility);
-                    rubUser += usdToRub * numbersOfUsdToConversion * Convert.ToInt32(payAbility);
-                    Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
+                    if(usdUser >= numbersOfUsdToConversion)
+                    {
+                        usdUser -= numbersOfUsdToConversion;
+                        rubUser += usdToRub * numbersOfUsdToConversion;
+                    }
+
                     break;
 
                 case ConvertionUsdToEur:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
-                    payAbility = usdUser >= numbersOfUsdToConversion;
-                    usdUser -= numbersOfUsdToConversion * Convert.ToInt32(payAbility);
-                    eurUser += usdToEur * numbersOfUsdToConversion * Convert.ToInt32(payAbility);
-                    Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
+                    if(usdUser >= numbersOfUsdToConversion)
+                    {
+                        usdUser -= numbersOfUsdToConversion;
+                        eurUser += usdToEur * numbersOfUsdToConversion;
+                    }
                     break;
 
                 case ConvertionRubToUsd:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
-                    payAbility = rubUser >= numbersOfRubToConversion;
-                    rubUser -= numbersOfRubToConversion * Convert.ToInt32(payAbility);
-                    usdUser += rubToUsd * numbersOfRubToConversion * Convert.ToInt32(payAbility);
-                    Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
+                    if(rubUser >= numbersOfRubToConversion)
+                    {
+                        rubUser -= numbersOfRubToConversion;
+                        usdUser += rubToUsd * numbersOfRubToConversion;
+                    }
                     break;
 
                 case ConvertionRubToEur:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
-                    payAbility = rubUser >= numbersOfRubToConversion;
-                    rubUser -= numbersOfRubToConversion * Convert.ToInt32(payAbility);
-                    eurUser += rubToEur * numbersOfRubToConversion * Convert.ToInt32(payAbility);
-                    Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
-                    break;       
-                    
+                    if(rubUser >= numbersOfRubToConversion)
+                    {
+                        rubUser -= numbersOfRubToConversion;
+                        eurUser += rubToEur * numbersOfRubToConversion;
+                    }
+                    break;
+
                 case ConvertionEurToUsd:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
-                    payAbility = eurUser >= numbersOfEurToConversion;
-                    eurUser -= numbersOfEurToConversion * Convert.ToInt32(payAbility);
-                    usdUser += eurToUsd * numbersOfEurToConversion * Convert.ToInt32(payAbility);
-                    Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
+                    if(eurUser >= numbersOfEurToConversion)
+                    {
+                        eurUser -= numbersOfEurToConversion;
+                        usdUser += eurToUsd * numbersOfEurToConversion;
+                    }
                     break;
 
                 case ConvertionEurToRub:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
-                    payAbility = eurUser >= numbersOfEurToConversion;
-                    eurUser -= numbersOfEurToConversion * Convert.ToInt32(payAbility);
-                    rubUser += eurToRub * numbersOfEurToConversion * Convert.ToInt32(payAbility);
-                    Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
+                    if(eurUser >= numbersOfEurToConversion)
+                    {
+                        eurUser -= numbersOfEurToConversion;
+                        rubUser += eurToRub * numbersOfEurToConversion;
+                    }
                     break;
 
                 case ConvertionExit:
@@ -98,6 +106,8 @@ namespace CSLight
                     Console.WriteLine("Такой валюты не существует.");
                     break;
             }
+
+            Console.WriteLine($"Ваш баланс составляет: {usdUser} долларов, {rubUser} рублей и {eurUser} евро");
         }
     }
 }

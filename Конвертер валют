@@ -30,7 +30,6 @@ namespace CSLight
             float eurToUsd = 1.05f;
             float eurToRub = 80;
             string convertion;
-            bool isPayAbility;
 
             Console.WriteLine("Что будем конвертировать?");
             convertion = Console.ReadLine();

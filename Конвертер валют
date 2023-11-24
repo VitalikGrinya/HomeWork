@@ -9,12 +9,12 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            const string ConvertionUsdToRub = "доллары в рубли";
-            const string ConvertionUsdToEur = "доллары в евро";
-            const string ConvertionRubToUsd = "рубли в доллары";
-            const string ConvertionRubToEur = "рубли в евро";
-            const string ConvertionEurToUsd = "евро в доллары";
-            const string ConvertionEurToRub = "евро в рубли";
+            const string ConvertionUsdIntoRub = "доллары в рубли";
+            const string ConvertionUsdIntoEur = "доллары в евро";
+            const string ConvertionRubIntoUsd = "рубли в доллары";
+            const string ConvertionRubIntoEur = "рубли в евро";
+            const string ConvertionEurIntoUsd = "евро в доллары";
+            const string ConvertionEurIntoRub = "евро в рубли";
             const string ConvertionExit = "выйти";
 
             int numbersOfUsdToConversion;
@@ -23,77 +23,76 @@ namespace CSLight
             float usdUser = 100;
             float rubUser = 100;
             float eurUser = 100;
-            float usdToRub = 90;
-            float usdToEur = 0.95f;
-            float rubToUsd = 0.09f;
-            float rubToEur = 0.1f;
-            float eurToUsd = 1.05f;
-            float eurToRub = 80;
-            string convertion;
+            float rateUsdToRub = 90;
+            float rateUsdToEur = 0.95f;
+            float rateRubToUsd = 0.09f;
+            float rateRubToEur = 0.1f;
+            float rateEurToUsd = 1.05f;
+            float rateEurToRub = 80;
+            string userInput;
 
             Console.WriteLine("Что будем конвертировать?");
-            convertion = Console.ReadLine();
+            userInput = Console.ReadLine();
 
-            switch (convertion)
+            switch (userInput)
             {
-                case ConvertionUsdToRub:
+                case ConvertionUsdIntoRub:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
                     if(usdUser >= numbersOfUsdToConversion)
                     {
                         usdUser -= numbersOfUsdToConversion;
-                        rubUser += usdToRub * numbersOfUsdToConversion;
+                        rubUser += rateUsdToRub * numbersOfUsdToConversion;
                     }
-
                     break;
 
-                case ConvertionUsdToEur:
+                case ConvertionUsdIntoEur:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
                     if(usdUser >= numbersOfUsdToConversion)
                     {
                         usdUser -= numbersOfUsdToConversion;
-                        eurUser += usdToEur * numbersOfUsdToConversion;
+                        eurUser += rateUsdToEur * numbersOfUsdToConversion;
                     }
                     break;
 
-                case ConvertionRubToUsd:
+                case ConvertionRubIntoUsd:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
                     if(rubUser >= numbersOfRubToConversion)
                     {
                         rubUser -= numbersOfRubToConversion;
-                        usdUser += rubToUsd * numbersOfRubToConversion;
+                        usdUser += rateRubToUsd * numbersOfRubToConversion;
                     }
                     break;
 
-                case ConvertionRubToEur:
+                case ConvertionRubIntoEur:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
                     if(rubUser >= numbersOfRubToConversion)
                     {
                         rubUser -= numbersOfRubToConversion;
-                        eurUser += rubToEur * numbersOfRubToConversion;
+                        eurUser += rateRubToEur * numbersOfRubToConversion;
                     }
                     break;
 
-                case ConvertionEurToUsd:
+                case ConvertionEurIntoUsd:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
                     if(eurUser >= numbersOfEurToConversion)
                     {
                         eurUser -= numbersOfEurToConversion;
-                        usdUser += eurToUsd * numbersOfEurToConversion;
+                        usdUser += rateEurToUsd * numbersOfEurToConversion;
                     }
                     break;
 
-                case ConvertionEurToRub:
+                case ConvertionEurIntoRub:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
                     if(eurUser >= numbersOfEurToConversion)
                     {
                         eurUser -= numbersOfEurToConversion;
-                        rubUser += eurToRub * numbersOfEurToConversion;
+                        rubUser += rateEurToRub * numbersOfEurToConversion;
                     }
                     break;
 

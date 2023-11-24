@@ -9,17 +9,18 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            const string ConvertionUsdIntoRub = "доллары в рубли";
-            const string ConvertionUsdIntoEur = "доллары в евро";
-            const string ConvertionRubIntoUsd = "рубли в доллары";
-            const string ConvertionRubIntoEur = "рубли в евро";
-            const string ConvertionEurIntoUsd = "евро в доллары";
-            const string ConvertionEurIntoRub = "евро в рубли";
+            const string ConvertionUsdIntoRub = "команда конвертации доллара в рубли";
+            const string ConvertionUsdIntoEur = "команда конвертации доллара в евро";
+            const string ConvertionRubIntoUsd = "команда конвертации рубля в доллары";
+            const string ConvertionRubIntoEur = "команда конвертации рубля в евро";
+            const string ConvertionEurIntoUsd = "команда конвертации евро в доллары";
+            const string ConvertionEurIntoRub = "команда конвертации евро в рубли";
             const string ConvertionExit = "выйти";
 
             int numbersOfUsdToConversion;
             int numbersOfRubToConversion;
             int numbersOfEurToConversion;
+
             float usdUser = 100;
             float rubUser = 100;
             float eurUser = 100;
@@ -29,6 +30,7 @@ namespace CSLight
             float rateRubToEur = 0.1f;
             float rateEurToUsd = 1.05f;
             float rateEurToRub = 80;
+
             string userInput;
 
             Console.WriteLine("Что будем конвертировать?");

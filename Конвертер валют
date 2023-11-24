@@ -9,13 +9,12 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            const string ConvertionUsdIntoRub = "команда конвертации доллара в рубли";
-            const string ConvertionUsdIntoEur = "команда конвертации доллара в евро";
-            const string ConvertionRubIntoUsd = "команда конвертации рубля в доллары";
-            const string ConvertionRubIntoEur = "команда конвертации рубля в евро";
-            const string ConvertionEurIntoUsd = "команда конвертации евро в доллары";
-            const string ConvertionEurIntoRub = "команда конвертации евро в рубли";
-            const string ConvertionExit = "выйти";
+            const string ConvertionUsdIntoRubCommand = "доллары в рубли";
+            const string ConvertionUsdIntoEurCommand = "доллары в евро";
+            const string ConvertionRubIntoUsdCommand = "рубли в доллары";
+            const string ConvertionRubIntoEurCommand = "рубли в евро";
+            const string ConvertionEurIntoUsdCommand = "евро в доллары";
+            const string ConvertionEurIntoRubCommand = "евро в рубли";
 
             int numbersOfUsdToConversion;
             int numbersOfRubToConversion;
@@ -38,7 +37,7 @@ namespace CSLight
 
             switch (userInput)
             {
-                case ConvertionUsdIntoRub:
+                case ConvertionUsdIntoRubCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
                     if(usdUser >= numbersOfUsdToConversion)
@@ -48,7 +47,7 @@ namespace CSLight
                     }
                     break;
 
-                case ConvertionUsdIntoEur:
+                case ConvertionUsdIntoEurCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
                     if(usdUser >= numbersOfUsdToConversion)
@@ -58,7 +57,7 @@ namespace CSLight
                     }
                     break;
 
-                case ConvertionRubIntoUsd:
+                case ConvertionRubIntoUsdCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
                     if(rubUser >= numbersOfRubToConversion)
@@ -68,7 +67,7 @@ namespace CSLight
                     }
                     break;
 
-                case ConvertionRubIntoEur:
+                case ConvertionRubIntoEurCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
                     if(rubUser >= numbersOfRubToConversion)
@@ -78,7 +77,7 @@ namespace CSLight
                     }
                     break;
 
-                case ConvertionEurIntoUsd:
+                case ConvertionEurIntoUsdCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
                     if(eurUser >= numbersOfEurToConversion)
@@ -88,7 +87,7 @@ namespace CSLight
                     }
                     break;
 
-                case ConvertionEurIntoRub:
+                case ConvertionEurIntoRubCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
                     if(eurUser >= numbersOfEurToConversion)
@@ -96,10 +95,6 @@ namespace CSLight
                         eurUser -= numbersOfEurToConversion;
                         rubUser += rateEurToRub * numbersOfEurToConversion;
                     }
-                    break;
-
-                case ConvertionExit:
-                    Console.WriteLine("До свидания!");
                     break;
 
                 default:

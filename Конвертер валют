@@ -40,7 +40,8 @@ namespace CSLight
                 case ConvertionUsdIntoRubCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
-                    if(usdUser >= numbersOfUsdToConversion)
+
+                    if (usdUser >= numbersOfUsdToConversion)
                     {
                         usdUser -= numbersOfUsdToConversion;
                         rubUser += rateUsdToRub * numbersOfUsdToConversion;
@@ -50,7 +51,7 @@ namespace CSLight
                 case ConvertionUsdIntoEurCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
-                    if(usdUser >= numbersOfUsdToConversion)
+                    if (usdUser >= numbersOfUsdToConversion)
                     {
                         usdUser -= numbersOfUsdToConversion;
                         eurUser += rateUsdToEur * numbersOfUsdToConversion;
@@ -60,7 +61,8 @@ namespace CSLight
                 case ConvertionRubIntoUsdCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
-                    if(rubUser >= numbersOfRubToConversion)
+
+                    if (rubUser >= numbersOfRubToConversion)
                     {
                         rubUser -= numbersOfRubToConversion;
                         usdUser += rateRubToUsd * numbersOfRubToConversion;
@@ -70,7 +72,8 @@ namespace CSLight
                 case ConvertionRubIntoEurCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfRubToConversion = Convert.ToInt32(Console.ReadLine());
-                    if(rubUser >= numbersOfRubToConversion)
+
+                    if (rubUser >= numbersOfRubToConversion)
                     {
                         rubUser -= numbersOfRubToConversion;
                         eurUser += rateRubToEur * numbersOfRubToConversion;
@@ -80,7 +83,8 @@ namespace CSLight
                 case ConvertionEurIntoUsdCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
-                    if(eurUser >= numbersOfEurToConversion)
+
+                    if (eurUser >= numbersOfEurToConversion)
                     {
                         eurUser -= numbersOfEurToConversion;
                         usdUser += rateEurToUsd * numbersOfEurToConversion;
@@ -90,7 +94,8 @@ namespace CSLight
                 case ConvertionEurIntoRubCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfEurToConversion = Convert.ToInt32(Console.ReadLine());
-                    if(eurUser >= numbersOfEurToConversion)
+
+                    if (eurUser >= numbersOfEurToConversion)
                     {
                         eurUser -= numbersOfEurToConversion;
                         rubUser += rateEurToRub * numbersOfEurToConversion;

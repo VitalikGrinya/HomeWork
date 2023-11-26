@@ -51,6 +51,7 @@ namespace CSLight
                 case ConvertionUsdIntoEurCommand:
                     Console.WriteLine("Сколько будем конвертировать?");
                     numbersOfUsdToConversion = Convert.ToInt32(Console.ReadLine());
+
                     if (usdUser >= numbersOfUsdToConversion)
                     {
                         usdUser -= numbersOfUsdToConversion;

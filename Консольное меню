@@ -11,67 +11,67 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
+            const string SetNameCommand = "создать имя";
+            const string ChangeConsoleColorCommand = "сменить цвет консоли";
+            const string ChangeFontColorCommand = "сменить цвет шрифта";
+            const string SetPasswordCommand = "установить пароль";
+            const string EscCommand = "выйти";
 
-            const string CommandSetName = "создать имя";
-            const string CommandChangeConsoleColor = "сменить цвет консоли";
-            const string CommandChangeFontColor = "сменить цвет шрифта";
-            const string CommandSetPassword = "установить пароль";
-            const string CommandEsc = "выйти";
-            string menu;
-            string name;
-            string parol;
-            string end = "до свидание!";
+            string userInput;
+            string userName;
+            string userPassword;
+            string escape = "До свидание!";
 
             Console.WriteLine("Что вам угодно?");
-            menu = Console.ReadLine();
+            userInput = Console.ReadLine();
 
-            while(menu != end)
+            while (userInput != escape)
             {
-                switch (menu)
+                switch (userInput)
                 {
-                    case CommandSetName:
-                        Console.WriteLine("Как вас зовут?");
-                        name = Convert.ToString(Console.ReadLine());
-                        Console.WriteLine("Вас зовут: " + name);
+                    case SetNameCommand:
+                        Console.Write("Введите свое имя: ");
+                        userName = Convert.ToString(Console.ReadLine());
+                        Console.WriteLine("Вас зовут: " + userName);
+
                         Console.WriteLine("Далее: ");
-                        menu = Convert.ToString(Console.ReadLine());
+                        userInput = Convert.ToString(Console.ReadLine());
                         break;
 
-                    case CommandChangeConsoleColor:
+                    case ChangeConsoleColorCommand:
                         Console.BackgroundColor = ConsoleColor.Red;
                         Console.WriteLine("Цвет изменен.");
+
                         Console.WriteLine("Далее: ");
-                        menu = Convert.ToString(Console.ReadLine());
+                        userInput = Convert.ToString(Console.ReadLine());
                         break;
 
-                    case CommandChangeFontColor:
+                    case ChangeFontColorCommand:
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.WriteLine("Цвет изменен.");
+
                         Console.WriteLine("Далее: ");
-                        menu = Convert.ToString(Console.ReadLine());
+                        userInput = Convert.ToString(Console.ReadLine());
                         break;
 
-                    case CommandSetPassword:
+                    case SetPasswordCommand:
                         Console.WriteLine("Создайте пароль: ");
-                        parol = Convert.ToString(Console.ReadLine());
-                        Console.WriteLine("Ваш пароль: " + parol);
+                        userPassword = Convert.ToString(Console.ReadLine());
+                        Console.WriteLine("Ваш пароль: " + userPassword);
+
                         Console.WriteLine("Далее: ");
-                        menu = Convert.ToString(Console.ReadLine());
+                        userInput = Convert.ToString(Console.ReadLine());
                         break;
 
-                    case CommandEsc:
-                        Console.WriteLine("до свидание!");
+                    case EscCommand:
+                        Console.WriteLine(escape);
+                        userInput = escape;
                         break;
 
                     default:
                         Console.WriteLine("Я не знаю такой команды. Попропуй другую.");
-                        menu = Convert.ToString(Console.ReadLine());
+                        userInput = Convert.ToString(Console.ReadLine());
                         break;
-                }
-
-                if(end == "до свидание!")
-                {
-                    break;
                 }
             }
         }

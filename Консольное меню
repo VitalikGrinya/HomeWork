@@ -11,70 +11,68 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            const string SetNameCommand = "1";
-            const string ChangeConsoleColorCommand = "2";
-            const string ChangeFontColorCommand = "3";
-            const string SetPasswordCommand = "4";
-            const string EscCommand = "5";
+            const string SetNameCommand = "1 Установить имя пользователя";
+            const string ChangeConsoleColorCommand = "2 Сменить цвет консоли";
+            const string ChangeFontColorCommand = "3 Сменить цвет шрифта";
+            const string SetPasswordCommand = "4 Установить пароль";
+            const string EscCommand = "5 Выйти из программы";
 
             string userInput;
             string userName;
             string userPassword;
-            string seeYouLater = "До свидание!";
+            string farewellMessage = "До свидание!";
 
             Console.WriteLine("Данное приложение обрабатывает следующие команды: 1 Установить имя пользователя." +
                 " 2 Сменить цвет консоли. 3 Сменить цвет шрифта. 4 Установить пароль. 5 Выйти из программы");
-            Console.WriteLine("Выбрав команду, напишите ее номер.");
+            Console.WriteLine("Выбрав команду, напишите ее номер.Готовы начать? Да/Нет");
             userInput = Console.ReadLine();
 
-            while (userInput != seeYouLater)
+            if(userInput == "Да")
             {
-                switch (userInput)
+                while (userInput != farewellMessage)
                 {
-                    case SetNameCommand:
-                        Console.Write("Введите свое имя: ");
-                        userName = Console.ReadLine();
-                        Console.WriteLine("Вас зовут: " + userName);
+                    Console.WriteLine("Введите номер команды: ");
+                    userInput = Console.ReadLine();
 
-                        Console.WriteLine("Введите номер команды: ");
-                        userInput = Console.ReadLine();
-                        break;
+                    switch (userInput)
+                    {
+                        case SetNameCommand:
+                            Console.Write("Введите свое имя: ");
+                            userName = Console.ReadLine();
+                            Console.WriteLine("Вас зовут: " + userName);
+                            break;
 
-                    case ChangeConsoleColorCommand:
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Цвет изменен.");
+                        case ChangeConsoleColorCommand:
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Цвет изменен.");
+                            break;
 
-                        Console.WriteLine("Введите номер команды: ");
-                        userInput = Console.ReadLine();
-                        break;
+                        case ChangeFontColorCommand:
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.WriteLine("Цвет изменен.");
+                            break;
 
-                    case ChangeFontColorCommand:
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("Цвет изменен.");
+                        case SetPasswordCommand:
+                            Console.WriteLine("Создайте пароль: ");
+                            userPassword = Convert.ToString(Console.ReadLine());
+                            Console.WriteLine("Ваш пароль: " + userPassword);
+                            break;
 
-                        Console.WriteLine("Введите номер команды: ");
-                        userInput = Console.ReadLine();
-                        break;
+                        case EscCommand:
+                            Console.WriteLine(farewellMessage);
+                            userInput = farewellMessage;
+                            break;
 
-                    case SetPasswordCommand:
-                        Console.WriteLine("Создайте пароль: ");
-                        userPassword = Convert.ToString(Console.ReadLine());
-                        Console.WriteLine("Ваш пароль: " + userPassword);
-
-                        Console.WriteLine("Введите номер команды: ");
-                        userInput = Console.ReadLine();
-                        break;
-
-                    case EscCommand:
-                        Console.WriteLine(seeYouLater);
-                        userInput = seeYouLater;
-                        break;
-
-                    default:
-                        Console.WriteLine("Я не знаю такой команды. Попропуй другую.");
-                        userInput = Console.ReadLine();
-                        break;
+                        default:
+                            Console.WriteLine("Я не знаю такой команды. Попропуй другую.");
+                            userInput = Console.ReadLine();
+                            break;
+                    }
                 }
+            }
+            else
+            {
+                Console.WriteLine("Ждем вас здесь снова!");
             }
         }
     }

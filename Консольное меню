@@ -11,23 +11,26 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            const string SetNameCommand = "1 Установить имя пользователя";
-            const string ChangeConsoleColorCommand = "2 Сменить цвет консоли";
-            const string ChangeFontColorCommand = "3 Сменить цвет шрифта";
-            const string SetPasswordCommand = "4 Установить пароль";
-            const string EscCommand = "5 Выйти из программы";
+            const string SetNameCommand = "1";
+            const string ChangeConsoleColorCommand = "2";
+            const string ChangeFontColorCommand = "3";
+            const string SetPasswordCommand = "4";
+            const string EscCommand = "5";
 
             string userInput;
+            string agreement = "Да";
+            string disagreement = "Нет";
             string userName;
             string userPassword;
             string farewellMessage = "До свидание!";
 
-            Console.WriteLine("Данное приложение обрабатывает следующие команды: 1 Установить имя пользователя." +
-                " 2 Сменить цвет консоли. 3 Сменить цвет шрифта. 4 Установить пароль. 5 Выйти из программы");
-            Console.WriteLine("Готовы начать? Да/Нет");
+            Console.WriteLine($"Данное приложение обрабатывает следующие команды: {SetNameCommand} Установить имя пользователя." +
+                $" {ChangeConsoleColorCommand} Сменить цвет консоли. {ChangeFontColorCommand} Сменить цвет шрифта." +
+                $" {SetPasswordCommand} Установить пароль. {EscCommand} Выйти из программы");
+            Console.WriteLine($"Выбрав команду, напишите ее номер.Готовы начать? {agreement}/{disagreement}");
             userInput = Console.ReadLine();
 
-            if(userInput == "Да")
+            if (userInput == agreement)
             {
                 while (userInput != farewellMessage)
                 {

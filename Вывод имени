@@ -12,10 +12,11 @@ namespace CSLight
         static void Main(string[] args)
         {
             string nameInput;
-            string symbol = "$";
+            string symbol;
             int positionOfTheFirstSymbol = -1;
 
             nameInput = Console.ReadLine();
+            symbol = Console.ReadLine();
             Console.Clear();
 
             for (int i = positionOfTheFirstSymbol; i <= nameInput.Length; i++)

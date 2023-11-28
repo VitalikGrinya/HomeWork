@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string nameInput;
+            string symbol = "$";
+            int positionOfTheFirstSymbol = -1;
+
+            nameInput = Console.ReadLine();
+            Console.Clear();
+
+            for (int i = positionOfTheFirstSymbol; i <= nameInput.Length; i++)
+            {
+                Console.Write(symbol);
+            }
+
+            Console.WriteLine("\n" + symbol + nameInput + symbol);
+
+            for (int i = positionOfTheFirstSymbol; i <= nameInput.Length; i++)
+            {
+                Console.Write(symbol);
+            }
+        }
+    }
+}

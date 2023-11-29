@@ -13,23 +13,19 @@ namespace CSLight
         {
             string nameInput;
             string symbol;
-            int positionOfTheFirstSymbol = -1;
+            int extraSymbol = 1;
 
             nameInput = Console.ReadLine();
             symbol = Console.ReadLine();
             Console.Clear();
-
-            for (int i = positionOfTheFirstSymbol; i <= nameInput.Length; i++)
+            
+            for (int i = 0; i <= nameInput.Length + extraSymbol; i++)
             {
                 Console.Write(symbol);
             }
 
             Console.WriteLine("\n" + symbol + nameInput + symbol);
-
-            for (int i = positionOfTheFirstSymbol; i <= nameInput.Length; i++)
-            {
-                Console.Write(symbol);
-            }
+            Console.Write(symbol);
         }
     }
 }

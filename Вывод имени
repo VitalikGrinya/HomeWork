@@ -13,19 +13,26 @@ namespace CSLight
         {
             string nameInput;
             string symbol;
-            int extraSymbol = 1;
+            string symbolsWithName;
+            string frame;
+            string emptySymbol = "";
 
+            Console.WriteLine("Введите имя: ");
             nameInput = Console.ReadLine();
+            Console.WriteLine("Введите символ: ");
             symbol = Console.ReadLine();
             Console.Clear();
-            
-            for (int i = 0; i <= nameInput.Length + extraSymbol; i++)
+            symbolsWithName = symbol + nameInput + symbol;
+            frame = emptySymbol;
+
+            for(int i = 0; i < symbolsWithName.Length; i++)
             {
-                Console.Write(symbol);
+                frame += symbol; 
             }
 
-            Console.WriteLine("\n" + symbol + nameInput + symbol);
-            Console.Write(symbol);
+            Console.Write(frame);
+            Console.WriteLine("\n" + symbolsWithName);
+            Console.Write(frame);
         }
     }
 }

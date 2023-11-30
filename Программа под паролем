@@ -16,12 +16,12 @@ namespace CSLight
             string secretMessage = "Пуф, теперь ты ящер!";
             string farewell = "Не повезло, не фортануло.....Попробуй позже.";
 
-            int attempts = 3;
-            int attemptExit = 2;
+            int remainingAttempts = 3;
+            int numberOfAllAttempts = 2;
 
             Console.WriteLine("Введите пароль: ");
 
-            for(int i = 0; i <= attemptExit; i++)
+            for(int i = 0; i <= numberOfAllAttempts; i++)
             {
                 inputPassword = Console.ReadLine();
 
@@ -32,8 +32,8 @@ namespace CSLight
                 }
                 else
                 {
-                    attempts--;
-                    Console.WriteLine("Попробуй еще раз. Количество оставшихся попыток: " + attempts);
+                    remainingAttempts--;
+                    Console.WriteLine("Попробуй еще раз. Количество оставшихся попыток: " + remainingAttempts);
                 }
             }
 

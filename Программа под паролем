@@ -11,7 +11,7 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            string password = "28Qwerty";
+            string password = "28";
             string inputPassword;
             string secretMessage = "Пуф, теперь ты ящер!";
             string farewell = "Не повезло, не фортануло.....Попробуй позже.";
@@ -20,24 +20,29 @@ namespace CSLight
             int numberOfAllAttempts = 2;
 
             Console.WriteLine("Введите пароль: ");
+            inputPassword = Console.ReadLine();
 
-            for(int i = 0; i <= numberOfAllAttempts; i++)
+            for(int i = 0; i < numberOfAllAttempts; i++)
             {
-                inputPassword = Console.ReadLine();
 
                 if(inputPassword == password)
                 {
                     Console.Clear();
                     Console.WriteLine(secretMessage);
+                    break;
                 }
                 else
                 {
                     remainingAttempts--;
                     Console.WriteLine("Попробуй еще раз. Количество оставшихся попыток: " + remainingAttempts);
+                    inputPassword = Console.ReadLine();
                 }
             }
 
-            Console.WriteLine(farewell);
+            if(inputPassword != password)
+            {
+                Console.WriteLine(farewell);
+            }
         }
     }
 }

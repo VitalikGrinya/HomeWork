@@ -17,10 +17,11 @@ namespace CSLight
             string farewell = "Не повезло, не фортануло.....Попробуй позже.";
 
             int numberOfAllAttempts = 3;
+            int correctedToOne = 1;
 
             Console.WriteLine("Введите пароль: ");
 
-            for(int i = 0; i < numberOfAllAttempts; i++)
+            for(int i = correctedToOne; i <= numberOfAllAttempts; i++)
             {
                 inputPassword = Console.ReadLine();
 

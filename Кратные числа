@@ -11,21 +11,21 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            Random rand = new Random();
+            Random random = new Random();
 
-            int firstValue = 1;
+            int minRandomValue = 1;
             int randomValue;
-            int lastValue = 28;
-            int firstThreeDigitNumber = 100;
-            int lastThreeDigitNumber = 999;
+            int maxRandomValue = 27;
+            int minThreeDigitNumber = 100;
+            int maxThreeDigitNumber = 999;
             int amountOfNumbers = 0;
 
-            randomValue = rand.Next(firstValue, lastValue);
+            randomValue = random.Next(minRandomValue, maxRandomValue + 1);
             Console.WriteLine("Данное число: " + randomValue);
-            
-            for (int i = 0; i <= lastThreeDigitNumber; i += randomValue)
+
+            for (int i = 0; i <= maxThreeDigitNumber; i += randomValue)
             {
-                if( i >= firstThreeDigitNumber)
+                if (i >= minThreeDigitNumber)
                 {
                     amountOfNumbers++;
                 }

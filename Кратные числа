@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random rand = new Random();
+
+            int firstValue = 1;
+            int randomValue;
+            int lastValue = 28;
+            int firstThreeDigitNumber = 100;
+            int lastThreeDigitNumber = 999;
+            int startingNumber = 0;
+
+            randomValue = rand.Next(firstValue, lastValue);
+            Console.WriteLine("Данное число: " + randomValue);
+            
+            for (int i = 0; i <= lastThreeDigitNumber; i += randomValue)
+            {
+                if( i >= firstThreeDigitNumber)
+                {
+                    startingNumber++;
+                }
+            }
+
+            Console.WriteLine("Количество трехзначных чисел кратное " + randomValue + " равно: " + startingNumber);
+        }
+    }
+}

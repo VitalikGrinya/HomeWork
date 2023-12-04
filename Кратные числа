@@ -18,7 +18,7 @@ namespace CSLight
             int lastValue = 28;
             int firstThreeDigitNumber = 100;
             int lastThreeDigitNumber = 999;
-            int startingNumber = 0;
+            int amountOfNumbers = 0;
 
             randomValue = rand.Next(firstValue, lastValue);
             Console.WriteLine("Данное число: " + randomValue);
@@ -27,11 +27,11 @@ namespace CSLight
             {
                 if( i >= firstThreeDigitNumber)
                 {
-                    startingNumber++;
+                    amountOfNumbers++;
                 }
             }
 
-            Console.WriteLine("Количество трехзначных чисел кратное " + randomValue + " равно: " + startingNumber);
+            Console.WriteLine("Количество трехзначных чисел кратное " + randomValue + " равно: " + amountOfNumbers);
         }
     }
 }

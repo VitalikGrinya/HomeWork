@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random rand = new Random();
+
+            int randomNumber;
+            int degreeOfTwo = 1;
+            int numberAtDegree = 2;
+            int numberInDegree;
+            int amountOfDegree = 0;
+            int minRandomValue = 0;
+            int maxRandomValue = 100;
+
+            numberInDegree = numberAtDegree * degreeOfTwo;
+
+            randomNumber = rand.Next(minRandomValue, maxRandomValue);
+
+            for (int i = degreeOfTwo; i <= randomNumber; i *= numberAtDegree)
+            {
+                numberInDegree = numberAtDegree * i;
+                amountOfDegree++;
+
+                if (numberInDegree > randomNumber)
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine($"Заданное число: {randomNumber}.\nЭто число меньше чем {numberAtDegree} в степени {amountOfDegree}" +
+                $", что равняется {numberInDegree}.\n{randomNumber} < {numberInDegree}.");
+        }
+    }
+}

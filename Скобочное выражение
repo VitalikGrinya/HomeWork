@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            char symbolYoungMoon = '(';
+            char symbolOldMoon = ')';
+            
+            string text = "()()";
+
+            int amountOfYoungMoonSymbols = 0;
+            int amountOfOldMoonSymbols = 0;
+            int maxDepth = 0;
+
+            bool isCorrect = true;
+
+            Console.WriteLine($"Скобочное выражение: {text}");
+            
+            for(int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == symbolYoungMoon)
+                {
+                    amountOfYoungMoonSymbols++;
+                }
+
+                if (text[i] == symbolOldMoon)
+                {
+                    amountOfOldMoonSymbols++;
+                }
+
+                if (text[0] == symbolOldMoon)
+                {
+                    isCorrect = false;
+                }
+            }
+
+            if(amountOfYoungMoonSymbols != amountOfOldMoonSymbols || !isCorrect)
+            {
+                Console.WriteLine("Скобочное выражение не соответствует условию.");
+            }
+
+            Console.WriteLine($"Максимальная глубина скобочных вложений равна: {maxDepth}.");
+        }
+    }
+}

@@ -13,27 +13,29 @@ namespace CSLight
         {
             char symbolYoungMoon = '(';
             char symbolOldMoon = ')';
-            
-            string text = "()()";
+
+            string text = "(()(()))";
 
             int amountOfYoungMoonSymbols = 0;
             int amountOfOldMoonSymbols = 0;
             int maxDepth = 0;
+            int depthInMin = 0;
+            int depthInMax = 0;
 
             bool isCorrect = true;
 
             Console.WriteLine($"Скобочное выражение: {text}");
-            
-            for(int i = 0; i < text.Length; i++)
+
+            for (int i = 0; i < text.Length; i++)
             {
                 if (text[i] == symbolYoungMoon)
                 {
-                    amountOfYoungMoonSymbols++;
+                    depthInMax++;
                 }
-
+                
                 if (text[i] == symbolOldMoon)
                 {
-                    amountOfOldMoonSymbols++;
+                     depthInMin--;
                 }
 
                 if (text[0] == symbolOldMoon)
@@ -42,7 +44,7 @@ namespace CSLight
                 }
             }
 
-            if(amountOfYoungMoonSymbols != amountOfOldMoonSymbols || !isCorrect)
+            if (depthInMax + depthInMin !=0 || !isCorrect)
             {
                 Console.WriteLine("Скобочное выражение не соответствует условию.");
             }

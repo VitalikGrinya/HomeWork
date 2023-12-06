@@ -29,22 +29,27 @@ namespace CSLight
                 if (text[i] == symbolYoungMoon)
                 {
                     depthInMax++;
-                    if(depthInMax > maxDepth)
+                    if (depthInMax > maxDepth)
                     {
                         maxDepth = depthInMax;
                     }
                 }
-                
+
                 if (text[i] == symbolOldMoon)
                 {
-                     depthInMin++;
-                    if(depthInMin < 0)
+                    depthInMin++;
+                    if (depthInMin < 0)
                     {
                         isCorrect = false;
                     }
                 }
 
-                if(depthInMax - depthInMin == 0)
+                if (text[0] == symbolOldMoon)
+                {
+                    isCorrect = false;
+                }
+
+                if (depthInMax - depthInMin == 0)
                 {
                     isCorrect = true;
                 }

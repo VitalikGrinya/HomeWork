@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            const string WaterDragonHit = "1";
+            const string SandShield = "2";
+            const string LightningHit = "3";
+            const string SaintOfGod = "4";
+
+            int playerHealth = 800;
+            int playerDamage = 0;
+            int waterDamage = 90;
+            int lightningDamage = 150;
+            int saintDamage = 45;
+            int playerHealing = 20;
+            int playerShield = 90;
+            int demonBossHealth = 1000;
+            int demonBossDamage = 100;
+
+            string userInput;
+
+            bool isDemonWet = false;
+
+            Console.WriteLine("Сразить в равном бою, против владыки демонов и одержите победу!!!");
+            Console.WriteLine("Удар водным драконом - 1. Песчаный щит - 2. Удар молнии - 3. Благословение - 4.\nНажмите цифру, чтобы начать бой.");
+
+            while (playerHealth >= 0 && demonBossHealth >= 0)
+            {
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case WaterDragonHit:
+                        playerDamage = waterDamage;
+                        demonBossHealth -= playerDamage;
+                        playerHealth -= demonBossDamage;
+                        isDemonWet = true;
+                        Console.WriteLine($"Здоровье игрока: {playerHealth}. Урон игрока: {playerDamage}." +
+                            $"Здоровье Демона: {demonBossHealth}. Урон Демона: {demonBossDamage}.");
+                        break;
+
+                    case SandShield:
+                        isDemonWet = false;
+                        playerDamage = 0;
+                        playerHealth += playerShield;
+                        demonBossHealth -= playerDamage;
+                        playerHealth -= demonBossDamage;
+                        Console.WriteLine($"Здоровье игрока: {playerHealth}. Урон игрока: {playerDamage}." +
+                            $"Здоровье Демона: {demonBossHealth}. Урон Демона: {demonBossDamage}.");
+                        break;
+
+                    case LightningHit:
+                        playerDamage = lightningDamage;
+
+                        if (isDemonWet)
+                        {
+                            playerDamage = lightningDamage * 2;
+                        }
+
+                        demonBossHealth -= playerDamage;
+                        playerHealth -= demonBossDamage;
+                        isDemonWet = false;
+                        Console.WriteLine($"Здоровье игрока: {playerHealth}. Урон игрока: {playerDamage}." +
+                            $"Здоровье Демона: {demonBossHealth}. Урон Демона: {demonBossDamage}.");
+                        break;
+
+                    case SaintOfGod:
+                        isDemonWet = false;
+                        playerHealth += playerHealing;
+                        playerDamage = saintDamage;
+                        demonBossHealth -= playerDamage;
+                        playerHealth -= demonBossDamage;
+                        Console.WriteLine($"Здоровье игрока: {playerHealth}. Урон игрока: {playerDamage}." +
+                            $"Здоровье Демона: {demonBossHealth}. Урон Демона: {demonBossDamage}.");
+                        break;
+
+                    default:
+                        Console.WriteLine("Я не знаю такого заклинания");
+                        break;
+                }
+
+                if (playerHealth <= 0)
+                {
+                    Console.WriteLine("Вы пали в бою");
+                }
+                else if (demonBossHealth <= 0)
+                {
+                    Console.WriteLine("Вы победили владыку демонов, отныне весь мир вас боготворит!!!");
+                }
+
+                if (playerHealth == 0 && demonBossHealth == 0)
+                {
+                    Console.WriteLine("Как равные ушли вы вместе в мир иной.......");
+                }
+            }
+        }
+    }
+}

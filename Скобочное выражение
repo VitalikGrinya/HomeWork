@@ -16,8 +16,6 @@ namespace CSLight
 
             string text = "(()(()))";
 
-            int amountOfYoungMoonSymbols = 0;
-            int amountOfOldMoonSymbols = 0;
             int maxDepth = 0;
             int depthInMin = 0;
             int depthInMax = 0;
@@ -31,25 +29,39 @@ namespace CSLight
                 if (text[i] == symbolYoungMoon)
                 {
                     depthInMax++;
+                    if(depthInMax > maxDepth)
+                    {
+                        maxDepth = depthInMax;
+                    }
                 }
                 
                 if (text[i] == symbolOldMoon)
                 {
-                     depthInMin--;
+                     depthInMin++;
+                    if(depthInMin < 0)
+                    {
+                        isCorrect = false;
+                    }
                 }
 
-                if (text[0] == symbolOldMoon)
+                if(depthInMax - depthInMin == 0)
+                {
+                    isCorrect = true;
+                }
+                else
                 {
                     isCorrect = false;
                 }
             }
 
-            if (depthInMax + depthInMin !=0 || !isCorrect)
+            if (!isCorrect)
             {
                 Console.WriteLine("Скобочное выражение не соответствует условию.");
             }
-
-            Console.WriteLine($"Максимальная глубина скобочных вложений равна: {maxDepth}.");
+            else
+            {
+                Console.WriteLine($"Максимальная глубина скобочных вложений равна: {maxDepth}.");
+            }
         }
     }
 }

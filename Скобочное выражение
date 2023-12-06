@@ -17,10 +17,7 @@ namespace CSLight
             string text = "(()(()))";
 
             int maxDepth = 0;
-            int depthInMin = 0;
-            int depthInMax = 0;
-
-            bool isCorrect = true;
+            int depth = 0;
 
             Console.WriteLine($"Скобочное выражение: {text}");
 
@@ -28,38 +25,23 @@ namespace CSLight
             {
                 if (text[i] == symbolYoungMoon)
                 {
-                    depthInMax++;
-                    if (depthInMax > maxDepth)
+                    depth++;
+                    if (depth > maxDepth)
                     {
-                        maxDepth = depthInMax;
+                        maxDepth = depth;
                     }
                 }
-
-                if (text[i] == symbolOldMoon)
+                else if (text[i] == symbolOldMoon)
                 {
-                    depthInMin++;
-                    if (depthInMin < 0)
+                    depth--;
+                    if (depth < 0)
                     {
-                        isCorrect = false;
+                        break;
                     }
-                }
-
-                if (text[0] == symbolOldMoon)
-                {
-                    isCorrect = false;
-                }
-
-                if (depthInMax - depthInMin == 0)
-                {
-                    isCorrect = true;
-                }
-                else
-                {
-                    isCorrect = false;
                 }
             }
 
-            if (!isCorrect)
+            if (depth != 0)
             {
                 Console.WriteLine("Скобочное выражение не соответствует условию.");
             }

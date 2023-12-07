@@ -25,6 +25,7 @@ namespace CSLight
             int playerShield = 90;
             int demonBossHealth = 1000;
             int demonBossDamage = 100;
+            int doubleDamage = 2;
 
             string userInput;
 
@@ -64,7 +65,7 @@ namespace CSLight
 
                         if (isDemonWet)
                         {
-                            playerDamage = lightningDamage * 2;
+                            playerDamage = lightningDamage * doubleDamage;
                         }
 
                         demonBossHealth -= playerDamage;
@@ -76,6 +77,12 @@ namespace CSLight
 
                     case SaintOfGod:
                         isDemonWet = false;
+                        
+                        if(playerHealth + playerHealing >= playerHealth)
+                        {
+                            playerHealing = 0;
+                        }
+
                         playerHealth += playerHealing;
                         playerDamage = saintDamage;
                         demonBossHealth -= playerDamage;
@@ -88,20 +95,21 @@ namespace CSLight
                         Console.WriteLine("Я не знаю такого заклинания");
                         break;
                 }
+            }
 
-                if (playerHealth <= 0)
-                {
-                    Console.WriteLine("Вы пали в бою");
-                }
-                else if (demonBossHealth <= 0)
-                {
-                    Console.WriteLine("Вы победили владыку демонов, отныне весь мир вас боготворит!!!");
-                }
+            if (playerHealth <= 0)
+            {
+                Console.WriteLine("Вы пали в бою");
+            }
+            
+            if (demonBossHealth <= 0)
+            {
+                Console.WriteLine("Вы победили владыку демонов, отныне весь мир вас боготворит!!!");
+            }
 
-                if (playerHealth == 0 && demonBossHealth == 0)
-                {
-                    Console.WriteLine("Как равные ушли вы вместе в мир иной.......");
-                }
+            if (playerHealth <= 0 && demonBossHealth <= 0)
+            {
+                Console.WriteLine("Как равные ушли вы вместе в мир иной.......");
             }
         }
     }

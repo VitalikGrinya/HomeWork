@@ -31,7 +31,8 @@ namespace CSLight
             bool isDemonWet = false;
 
             Console.WriteLine("Сразить в равном бою, против владыки демонов и одержите победу!!!");
-            Console.WriteLine("Удар водным драконом - 1. Песчаный щит - 2. Удар молнии - 3. Благословение - 4.\nНажмите цифру, чтобы начать бой.");
+            Console.WriteLine($"Удар водным драконом - {WaterDragonHit}. Песчаный щит - {SandShield}." +
+                $" Удар молнии - {LightningHit}. Благословение - {SaintOfGod}.\nНажмите цифру, чтобы начать бой.");
 
             while (playerHealth >= 0 && demonBossHealth >= 0)
             {

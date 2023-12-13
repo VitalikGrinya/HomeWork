@@ -29,28 +29,16 @@ namespace CSLight
                 Console.WriteLine();
             }
 
-            for (int i = 0; i < array.GetLength(0); i++)
+            for (int i = 0; i < array.GetLength(1); i++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    if (i == lineIndex)
-                    {
-                        sum += array[i, j];
-                    }
-                }
+                    sum += array[lineIndex, i];
             }
 
             Console.WriteLine("Сумма равна: " + sum);
 
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    if (j == coloneIndex)
-                    {
-                        product *= array[i, j];
-                    }
-                }
+                    product *= array[i, coloneIndex];
             }
 
             Console.WriteLine("Произведение равно: " + product);

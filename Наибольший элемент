@@ -16,6 +16,7 @@ namespace CSLight
             int minArrayValue = 1;
             int maxArrayValue = 10;
             int maxValue = int.MinValue;
+            int newValue = 0;
             int[,] array = new int[10, 10];
 
             for(int i = 0; i< array.GetLength(0); i++)
@@ -35,20 +36,23 @@ namespace CSLight
             {
                 for(int j = 0; j < array.GetLength(1); j++)
                 {
-                    if (maxValue <= array[i,j])
+                    if (maxValue < array[i,j])
                     {
                         maxValue = array[i,j];
                     }
                 }
             }
             
+            Console.WriteLine("Наибольшее значение: " + maxValue);
+            Console.WriteLine();
+
             for(int i = 0; i < array.GetLength(0); i++)
             {
                 for(int j = 0; j < array.GetLength(1); j++)
                 {
-                    if (maxValue <= array[i,j])
+                    if (maxValue == array[i,j])
                     {
-                        array[i,j] -= maxValue;
+                        array[i,j] = newValue;
                     }
 
                     Console.Write(array[i,j] + " ");
@@ -57,7 +61,6 @@ namespace CSLight
                 Console.WriteLine();
             }
 
-            Console.WriteLine("Наибольшее значение: " + maxValue);
         }
     }
 }

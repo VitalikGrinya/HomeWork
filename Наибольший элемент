@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random random = new Random();
+
+            int minArrayValue = 1;
+            int maxArrayValue = 10;
+            int maxValue = int.MinValue;
+            int[,] array = new int[10, 10];
+
+            for(int i = 0; i< array.GetLength(0); i++)
+            {
+                for(int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i,j] = random.Next(minArrayValue, maxArrayValue);
+                    Console.Write(array[i,j] + " ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine(" ");
+
+            for(int i = 0; i < array.GetLength(0); i++)
+            {
+                for(int j = 0; j < array.GetLength(1); j++)
+                {
+                    if (maxValue <= array[i,j])
+                    {
+                        maxValue = array[i,j];
+                    }
+                }
+            }
+            
+            for(int i = 0; i < array.GetLength(0); i++)
+            {
+                for(int j = 0; j < array.GetLength(1); j++)
+                {
+                    if (maxValue <= array[i,j])
+                    {
+                        array[i,j] -= maxValue;
+                    }
+
+                    Console.Write(array[i,j] + " ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Наибольшее значение: " + maxValue);
+        }
+    }
+}

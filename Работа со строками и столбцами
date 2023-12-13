@@ -11,25 +11,48 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            int[,] array = new int[2, 3] { { 2, 8, 5 }, { 3, 6, 7 } };
-
+            Random random = new Random();
+            int lineIndex = 1;
+            int coloneIndex = 0;
             int sum = 0;
             int product = 1;
+            int[,] array = new int[2, 3];
 
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
+                    array[i, j] = random.Next(0, 10);
                     Console.Write(array[i, j] + " ");
                 }
 
                 Console.WriteLine();
             }
 
-            sum = array[1, 0] + array[1, 1] + array[1, 2];
-            product = array[0, 0] * array[1, 0];
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    if (i == lineIndex)
+                    {
+                        sum += array[i, j];
+                    }
+                }
+            }
 
             Console.WriteLine("Сумма равна: " + sum);
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    if (j == coloneIndex)
+                    {
+                        product *= array[i, j];
+                    }
+                }
+            }
+
             Console.WriteLine("Произведение равно: " + product);
         }
     }

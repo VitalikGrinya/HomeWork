@@ -16,7 +16,7 @@ namespace CSLight
             int minArrayValue = 1;
             int maxArrayValue = 10;
             int maxValue = int.MinValue;
-            int editerMaxValue = 0;
+            int editorMaxValue = 0;
             int[,] array = new int[10, 10];
 
             for (int i = 0; i < array.GetLength(0); i++)
@@ -52,7 +52,7 @@ namespace CSLight
                 {
                     if (maxValue == array[i, j])
                     {
-                        array[i, j] = editerMaxValue;
+                        array[i, j] = editorMaxValue;
                     }
 
                     Console.Write(array[i, j] + " ");

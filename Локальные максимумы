@@ -16,11 +16,11 @@ namespace CSLight
             int[] array = new int[30];
             int minArrayValue = 0;
             int maxArrayValue = 10;
-            int firstElementOfArray = array[0];
-            int secondElementOfArray = array[1];
-            int oneElementOfArray = 1;
-            int lastElementOfArray = array[array.Length - 1];
-            int penultimateElementOfArray = array[array.Length - 2];
+            int firstElementOfArray = 0;
+            int secondElementOfArray = 1;
+            int shift = 1;
+            int lastElementOfArray = array.Length - 1;
+            int penultimateElementOfArray = array.Length - 2;
 
             for (int i = 0; i < array.Length; i++)
             {
@@ -35,10 +35,10 @@ namespace CSLight
                 Console.Write(array[firstElementOfArray] + " ");
             }
 
-            for (int i = oneElementOfArray; i < array.Length - oneElementOfArray; i++)
+            for (int i = shift; i < array.Length - shift; i++)
             {
-                int previousElementIndex = i - oneElementOfArray;
-                int nextElementIndex = i + oneElementOfArray;
+                int previousElementIndex = i - shift;
+                int nextElementIndex = i + shift;
 
                 if (array[i] > array[previousElementIndex] && array[i] > array[nextElementIndex])
                 {

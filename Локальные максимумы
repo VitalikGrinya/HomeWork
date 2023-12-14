@@ -30,9 +30,9 @@ namespace CSLight
 
             Console.WriteLine();
 
-            if (array[firstElementOfArray] > array[secondElementOfArray])
+            if (array[firstIndexOfArray] > array[secondIndexOfArray])
             {
-                Console.Write(array[firstElementOfArray] + " ");
+                Console.Write(array[firstIndexOfArray] + " ");
             }
 
             for (int i = shift; i < array.Length - shift; i++)

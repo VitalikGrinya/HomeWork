@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random random = new Random();
+
+            int[] array = new int[30];
+            int minArrayValue = 0;
+            int maxArrayValue = 10;
+            int firstElementOfArray = array[0];
+            int secondElementOfArray = array[1];
+            int oneElementOfArray = 1;
+            int lastElementOfArray = array[array.Length - 1];
+            int penultimateElementOfArray = array[array.Length - 2];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(minArrayValue, maxArrayValue);
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine();
+
+            if (array[firstElementOfArray] > array[secondElementOfArray])
+            {
+                Console.Write(array[firstElementOfArray] + " ");
+            }
+
+            for (int i = oneElementOfArray; i < array.Length - oneElementOfArray; i++)
+            {
+                int previousElementIndex = i - oneElementOfArray;
+                int nextElementIndex = i + oneElementOfArray;
+
+                if (array[i] > array[previousElementIndex] && array[i] > array[nextElementIndex])
+                {
+                    Console.Write(array[i] + " ");
+                }
+            }
+
+            if (array[lastElementOfArray] > array[penultimateElementOfArray])
+            {
+                Console.Write(array[lastElementOfArray] + " ");
+            }
+        }
+    }
+}

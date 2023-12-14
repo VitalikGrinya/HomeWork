@@ -16,11 +16,11 @@ namespace CSLight
             int[] array = new int[30];
             int minArrayValue = 0;
             int maxArrayValue = 10;
-            int firstElementOfArray = 0;
-            int secondElementOfArray = 1;
+            int firstIndexOfArray = 0;
+            int secondIndexOfArray = 1;
             int shift = 1;
-            int lastElementOfArray = array.Length - 1;
-            int penultimateElementOfArray = array.Length - 2;
+            int lastIndexOfArray = array.Length - 1;
+            int penultimateIndexOfArray = array.Length - 2;
 
             for (int i = 0; i < array.Length; i++)
             {
@@ -46,9 +46,9 @@ namespace CSLight
                 }
             }
 
-            if (array[lastElementOfArray] > array[penultimateElementOfArray])
+            if (array[lastIndexOfArray] > array[penultimateIndexOfArray])
             {
-                Console.Write(array[lastElementOfArray] + " ");
+                Console.Write(array[lastIndexOfArray] + " ");
             }
         }
     }

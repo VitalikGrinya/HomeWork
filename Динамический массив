@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            const string CommandSumArray = "sum";
+            const string CommandExit = "exit";
+            string userInput;
+
+            Random random = new Random();
+
+            int[] numberInput = new int[0];
+           
+            bool isWorking = true;
+
+            Console.WriteLine("Введите команду или число: ");
+            Console.WriteLine("Команда - " + CommandSumArray + ", выведет сумму введенных чисел.");
+            Console.WriteLine("Команда - " + CommandExit + ", выйдет из приложения.");
+
+            while (isWorking)
+            {
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case CommandSumArray:
+                        int sum = 0;
+
+                        for (int i = 0; i < numberInput.Length; i++)
+                        {
+                            sum += numberInput[i];
+                        }
+
+                        Console.WriteLine("Сумма равна: " + sum);
+                        break;
+
+                    case CommandExit:
+                        isWorking = false;
+
+                        Console.WriteLine("Ok, bye!");
+                        break;
+
+                    default:
+                        int[] tempNumberInput = new int[numberInput.Length + 1];
+
+                        tempNumberInput[tempNumberInput.Length - 1] = Convert.ToInt32(userInput);
+
+                        for (int i = 0; i < numberInput.Length; i++)
+                        {
+                            tempNumberInput[i] = numberInput[i];
+                        }
+
+                        numberInput = tempNumberInput;
+                        break;
+                }
+            }
+        }
+    }
+}

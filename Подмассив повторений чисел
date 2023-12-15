@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSLight
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] array = new int[30];
+
+            Random random = new Random();
+            int minArrayValue = 1;
+            int maxArrayValue = 3;
+            int nextMatchArrayValue = 1;
+            int numberMaxMatch = 0;
+            int maxMatchValue = int.MinValue;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(minArrayValue, maxArrayValue);
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine();
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                if (array[i] == array[i + 1])
+                {
+                    nextMatchArrayValue++;
+                }
+                else
+                {
+                    nextMatchArrayValue = 1;
+                }
+
+                if (maxMatchValue < nextMatchArrayValue)
+                {
+                    maxMatchValue = nextMatchArrayValue;
+                    numberMaxMatch = array[i];
+                }
+            }
+
+            Console.WriteLine("Число, что больше всех повторяется - " + numberMaxMatch + ". Количество повторений - " + maxMatchValue + ".");
+        }
+    }
+}

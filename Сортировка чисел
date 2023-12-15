@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BubbleSort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Random random = new Random();
+
+            int minArrayValue = 1;
+            int maxArrayValue = 10;
+            int arraySize = 10;
+            int shift = 0;
+
+            bool isWorking = true;
+
+            int[] array = new int[arraySize];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(minArrayValue, maxArrayValue);
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine();
+
+            while (isWorking)
+            {
+                for (int i = 0; i < array.Length - 1; i++)
+                {
+                    if (array[i] > array[i + 1])
+                    {
+                        int tempArray = array[i];
+
+                        array[i] = array[i + 1];
+                        array[i + 1] = tempArray;
+                        shift++;
+                    }
+                }
+
+                if(shift == 0)
+                {
+                    isWorking = false;
+                }
+
+                shift = 0;
+            }
+
+            for(int i = 0; i < array.Length; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+        }
+    }
+}

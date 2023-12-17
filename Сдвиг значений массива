@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ShiftArray
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] array = { 1, 2, 3, 4, 5 };
+
+            int firstIndexValue = 0;
+            int shift;
+            int inputNumber;
+
+            Console.Write("На сколько сдвинуть массив?: ");
+
+            inputNumber = Convert.ToInt32(Console.ReadLine());
+
+            shift = inputNumber % array.Length;
+
+            for (int i = 0; i < shift; i++)
+            {
+                int tempNumber = array[firstIndexValue];
+
+                for (int j = 0; j < array.Length - 1; j++)
+                {
+                    array[j] = array[j + 1];
+                }
+
+                array[array.Length - 1] = tempNumber;
+            }
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+        }
+    }
+}

@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace ShiftArray
+namespace PersonnelAccounting
 {
     class Program
     {
@@ -25,7 +18,7 @@ namespace ShiftArray
             bool isWorking = true;
 
             Console.WriteLine($"Для продолжения работы введите следующию цифру:\n{1} Добавить досье.\n" +
-                $"{2} Вывести досье.\n{3} Удалить досье.\n{4} найти фамилию.\n{5} Выход из программы.");
+                $"{2} Вывести досье.\n{3} Удалить досье.\n{4} Найти фамилию.\n{5} Выход из программы.");
 
             while (isWorking)
             {
@@ -38,7 +31,7 @@ namespace ShiftArray
                         break;
 
                     case CommandShowDossier:
-                        ShowDossier(ref fullNameData, ref postData);
+                        ShowDossier(fullNameData, postData);
                         break;
 
                     case CommandDeleteDossier:
@@ -46,7 +39,7 @@ namespace ShiftArray
                         break;
 
                     case CommandSearchName:
-                        SearchName(ref fullNameData, ref postData);
+                        SearchName(fullNameData, postData);
                         break;
 
                     case CommandExit:
@@ -61,7 +54,7 @@ namespace ShiftArray
             }
         }
 
-        static string[] AddArray(string[] array, string text)
+        static string[] AddElementOfArray(string[] array, string text)
         {
             string inputArray;
             string[] tempInputArray = new string[array.Length + 1];
@@ -80,11 +73,11 @@ namespace ShiftArray
 
         static void AddDossier(ref string[] fullNameData, ref string[] postData)
         {
-            fullNameData = AddArray(fullNameData, "Введите ФИО: ");
-            postData = AddArray(postData, "Введите должность: ");
+            fullNameData = AddElementOfArray(fullNameData, "Введите ФИО: ");
+            postData = AddElementOfArray(postData, "Введите должность: ");
         }
 
-        static void ShowDossier(ref string[] fullNameData, ref string[] postData)
+        static void ShowDossier(string[] fullNameData, string[] postData)
         {
             int numberOfDossier = 0;
 
@@ -95,7 +88,7 @@ namespace ShiftArray
             }
         }
 
-        static string[] DeleteArray(string[] array, int indexOfDossier)
+        static string[] DeleteElementOfArray(string[] array, int indexOfDossier)
         {
             string[] deleteArray = new string[array.Length - 1];
 
@@ -121,8 +114,8 @@ namespace ShiftArray
 
             if (indexOfDossier < fullNameData.Length && indexOfDossier < postData.Length && indexOfDossier >= 0)
             {
-                fullNameData = DeleteArray(fullNameData, indexOfDossier);
-                postData = DeleteArray(postData, indexOfDossier);
+                fullNameData = DeleteElementOfArray(fullNameData, indexOfDossier);
+                postData = DeleteElementOfArray(postData, indexOfDossier);
             }
             else
             {
@@ -130,9 +123,13 @@ namespace ShiftArray
             }
         }
 
-        static void SearchName(ref string[] fullNameData, ref string[] postData)
+        static void SearchName(string[] fullNameData, string[] postData)
         {
             string userInput;
+
+            char separatorSymbol = ' ';
+
+            int indexOfLastName = 0;
 
             bool isFound = false;
 
@@ -141,7 +138,9 @@ namespace ShiftArray
 
             for (int i = 0; i < fullNameData.Length && i < postData.Length; i++)
             {
-                if (fullNameData[i] == userInput)
+                string[] lastName = fullNameData[i].Split(separatorSymbol);
+                
+                if (lastName[indexOfLastName] == userInput)
                 {
                     isFound = true;
                     int numberOfDossier = i + 1;
@@ -149,7 +148,7 @@ namespace ShiftArray
                 }
             }
 
-            if (!isFound)
+            if (isFound == false)
             {
                 Console.WriteLine("Такой фамилии нет в базе данных.");
             }

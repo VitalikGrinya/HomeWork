@@ -29,7 +29,6 @@ namespace ShiftArray
 
             while (isWorking)
             {
-
                 userInput = Convert.ToInt32(Console.ReadLine());
 
                 switch (userInput)
@@ -47,6 +46,7 @@ namespace ShiftArray
                         break;
 
                     case CommandSearchName:
+                        SearchName(ref fullNameData, ref postData);
                         break;
 
                     case CommandExit:
@@ -60,34 +60,27 @@ namespace ShiftArray
             }
         }
 
+        static string[] AddArray(string[] array, string message)
+        {
+            string inputArray;
+            string[] tempInputArray = new string[array.Length + 1];
+
+            Console.WriteLine(message);
+            inputArray = Console.ReadLine();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                tempInputArray[i] = array[i];
+            }
+
+            tempInputArray[tempInputArray.Length - 1] = inputArray;
+            return array = tempInputArray;
+        }
+
         static void AddDossier(ref string[] fullNameData, ref string[] postData)
         {
-            string fullName;
-            string post;
-
-            string[] tempFullNameData = new string[fullNameData.Length + 1];
-            string[] tempPostData = new string[postData.Length + 1];
-
-            Console.WriteLine("Введите ФИО: ");
-            fullName = Console.ReadLine();
-            Console.WriteLine("Введите должночть: ");
-            post = Console.ReadLine();
-
-            for (int i = 0; i < fullNameData.Length; i++)
-            {
-                tempFullNameData[i] = fullNameData[i];
-            }
-
-            for (int i = 0; i < postData.Length; i++)
-            {
-                tempPostData[i] = postData[i];
-            }
-
-            tempFullNameData[tempFullNameData.Length - 1] = fullName;
-            tempPostData[tempPostData.Length - 1] = post;
-
-            fullNameData = tempFullNameData;
-            postData = tempPostData;
+            fullNameData = AddArray(fullNameData, "Введите ФИО: ");
+            postData = AddArray(postData, "Введите должность: ");
         }
 
         static void ShowDossier(ref string[] fullNameData, ref string[] postData)
@@ -101,36 +94,63 @@ namespace ShiftArray
             }
         }
 
+        static string[] DeleteArray(string[] array, int indexOfDossier)
+        {
+            string[] deleteArray = new string[array.Length - 1];
+
+            for (int i = 0; i < indexOfDossier; i++)
+            {
+                deleteArray[i] = array[i];
+            }
+
+            for (int i = indexOfDossier; i < deleteArray.Length; i++)
+            {
+                deleteArray[i] = array[i + 1];
+            }
+
+            return array = deleteArray;
+        }
+
         static void DeleteDossier(ref string[] fullNameData, ref string[] postData)
         {
-            int indexOfDossier;
-
-            string[] deleteFullNameData = new string[fullNameData.Length - 1];
-            string[] deletePostData = new string[postData.Length - 1];
+            int indexOfDossier = 0;
 
             Console.WriteLine("Введите номер досье, которое хотите удалить: ");
             indexOfDossier = Convert.ToInt32(Console.ReadLine()) - 1;
 
-            if (indexOfDossier < fullNameData.Length && indexOfDossier >= 0)
+            if (indexOfDossier < fullNameData.Length && indexOfDossier < postData.Length && indexOfDossier >= 0)
             {
-                for (int i = 0; i < indexOfDossier; i++)
-                {
-                    deleteFullNameData[i] = fullNameData[i];
-                    deletePostData[i] = postData[i];
-                }
-
-                for (int i = indexOfDossier; i < deleteFullNameData.Length && i < deletePostData.Length; i++)
-                {
-                    deleteFullNameData[i] = fullNameData[i + 1];
-                    deletePostData[i] = postData[i + 1];
-                }
-
-                fullNameData = deleteFullNameData;
-                postData = deletePostData;
+                fullNameData = DeleteArray(fullNameData, indexOfDossier);
+                postData = DeleteArray(postData, indexOfDossier);
             }
             else
             {
                 Console.WriteLine("Введен неверный номер.");
+            }
+        }
+
+        static void SearchName(ref string[] fullNameData, ref string[] postData)
+        {
+            string userInput;
+
+            bool isFound = false;
+
+            Console.WriteLine("Введите фамилию, которую ищите: ");
+            userInput = Console.ReadLine();
+            
+            for (int i = 0; i < fullNameData.Length && i < postData.Length; i++)
+            {
+                if (fullNameData[i] == userInput)
+                {
+                    isFound = true;
+                    int numberOfDossier = i + 1;
+                    Console.WriteLine(numberOfDossier + ") " + fullNameData[i] + " - " + postData[i]);
+                }
+            }
+
+            if (!isFound)
+            {
+                Console.WriteLine("Такой фамилии нет в базе данных.");
             }
         }
     }

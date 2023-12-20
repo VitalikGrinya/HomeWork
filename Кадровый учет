@@ -109,7 +109,7 @@ namespace ShiftArray
             string[] deletePostData = new string[postData.Length - 1];
 
             Console.WriteLine("Введите номер досье, которое хотите удалить: ");
-            indexOfDossier = Convert.ToInt32(Console.ReadLine());
+            indexOfDossier = Convert.ToInt32(Console.ReadLine()) - 1;
 
             if (indexOfDossier < fullNameData.Length && indexOfDossier >= 0)
             {

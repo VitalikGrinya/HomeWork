@@ -51,6 +51,7 @@ namespace ShiftArray
 
                     case CommandExit:
                         isWorking = false;
+                        Console.WriteLine("Bye!!!");
                         break;
 
                     default:
@@ -60,12 +61,12 @@ namespace ShiftArray
             }
         }
 
-        static string[] AddArray(string[] array, string message)
+        static string[] AddArray(string[] array, string text)
         {
             string inputArray;
             string[] tempInputArray = new string[array.Length + 1];
 
-            Console.WriteLine(message);
+            Console.WriteLine(text);
             inputArray = Console.ReadLine();
 
             for (int i = 0; i < array.Length; i++)
@@ -137,7 +138,7 @@ namespace ShiftArray
 
             Console.WriteLine("Введите фамилию, которую ищите: ");
             userInput = Console.ReadLine();
-            
+
             for (int i = 0; i < fullNameData.Length && i < postData.Length; i++)
             {
                 if (fullNameData[i] == userInput)

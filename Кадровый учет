@@ -1,0 +1,137 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace ShiftArray
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            const int CommandAddDossier = 1;
+            const int CommandShowDossier = 2;
+            const int CommandDeleteDossier = 3;
+            const int CommandSearchName = 4;
+            const int CommandExit = 5;
+
+            string[] fullNameData = new string[0];
+            string[] postData = new string[0];
+
+            int userInput;
+
+            bool isWorking = true;
+
+            Console.WriteLine($"Для продолжения работы введите следующию цифру:\n{1} Добавить досье.\n" +
+                $"{2} Вывести досье.\n{3} Удалить досье.\n{4} найти фамилию.\n{5} Выход из программы.");
+
+            while (isWorking)
+            {
+
+                userInput = Convert.ToInt32(Console.ReadLine());
+
+                switch (userInput)
+                {
+                    case CommandAddDossier:
+                        AddDossier(ref fullNameData, ref postData);
+                        break;
+
+                    case CommandShowDossier:
+                        ShowDossier(ref fullNameData, ref postData);
+                        break;
+
+                    case CommandDeleteDossier:
+                        DeleteDossier(ref fullNameData, ref postData);
+                        break;
+
+                    case CommandSearchName:
+                        break;
+
+                    case CommandExit:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Такой команды не существует.");
+                        break;
+                }
+            }
+        }
+
+        static void AddDossier(ref string[] fullNameData, ref string[] postData)
+        {
+            string fullName;
+            string post;
+
+            string[] tempFullNameData = new string[fullNameData.Length + 1];
+            string[] tempPostData = new string[postData.Length + 1];
+
+            Console.WriteLine("Введите ФИО: ");
+            fullName = Console.ReadLine();
+            Console.WriteLine("Введите должночть: ");
+            post = Console.ReadLine();
+
+            for (int i = 0; i < fullNameData.Length; i++)
+            {
+                tempFullNameData[i] = fullNameData[i];
+            }
+
+            for (int i = 0; i < postData.Length; i++)
+            {
+                tempPostData[i] = postData[i];
+            }
+
+            tempFullNameData[tempFullNameData.Length - 1] = fullName;
+            tempPostData[tempPostData.Length - 1] = post;
+
+            fullNameData = tempFullNameData;
+            postData = tempPostData;
+        }
+
+        static void ShowDossier(ref string[] fullNameData, ref string[] postData)
+        {
+            int numberOfDossier = 0;
+
+            for (int i = 0; i < fullNameData.Length && i < postData.Length; i++)
+            {
+                numberOfDossier = i + 1;
+                Console.WriteLine(numberOfDossier + ") " + fullNameData[i] + " - " + postData[i]);
+            }
+        }
+
+        static void DeleteDossier(ref string[] fullNameData, ref string[] postData)
+        {
+            int indexOfDossier;
+
+            string[] deleteFullNameData = new string[fullNameData.Length - 1];
+            string[] deletePostData = new string[postData.Length - 1];
+
+            Console.WriteLine("Введите номер досье, которое хотите удалить: ");
+            indexOfDossier = Convert.ToInt32(Console.ReadLine());
+
+            if (indexOfDossier < fullNameData.Length && indexOfDossier >= 0)
+            {
+                for (int i = 0; i < indexOfDossier; i++)
+                {
+                    deleteFullNameData[i] = fullNameData[i];
+                    deletePostData[i] = postData[i];
+                }
+
+                for (int i = indexOfDossier; i < deleteFullNameData.Length && i < deletePostData.Length; i++)
+                {
+                    deleteFullNameData[i] = fullNameData[i + 1];
+                    deletePostData[i] = postData[i + 1];
+                }
+
+                fullNameData = deleteFullNameData;
+                postData = deletePostData;
+            }
+            else
+            {
+                Console.WriteLine("Введен неверный номер.");
+            }
+        }
+    }
+}

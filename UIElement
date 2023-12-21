@@ -1,36 +1,68 @@
-namespace HealthBar
+namespace UIElement
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
-            int health = 6;
-            int maxHealth = 10;
+            int maxHealth;
+            int userInputHealth;
+            int maxPercent = 100;
+            int health;
 
-            HealthBar(health, maxHealth);
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+                Console.Write("Введите максимальное количество здоровья: ");
+                maxHealth = Convert.ToInt32(Console.ReadLine());
+
+                Console.Write("Введите количество оставшегося здоровья в процентах: ");
+                userInputHealth = Convert.ToInt32(Console.ReadLine());
+
+                health = maxHealth * userInputHealth / maxPercent;
+
+                if (health <= maxHealth && health > 0 && maxHealth <= 50)
+                {
+                    DrawBar(health, maxHealth, ConsoleColor.Green, 60,5);
+                    Console.ReadKey();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\nНеверно введены значения, попробуйте снова.");
+                }
+            }
         }
 
-        static void HealthBar(int value, int maxValue)
+        static void DrawBar(int value, int maxValue, ConsoleColor color,int horizontalPosition, int verticalPosition)
+        {
+            ConsoleColor defaultColor = Console.BackgroundColor;
+
+            string bar;
+
+            bar = HelpsDrawHealthBar(value);
+
+            Console.SetCursorPosition(horizontalPosition, verticalPosition);
+            Console.Write("[");
+            Console.BackgroundColor = color;
+            Console.Write(bar);
+            Console.BackgroundColor = defaultColor;
+
+            bar = HelpsDrawHealthBar(maxValue - value);
+
+            Console.Write(bar + "]");
+        }
+
+        static string HelpsDrawHealthBar(int someValue)
         {
             string bar = "";
 
-            for(int i = 0; i < value; i++)
+            for (int i = 0; i < someValue; i++)
             {
-                bar += "#";
+                bar += " ";
             }
 
-            Console.SetCursorPosition(50, 1);
-            Console.Write('[');
-            Console.Write(bar);
-
-            bar = "";
-
-            for(int i = value; i < maxValue; i++)
-            {
-                bar += "_";
-            }
-
-            Console.Write(bar + ']');
+            return bar;
         }
     }
 }

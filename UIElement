@@ -8,8 +8,13 @@ namespace UIElement
             int userInputHealth;
             int maxPercent = 100;
             int health;
+            int lastValueOfHealth = 50;
+            int horizontalBarPosition = 0;
+            int verticalBarPosition = 0;
 
             bool isWorking = true;
+
+            ConsoleColor color;
 
             while (isWorking)
             {
@@ -19,11 +24,13 @@ namespace UIElement
                 Console.Write("Введите количество оставшегося здоровья в процентах: ");
                 userInputHealth = Convert.ToInt32(Console.ReadLine());
 
+                Console.Clear();
+
                 health = maxHealth * userInputHealth / maxPercent;
 
-                if (health <= maxHealth && health > 0 && maxHealth <= 50)
+                if (health <= maxHealth && health > 0 && maxHealth <= lastValueOfHealth)
                 {
-                    DrawBar(health, maxHealth, ConsoleColor.Green, 60,5);
+                    DrawBar(health, maxHealth, ConsoleColor.Green, ref horizontalBarPosition, ref verticalBarPosition);
                     Console.ReadKey();
                     break;
                 }
@@ -34,26 +41,26 @@ namespace UIElement
             }
         }
 
-        static void DrawBar(int value, int maxValue, ConsoleColor color,int horizontalPosition, int verticalPosition)
+        static void DrawBar(int value, int maxValue, ConsoleColor color,ref int horizontalBarPosition,ref int verticalBarPosition)
         {
             ConsoleColor defaultColor = Console.BackgroundColor;
 
             string bar;
 
-            bar = HelpsDrawHealthBar(value);
+            bar = DrawHelpsHealthBar(value);
 
-            Console.SetCursorPosition(horizontalPosition, verticalPosition);
+            Console.SetCursorPosition(horizontalBarPosition, verticalBarPosition);
             Console.Write("[");
             Console.BackgroundColor = color;
             Console.Write(bar);
             Console.BackgroundColor = defaultColor;
 
-            bar = HelpsDrawHealthBar(maxValue - value);
+            bar = DrawHelpsHealthBar(maxValue - value);
 
             Console.Write(bar + "]");
         }
 
-        static string HelpsDrawHealthBar(int someValue)
+        static string DrawHelpsHealthBar(int someValue)
         {
             string bar = "";
 

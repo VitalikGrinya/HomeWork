@@ -1,0 +1,36 @@
+namespace HealthBar
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int health = 6;
+            int maxHealth = 10;
+
+            HealthBar(health, maxHealth);
+        }
+
+        static void HealthBar(int value, int maxValue)
+        {
+            string bar = "";
+
+            for(int i = 0; i < value; i++)
+            {
+                bar += "#";
+            }
+
+            Console.SetCursorPosition(50, 1);
+            Console.Write('[');
+            Console.Write(bar);
+
+            bar = "";
+
+            for(int i = value; i < maxValue; i++)
+            {
+                bar += "_";
+            }
+
+            Console.Write(bar + ']');
+        }
+    }
+}

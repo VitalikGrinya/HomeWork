@@ -14,7 +14,7 @@ namespace UIElement
 
             bool isWorking = true;
 
-            ConsoleColor color;
+            ConsoleColor color = ConsoleColor.Green;
 
             while (isWorking)
             {
@@ -30,7 +30,7 @@ namespace UIElement
 
                 if (health <= maxHealth && health > 0 && maxHealth <= lastValueOfHealth)
                 {
-                    DrawBar(health, maxHealth, ConsoleColor.Green, ref horizontalBarPosition, ref verticalBarPosition);
+                    DrawBar(health, maxHealth, color, ref horizontalBarPosition, ref verticalBarPosition);
                     Console.ReadKey();
                     break;
                 }

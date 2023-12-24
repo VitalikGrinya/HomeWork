@@ -1,0 +1,36 @@
+namespace ReadInt
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            ReadInt();
+        }
+
+        static void ReadInt()
+        {
+            bool isWorking = true;
+
+            string userInput;
+
+            Console.Write("Введите любое целое число: ");
+            userInput = Console.ReadLine();
+
+            while (isWorking) 
+            {
+                bool result = int.TryParse(userInput, out var value);
+
+                if (result == true)
+                {
+                    Console.WriteLine("Ваш результат: " + value);
+                    isWorking = false;
+                }
+                else
+                {
+                    Console.Write("Не удалось преобралзовать, попробуйте снова: ");
+                    userInput = Console.ReadLine();
+                }
+            }
+        }
+    }
+}

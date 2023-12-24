@@ -4,7 +4,7 @@ namespace ReadInt
     {
         static void Main(string[] args)
         {
-            ConsoleResult();
+            PrintResult();
         }
 
         static int ReadInt()
@@ -24,7 +24,7 @@ namespace ReadInt
             return value;
         }
 
-        static void ConsoleResult()
+        static void PrintResult()
         {
             int numberValue;
 

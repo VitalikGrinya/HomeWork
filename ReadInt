@@ -4,33 +4,32 @@ namespace ReadInt
     {
         static void Main(string[] args)
         {
-            ReadInt();
+            ConsoleResult();
         }
 
-        static void ReadInt()
+        static int ReadInt()
         {
-            bool isWorking = true;
-
+            int value;
             string userInput;
 
             Console.Write("Введите любое целое число: ");
             userInput = Console.ReadLine();
 
-            while (isWorking) 
+            while (int.TryParse(userInput, out value) == false)
             {
-                bool result = int.TryParse(userInput, out var value);
-
-                if (result == true)
-                {
-                    Console.WriteLine("Ваш результат: " + value);
-                    isWorking = false;
-                }
-                else
-                {
-                    Console.Write("Не удалось преобралзовать, попробуйте снова: ");
-                    userInput = Console.ReadLine();
-                }
+                Console.Write("Не удалось преобралзовать, попробуйте снова: ");
+                userInput = Console.ReadLine();
             }
+
+            return value;
+        }
+
+        static void ConsoleResult()
+        {
+            int numberValue;
+
+            numberValue = ReadInt();
+            Console.WriteLine("Ваше число: " + numberValue);
         }
     }
 }

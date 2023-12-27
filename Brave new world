@@ -11,8 +11,8 @@ namespace BraveNewWorld
 
             ConsoleKeyInfo pressedKey;
 
-            int heroX = 1;
-            int heroY = 1;
+            int heroPositionX = 1;
+            int heroPositionY = 1;
 
             bool isWorking = true;
 
@@ -21,12 +21,12 @@ namespace BraveNewWorld
                 Console.Clear();
                 DrawMap(map);
 
-                Console.SetCursorPosition(heroX, heroY);
+                Console.SetCursorPosition(heroPositionX, heroPositionY);
                 Console.Write("0");
 
                 pressedKey = Console.ReadKey();
 
-                HandleInput(pressedKey, ref heroX, ref heroY, map);
+                MoveHero(pressedKey, ref heroPositionX, ref heroPositionY, map);
             }
         }
 
@@ -60,24 +60,39 @@ namespace BraveNewWorld
             }
         }
 
-        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int heroX, ref int heroY, char[,] map)
+        private static void MoveHero(ConsoleKeyInfo pressedKey, ref int heroPositionX, ref int heroPositionY, char[,] map)
         {
             int[] direction = GetDirection(pressedKey);
 
-            int nextHeroPositionX = heroX + direction[0];
-            int nextHeroPositionY = heroY + direction[1];
+            int nextHeroPositionX = heroPositionX + direction[0];
+            int nextHeroPositionY = heroPositionY + direction[1];
+
+            char emptyCell = ' ';
+            char starCell = '*';
 
             char nextCell = map[nextHeroPositionX, nextHeroPositionY];
 
-            if (nextCell == ' ' || nextCell == '*')
+            if (IsMovePossible(nextCell, emptyCell, starCell) == true)
             {
-                heroX = nextHeroPositionX;
-                heroY = nextHeroPositionY;
+                heroPositionX = nextHeroPositionX;
+                heroPositionY = nextHeroPositionY;
 
                 if (nextCell == '*')
                 {
                     map[nextHeroPositionX, nextHeroPositionY] = ' ';
                 }
+            }
+        }
+
+        static bool IsMovePossible(char cell, char emptyCell, char starCell)
+        {
+            if (cell == emptyCell || cell == starCell)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

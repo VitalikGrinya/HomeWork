@@ -8,12 +8,32 @@ namespace BraveNewWorld
         static void Main(string[] args)
         {
             char[,] map = ReadMap("map.txt");
-            Console.WriteLine(map);
+
+            ConsoleKeyInfo pressedKey;
+
+            int heroX = 1;
+            int heroY = 1;
+
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+                Console.Clear();
+                DrawMap(map);
+
+                Console.SetCursorPosition(heroX, heroY);
+                Console.Write("0");
+
+                pressedKey = Console.ReadKey();
+
+                HandleInput(pressedKey, ref heroX, ref heroY, map);
+            }
         }
 
-        static char[,] ReadMap(string path)
+        static char[,] ReadMap(string text)
         {
             string[] file = File.ReadAllLines("map.txt");
+
             char[,] map = new char[GetMaxLengthOfLine(file), file.Length];
 
             for (int x = 0; x < map.GetLength(0); x++)
@@ -38,6 +58,51 @@ namespace BraveNewWorld
 
                 Console.WriteLine(" ");
             }
+        }
+
+        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int heroX, ref int heroY, char[,] map)
+        {
+            int[] direction = GetDirection(pressedKey);
+
+            int nextHeroPositionX = heroX + direction[0];
+            int nextHeroPositionY = heroY + direction[1];
+
+            char nextCell = map[nextHeroPositionX, nextHeroPositionY];
+
+            if (nextCell == ' ' || nextCell == '*')
+            {
+                heroX = nextHeroPositionX;
+                heroY = nextHeroPositionY;
+
+                if (nextCell == '*')
+                {
+                    map[nextHeroPositionX, nextHeroPositionY] = ' ';
+                }
+            }
+        }
+
+        private static int[] GetDirection(ConsoleKeyInfo pressedKey)
+        {
+            int[] direction = { 0, 0 };
+
+            if (pressedKey.Key == ConsoleKey.UpArrow)
+            {
+                direction[1] = -1;
+            }
+            else if (pressedKey.Key == ConsoleKey.LeftArrow)
+            {
+                direction[0] = -1;
+            }
+            else if (pressedKey.Key == ConsoleKey.DownArrow)
+            {
+                direction[1] = 1;
+            }
+            else if (pressedKey.Key == ConsoleKey.RightArrow)
+            {
+                direction[0] = 1;
+            }
+
+            return direction;
         }
 
         private static int GetMaxLengthOfLine(string[] lines)

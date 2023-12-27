@@ -1,0 +1,51 @@
+namespace Shuffle
+{
+    class Programm
+    {
+        static void Main(string[] args)
+        {
+            int minValue = 1;
+            int maxValue = 10;
+            int[] array = new int[5];
+            Random random = new Random();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(minValue, maxValue);
+            }
+
+            Console.WriteLine("Начальный массив: ");
+            ShowArray(array);
+
+            Shuffle(array);
+            Console.WriteLine("Новый массив: ");
+            ShowArray(array);
+        }
+
+        static void ShowArray(int[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        static void Shuffle(int[] array)
+        {
+            Random random = new Random();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                int tempArray;
+                int randomIndex;
+
+                randomIndex = random.Next(0, array.Length - 1);
+                tempArray = array[i];
+                array[i] = array[randomIndex];
+                array[randomIndex] = tempArray;
+            }
+        }
+    }
+}

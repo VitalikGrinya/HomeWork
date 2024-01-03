@@ -11,7 +11,7 @@ namespace Dictionary
             Dictionary<string, string> words = new Dictionary<string, string>();
 
             words.Add("Джон Сноу", "Правитель Севера.");
-            words.Add("Король ночи", "Или как украсть дракона.");
+            words.Add("Король Ночи", "или как украсть дракона.");
             words.Add("Дейнерис Таргариан", "Именуемая первой, неопалимая, Королева Миэрина," +
                 " Королева Андалов, Ройнар и первых людей, Кхалиси Дотракийского моря, Разбивающая Оковы и Матерь Драконов.");
 
@@ -23,10 +23,7 @@ namespace Dictionary
 
                 if (words.ContainsKey(userInput))
                 {
-                    int indexOfKey = words.Keys.ToList().IndexOf(userInput);
-                    string keyToString = words.Keys.ToList().ElementAt(indexOfKey);
-
-                    Console.WriteLine($"{ keyToString} - {words[userInput]}");
+                    Console.WriteLine(words[userInput]);
                 }
                 else
                 {

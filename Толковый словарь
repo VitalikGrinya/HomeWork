@@ -21,17 +21,18 @@ namespace Dictionary
             {
                 userInput = Console.ReadLine();
 
-                foreach (var word in words)
+                if (words.ContainsKey(userInput))
                 {
-                    if (userInput == word.Key)
-                    {
-                        Console.WriteLine(word.Value);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Словарь не знает таких слов. Попробуй еще раз.");
-                    }
+                    int indexOfKey = words.Keys.ToList().IndexOf(userInput);
+                    string keyToString = words.Keys.ToList().ElementAt(indexOfKey);
+
+                    Console.WriteLine($"{ keyToString} - {words[userInput]}");
                 }
+                else
+                {
+                    Console.WriteLine("Словарь не знает таких слов. Попробуй еще раз.");
+                }
+
             }
         }
     }

@@ -1,0 +1,41 @@
+namespace QueueInMall
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            bool isWorking = true;
+
+            Queue<int> buyers = new Queue<int>();
+
+            int sum = 0;
+
+            buyers.Enqueue(5);
+            buyers.Enqueue(18);
+            buyers.Enqueue(3);
+            buyers.Enqueue(7);
+            buyers.Enqueue(16);
+
+            foreach (int buyer in buyers)
+            {
+                Console.WriteLine($"Свободная касса: {buyer}");
+                Console.ReadKey();
+                Console.Clear();
+            }
+
+            while (isWorking)
+            {
+                for (int i = 0; i < buyers.Count; i++)
+                {
+                    sum += buyers.Dequeue();
+                }
+
+                if (buyers.Count == 0)
+                {
+                    Console.WriteLine("Очередь закончилась. Заработок - " + sum);
+                    break;
+                }
+            }
+        }
+    }
+}

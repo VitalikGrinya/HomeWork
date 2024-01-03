@@ -21,19 +21,16 @@ namespace QueueInMall
                 Console.Clear();
             }
 
-            BuyInMall(buyers, sum);
-
+            ServeBuyer(buyers, sum);
         }
-        static void BuyInMall(Queue<int> queue, int value)
+
+        static void ServeBuyer(Queue<int> queue, int value)
         {
             bool isWorking = true;
 
             while (isWorking)
             {
-                for (int i = 0; i < queue.Count; i++)
-                {
-                    value += queue.Dequeue();
-                }
+                value += queue.Dequeue();
 
                 if (queue.Count == 0)
                 {

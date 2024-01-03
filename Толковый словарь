@@ -1,0 +1,40 @@
+namespace Dictionary
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string userInput;
+
+            bool isWorking = true;
+
+            Dictionary<string, string> words = new Dictionary<string, string>();
+
+            words.Add("Джон Сноу", "Правитель Севера.");
+            words.Add("Король Ночи", "Или как украсть дракона.");
+            words.Add("Дейнерис Таргариан", "Именуемая первой, неопалимая, Королева Миэрина," +
+                " Королева Андалов, Ройнар и первых людей, Кхалиси Дотракийского моря, Разбивающая Оковы и Матерь Драконов.");
+
+            Console.WriteLine("Введите ваш запрос: ");
+            
+            while (isWorking)
+            {
+                foreach (var word in words)
+                {
+                    userInput = Console.ReadLine();
+
+                    if (userInput == word.Key)
+                    {
+                        Console.WriteLine(word.Value);
+                        Console.ReadKey();
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Словарь не знает таких слов. Попробуй еще раз.");
+                    }
+                }
+            }
+        }
+    }
+}

@@ -23,7 +23,8 @@ namespace Dictionary
 
                 if (words.ContainsKey(userInput))
                 {
-                    Console.WriteLine(words[userInput]);
+                    Console.Clear();
+                    Console.WriteLine(userInput + " - " + words[userInput]);
                 }
                 else
                 {

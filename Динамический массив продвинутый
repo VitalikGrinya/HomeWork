@@ -1,0 +1,54 @@
+namespace DynamicArrayPro
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            const string CommandSum = "sum";
+            const string CommandExit = "exit";
+
+            string userInput;
+
+            List<int> numbers = new List<int>();
+
+            bool isWorking = true;
+
+            Console.WriteLine("Введите команду или число: ");
+            Console.WriteLine("Команда - " + CommandSum + ", выведет сумму введенных чисел.");
+            Console.WriteLine("Команда - " + CommandExit + ", выйдет из приложения.");
+
+            while (isWorking)
+            {
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case CommandSum:
+                        int sum = 0;
+
+                        Console.WriteLine(" ");
+
+                        for (int i = 0; i < numbers.Count; i++)
+                        {
+                            sum += numbers[i];
+                        }
+
+                        Console.WriteLine("Сумма равна: " + sum);
+                        Console.WriteLine(" ");
+                        break;
+
+                    case CommandExit:
+                        isWorking = false;
+                        Console.WriteLine(" ");
+                        Console.WriteLine("Ok, bye!");
+                        break;
+
+                    default:
+                        int numberInput = Convert.ToInt32(userInput);
+                        numbers.Add(numberInput);
+                        break;
+                }
+            }
+        }
+    }
+}

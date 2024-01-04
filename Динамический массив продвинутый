@@ -11,8 +11,6 @@ namespace DynamicArrayPro
 
             List<int> numbers = new List<int>();
 
-            // int numberInput;
-
             bool isWorking = true;
 
             Console.WriteLine("Введите команду или число: ");
@@ -26,21 +24,21 @@ namespace DynamicArrayPro
                 switch (userInput)
                 {
                     case CommandSum:
-                        Summarize(ref numbers);
+                        ShowSum(numbers);
                         break;
 
                     case CommandExit:
-                        UseExit(isWorking);
+                        FinishMenu(isWorking);
                         break;
 
                     default:
-                        AddNewValue(ref numbers, ref userInput);
+                        AddNewValue(numbers, userInput);
                         break;
                 }
             }
         }
 
-        static void Summarize(ref List<int> numbers)
+        static void ShowSum(List<int> numbers)
         {
             int sum = 0;
 
@@ -55,14 +53,14 @@ namespace DynamicArrayPro
             Console.WriteLine(" ");
         }
 
-        static void UseExit(bool isDoing)
+        static void FinishMenu(bool isDoing)
         {
             isDoing = false;
             Console.WriteLine(" ");
             Console.WriteLine("Ok, bye!");
         }
 
-        static void AddNewValue(ref List<int> numbers, ref string userInput)
+        static void AddNewValue(List<int> numbers, string userInput)
         {
             if (int.TryParse(userInput, out int numberInput))
             {

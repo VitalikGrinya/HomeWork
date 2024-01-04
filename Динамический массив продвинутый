@@ -28,7 +28,7 @@ namespace DynamicArrayPro
                         break;
 
                     case CommandExit:
-                        FinishMenu(isWorking);
+                        isWorking = false;
                         break;
 
                     default:
@@ -52,14 +52,6 @@ namespace DynamicArrayPro
             Console.WriteLine("Сумма равна: " + sum);
             Console.WriteLine(" ");
         }
-
-        static void FinishMenu(bool isDoing)
-        {
-            isDoing = false;
-            Console.WriteLine(" ");
-            Console.WriteLine("Ok, bye!");
-        }
-
         static void AddNewValue(List<int> numbers, string userInput)
         {
             if (int.TryParse(userInput, out int numberInput))

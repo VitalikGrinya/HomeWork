@@ -4,14 +4,14 @@ namespace PersonnelAccounting
     {
         static void Main(string[] args)
         {
-            const int CommandAddDossier = 1;
-            const int CommandShowDossier = 2;
-            const int CommandDeleteDossier = 3;
-            const int CommandExit = 4;
+            const string CommandAddDossier = "1";
+            const string CommandShowDossier = "2";
+            const string CommandDeleteDossier = "3";
+            const string CommandExit = "4";
 
             Dictionary<string, string> dossier = new Dictionary<string, string>();
 
-            int userInput;
+            string userInput;
 
             string fullNameInput = "";
             string postInput = "";
@@ -24,25 +24,24 @@ namespace PersonnelAccounting
 
             while (isWorking)
             {
-                userInput = Convert.ToInt32(Console.ReadLine());
+                userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
                     case CommandAddDossier:
-                        AddDossier(dossier, ref fullNameInput, ref postInput);
+                        AddDossier(dossier, fullNameInput, postInput);
                         break;
 
                     case CommandShowDossier:
-                        ShowDossier(dossier, ref fullNameInput, ref postInput);
+                        ShowDossier(dossier, fullNameInput, postInput);
                         break;
 
                     case CommandDeleteDossier:
-                        DeleteDossier(dossier, ref deleteDossier);
+                        DeleteDossier(dossier, deleteDossier);
                         break;
 
                     case CommandExit:
                         isWorking = false;
-                        Console.WriteLine("Bye!!!");
                         break;
 
                     default:
@@ -51,37 +50,31 @@ namespace PersonnelAccounting
                 }
             }
         }
-        static void AddDossier(Dictionary<string, string> text, ref string fullNameInput, ref string postInput)
+        static void AddDossier(Dictionary<string, string> text, string fullNameInput, string postInput)
         {
             fullNameInput = Console.ReadLine();
             postInput = Console.ReadLine();
             text.Add(fullNameInput, postInput);
         }
-
-        static void ShowDossier(Dictionary<string, string> text, ref string fullNameInput, ref string postInput)
+        static void ShowDossier(Dictionary<string, string> text, string fullNameInput, string postInput)
         {
             foreach (var word in text)
             {
                 Console.WriteLine(word.Key + " - " + word.Value);
             }
         }
-        static void DeleteDossier(Dictionary<string, string> text, ref string deleteDossier)
+        static void DeleteDossier(Dictionary<string, string> text, string deleteDossier)
         {
-            bool isDelete = true;
             Console.WriteLine("Введите ФИО сотрудника, чьё досье хотите удалить: ");
             deleteDossier = Console.ReadLine();
 
-            while (isDelete)
+            if (text.ContainsKey(deleteDossier))
             {
-                if (text.ContainsKey(deleteDossier))
-                {
-                    text.Remove(text[deleteDossier]);
-                }
-                else
-                {
-                    Console.WriteLine("Такого сотрудника не существует.");
-                    isDelete = false;
-                }
+                text.Remove(deleteDossier);
+            }
+            else
+            {
+                Console.WriteLine("Такого сотрудника не существует.");
             }
         }
     }

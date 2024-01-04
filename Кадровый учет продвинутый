@@ -1,0 +1,88 @@
+namespace PersonnelAccounting
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            const int CommandAddDossier = 1;
+            const int CommandShowDossier = 2;
+            const int CommandDeleteDossier = 3;
+            const int CommandExit = 4;
+
+            Dictionary<string, string> dossier = new Dictionary<string, string>();
+
+            int userInput;
+
+            string fullNameInput = "";
+            string postInput = "";
+            string deleteDossier = "";
+
+            bool isWorking = true;
+
+            Console.WriteLine($"Для продолжения работы введите следующию цифру:\n{1} Добавить досье.\n" +
+                $"{2} Вывести досье.\n{3} Удалить досье.\n{4} Выход из программы.");
+
+            while (isWorking)
+            {
+                userInput = Convert.ToInt32(Console.ReadLine());
+
+                switch (userInput)
+                {
+                    case CommandAddDossier:
+                        AddDossier(dossier, ref fullNameInput, ref postInput);
+                        break;
+
+                    case CommandShowDossier:
+                        ShowDossier(dossier, ref fullNameInput, ref postInput);
+                        break;
+
+                    case CommandDeleteDossier:
+                        DeleteDossier(dossier, ref deleteDossier);
+                        break;
+
+                    case CommandExit:
+                        isWorking = false;
+                        Console.WriteLine("Bye!!!");
+                        break;
+
+                    default:
+                        Console.WriteLine("Такой команды не существует.");
+                        break;
+                }
+            }
+        }
+        static void AddDossier(Dictionary<string, string> text, ref string fullNameInput, ref string postInput)
+        {
+            fullNameInput = Console.ReadLine();
+            postInput = Console.ReadLine();
+            text.Add(fullNameInput, postInput);
+        }
+
+        static void ShowDossier(Dictionary<string, string> text, ref string fullNameInput, ref string postInput)
+        {
+            foreach (var word in text)
+            {
+                Console.WriteLine(word.Key + " - " + word.Value);
+            }
+        }
+        static void DeleteDossier(Dictionary<string, string> text, ref string deleteDossier)
+        {
+            bool isDelete = true;
+            Console.WriteLine("Введите ФИО сотрудника, чьё досье хотите удалить: ");
+            deleteDossier = Console.ReadLine();
+
+            while (isDelete)
+            {
+                if (text.ContainsKey(deleteDossier))
+                {
+                    text.Remove(text[deleteDossier]);
+                }
+                else
+                {
+                    Console.WriteLine("Такого сотрудника не существует.");
+                    isDelete = false;
+                }
+            }
+        }
+    }
+}

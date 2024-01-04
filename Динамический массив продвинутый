@@ -11,6 +11,8 @@ namespace DynamicArrayPro
 
             List<int> numbers = new List<int>();
 
+            // int numberInput;
+
             bool isWorking = true;
 
             Console.WriteLine("Введите команду или число: ");
@@ -24,30 +26,51 @@ namespace DynamicArrayPro
                 switch (userInput)
                 {
                     case CommandSum:
-                        int sum = 0;
-
-                        Console.WriteLine(" ");
-
-                        for (int i = 0; i < numbers.Count; i++)
-                        {
-                            sum += numbers[i];
-                        }
-
-                        Console.WriteLine("Сумма равна: " + sum);
-                        Console.WriteLine(" ");
+                        Summarize(ref numbers);
                         break;
 
                     case CommandExit:
-                        isWorking = false;
-                        Console.WriteLine(" ");
-                        Console.WriteLine("Ok, bye!");
+                        UseExit(isWorking);
                         break;
 
                     default:
-                        int numberInput = Convert.ToInt32(userInput);
-                        numbers.Add(numberInput);
+                        AddNewValue(ref numbers, ref userInput);
                         break;
                 }
+            }
+        }
+
+        static void Summarize(ref List<int> numbers)
+        {
+            int sum = 0;
+
+            Console.WriteLine(" ");
+
+            for (int i = 0; i < numbers.Count; i++)
+            {
+                sum += numbers[i];
+            }
+
+            Console.WriteLine("Сумма равна: " + sum);
+            Console.WriteLine(" ");
+        }
+
+        static void UseExit(bool isDoing)
+        {
+            isDoing = false;
+            Console.WriteLine(" ");
+            Console.WriteLine("Ok, bye!");
+        }
+
+        static void AddNewValue(ref List<int> numbers, ref string userInput)
+        {
+            if (int.TryParse(userInput, out int numberInput))
+            {
+                numbers.Add(numberInput);
+            }
+            else
+            {
+                Console.WriteLine("Введено недопустимое значение. Попробуй снова: ");
             }
         }
     }

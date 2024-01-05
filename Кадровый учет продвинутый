@@ -68,7 +68,8 @@ namespace PersonnelAccounting
             {
                 for (int i = 0; i < fullNames.Count && i < posts.Count; i++)
                 {
-                    Console.WriteLine(fullNames[i] +" - "+ posts[i]);
+                    int numberOfDossier = i + 1;
+                    Console.WriteLine(numberOfDossier + ") " + fullNames[i] + " - " + posts[i]);
                 }
             }
             else
@@ -81,22 +82,26 @@ namespace PersonnelAccounting
 
         static void DeleteDossier(List<string> fullNames, List<string> posts)
         {
-            string fullNameToDelete;
-            string postToDelete;
+            ShowDossiers(fullNames, posts);
 
-            Console.WriteLine("Введите ФИО сотрудника: ");
-            fullNameToDelete = Console.ReadLine();
-            Console.WriteLine("Введите должность этого сотрудника: ");
-            postToDelete = Console.ReadLine();
+            string indexToDelete;
 
-            if (fullNames.Contains(fullNameToDelete) && posts.Contains(postToDelete))
+            Console.WriteLine("Введите номер сотрудника, которого хотите удалить: ");
+            indexToDelete = Console.ReadLine();
+
+            if (int.TryParse(indexToDelete, out var numberToDelete) == true)
             {
-                fullNames.Remove(fullNameToDelete);
-                posts.Remove(postToDelete);
-            }
-            else
-            {
-                Console.WriteLine("ФИО или должность введены неверно.");
+                numberToDelete--;
+
+                if (numberToDelete >= 0 && numberToDelete < fullNames.Count)
+                {
+                    fullNames.RemoveAt(numberToDelete);
+                    posts.RemoveAt(numberToDelete);
+                }
+                else
+                {
+                    Console.WriteLine("Введён некорректный номер.");
+                }
             }
         }
     }

@@ -1,0 +1,24 @@
+namespace BigArray;
+class Program
+{
+    static void Main(string[] args)
+    {
+        int[] firstArray = { 1, 2, 3 };
+        int[] secondArray = { 4, 2, 8 };
+
+        HashSet<int> bigArray = new HashSet<int>();
+
+        bigArray.UnionWith(firstArray);
+        bigArray.UnionWith(secondArray);
+
+        ShowSet(bigArray);
+    }
+
+    static void ShowSet(HashSet<int> set)
+    {
+        foreach(var value in set)
+        {
+            Console.Write(value + " ");
+        }
+    }
+}

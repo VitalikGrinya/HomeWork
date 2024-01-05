@@ -9,18 +9,15 @@ namespace PersonnelAccounting
             const string CommandDeleteDossier = "3";
             const string CommandExit = "4";
 
-            Dictionary<string, string> dossier = new Dictionary<string, string>();
+            List<string> fullNames = new List<string>();
+            List<string> posts = new List<string>();
 
             string userInput;
 
-            string fullNameInput = "";
-            string postInput = "";
-            string deleteDossier = "";
-
             bool isWorking = true;
 
-            Console.WriteLine($"Для продолжения работы введите следующию цифру:\n{1} Добавить досье.\n" +
-                $"{2} Вывести досье.\n{3} Удалить досье.\n{4} Выход из программы.");
+            Console.WriteLine($"Для продолжения работы введите следующию цифру:\n{CommandAddDossier} Добавить досье.\n" +
+                $"{CommandShowDossier} Вывести досье.\n{CommandDeleteDossier} Удалить досье.\n{CommandExit} Выход из программы.");
 
             while (isWorking)
             {
@@ -29,15 +26,15 @@ namespace PersonnelAccounting
                 switch (userInput)
                 {
                     case CommandAddDossier:
-                        AddDossier(dossier, fullNameInput, postInput);
+                        AddDossier(fullNames, posts);
                         break;
 
                     case CommandShowDossier:
-                        ShowDossier(dossier, fullNameInput, postInput);
+                        ShowDossiers(fullNames, posts);
                         break;
 
                     case CommandDeleteDossier:
-                        DeleteDossier(dossier, deleteDossier);
+                        DeleteDossier(fullNames, posts);
                         break;
 
                     case CommandExit:
@@ -50,31 +47,56 @@ namespace PersonnelAccounting
                 }
             }
         }
-        static void AddDossier(Dictionary<string, string> text, string fullNameInput, string postInput)
-        {
-            fullNameInput = Console.ReadLine();
-            postInput = Console.ReadLine();
-            text.Add(fullNameInput, postInput);
-        }
-        static void ShowDossier(Dictionary<string, string> text, string fullNameInput, string postInput)
-        {
-            foreach (var word in text)
-            {
-                Console.WriteLine(word.Key + " - " + word.Value);
-            }
-        }
-        static void DeleteDossier(Dictionary<string, string> text, string deleteDossier)
-        {
-            Console.WriteLine("Введите ФИО сотрудника, чьё досье хотите удалить: ");
-            deleteDossier = Console.ReadLine();
 
-            if (text.ContainsKey(deleteDossier))
+        static void AddDossier(List<string> fullNames, List<string> posts)
+        {
+            string fullNameInput;
+            string postInput;
+
+            Console.WriteLine("Введите ФИО сотрудника: ");
+            fullNameInput = Console.ReadLine();
+            Console.WriteLine("Введите должность сотрудника: ");
+            postInput = Console.ReadLine();
+
+            fullNames.Add(fullNameInput);
+            posts.Add(postInput);
+        }
+
+        static void ShowDossiers(List<string> fullNames, List<string> posts)
+        {
+            if (fullNames.Count > 0 || posts.Count > 0)
             {
-                text.Remove(deleteDossier);
+                for (int i = 0; i < fullNames.Count && i < posts.Count; i++)
+                {
+                    Console.WriteLine(fullNames[i] +" - "+ posts[i]);
+                }
             }
             else
             {
-                Console.WriteLine("Такого сотрудника не существует.");
+                Console.WriteLine("Список досье пуст.");
+            }
+
+            Console.WriteLine();
+        }
+
+        static void DeleteDossier(List<string> fullNames, List<string> posts)
+        {
+            string fullNameToDelete;
+            string postToDelete;
+
+            Console.WriteLine("Введите ФИО сотрудника: ");
+            fullNameToDelete = Console.ReadLine();
+            Console.WriteLine("Введите должность этого сотрудника: ");
+            postToDelete = Console.ReadLine();
+
+            if (fullNames.Contains(fullNameToDelete) && posts.Contains(postToDelete))
+            {
+                fullNames.Remove(fullNameToDelete);
+                posts.Remove(postToDelete);
+            }
+            else
+            {
+                Console.WriteLine("ФИО или должность введены неверно.");
             }
         }
     }

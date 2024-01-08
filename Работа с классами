@@ -10,18 +10,18 @@ class Program
 
 class Player
 {
-    private string Name;
-    private int Age;
+    private string _name;
+    private int _age;
 
     public Player(string name, int age)
     {
-        Name = name;
-        Age = age;
+        _name = name;
+        _age = age;
     }
 
     public void ShowInfo()
     {
-        Console.WriteLine($"Имя игрока - {Name}. Возраст игрока - {Age}");
+        Console.WriteLine($"Имя игрока - {_name}. Возраст игрока - {_age}");
     }
 
 }

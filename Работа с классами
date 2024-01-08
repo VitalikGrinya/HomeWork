@@ -1,0 +1,26 @@
+namespace WorkWithClass;
+class Program
+{
+    static void Main(string[] args)
+    {
+        Player player = new Player("Джимбо", 18);
+        player.ShowInfo();
+    }
+}
+
+class Player
+{
+    public string Name;
+    public int Age;
+
+    public void ShowInfo()
+    {
+        Console.WriteLine($"Имя игрока - {Name}. Возраст игрока - {Age}");
+    }
+
+    public Player(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+}

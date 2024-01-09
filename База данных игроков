@@ -1,0 +1,246 @@
+namespace DataBase;
+class Program
+{
+    static void Main(string[] args)
+    {
+        const string ShowDataBaseCommand = "1";
+        const string AddPlayerCommand = "2";
+        const string RemovePlayerCommand = "3";
+        const string BanPlayerCommand = "4";
+        const string UnbanPlayerCommand = "5";
+        const string ExitCommand = "6";
+
+        string userInput;
+        bool isWorking = true;
+
+        DataBase data = new DataBase();
+
+        while (isWorking)
+        {
+            Console.WriteLine($"Введите - {ShowDataBaseCommand}, чтобы посмотреть базу данных.\n" +
+                              $"Введите - {AddPlayerCommand}, чтобы добавить игрока.\n" +
+                              $"Введите - {RemovePlayerCommand}, чтобы удалить игрока.\n" +
+                              $"Введите - {BanPlayerCommand}, чтобы забанить игрока.\n" +
+                              $"Введите - {UnbanPlayerCommand}, чтобы разбанить игрока.\n" +
+                              $"Введите - {ExitCommand}, чтобы выйти из программы.");
+
+            userInput = Console.ReadLine();
+
+            switch (userInput)
+            {
+                case ShowDataBaseCommand:
+                    data.ShowDataBase();
+                    break;
+
+                case AddPlayerCommand:
+                    data.AddPlayer();
+                    break;
+
+                case RemovePlayerCommand:
+                    data.RemovePlayer();
+                    break;
+
+                case BanPlayerCommand:
+                    data.Ban();
+                    break;
+
+                case UnbanPlayerCommand:
+                    data.Unban();
+                    break;
+
+                case ExitCommand:
+                    isWorking = false;
+                    break;
+
+                default:
+                    Console.WriteLine("Такой команды не существует.");
+                    break;
+            }
+        }
+    }
+}
+
+class Player
+{
+    public Player(int id, string name, int level, bool isBan)
+    {
+        ID = id;
+        Name = name;
+        Level = level;
+        IsBan = isBan;
+    }
+
+    public int ID { get; private set; }
+    public string Name { get; private set; }
+    public int Level { get; private set; }
+    public bool IsBan { get; private set; }
+
+    public void ToBan(bool banValue)
+    {
+        IsBan = banValue;
+    }
+
+    public void ToUnban(bool unbanValue)
+    {
+        IsBan = unbanValue;
+    }
+}
+
+class DataBase
+{
+    private List<Player> _players;
+
+    public DataBase()
+    {
+        _players = new List<Player>();
+    }
+    public void ShowDataBase()
+    {
+        Console.Clear();
+
+        foreach (var player in _players)
+        {
+            Console.WriteLine($"Пользователь {player.Name}#{player.ID} {player.Level}lvl Бан: {player.IsBan}");
+        }    
+
+        if(_players.Count == 0)
+        {
+            Console.WriteLine("База данных пуста.");
+        }
+
+        Console.ReadKey();
+        Console.Clear();
+    }
+    public void AddPlayer()
+    {
+        string userInputInfo;
+        string nameInput;
+        bool isBan = false;
+        int level;
+        int id;
+
+        Console.Clear();
+
+        Console.WriteLine("Введите ID игрока: ");
+
+        while (int.TryParse(userInputInfo = Console.ReadLine(), out id) == false || IsPlayerExist(id) == true)
+        {
+            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+        }
+
+        Console.WriteLine("Введите уровень игрока: ");
+
+        while (int.TryParse(userInputInfo = Console.ReadLine(), out level) == false)
+        {
+            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+        }
+
+        Console.WriteLine("Введите никнейм игрока: ");
+        nameInput = Console.ReadLine();
+
+        Console.Clear();
+
+        Player player = new Player(id, nameInput, level, isBan);
+
+        _players.Add(player);
+
+        Console.WriteLine($"Пользователь создан.");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    public void RemovePlayer()
+    {
+        string userInputInfo;
+        int id;
+
+        Console.WriteLine("Введите ID игрока: ");
+
+        while (int.TryParse(userInputInfo = Console.ReadLine(), out id) == false || IsPlayerExist(id) == true)
+        {
+            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+        }
+
+        Player player = _players.Find(player => player.ID == id);
+
+        if(TryGetPlayer(id, out player))
+        {
+            _players.Remove(player);
+        }
+
+        Console.WriteLine($"Пользователь удален.");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    public void Ban()
+    {
+        string userInput;
+        int id;
+        Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
+
+        while (int.TryParse(userInput = Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
+        {
+            Console.WriteLine("Введите ID зарегестрированного игрока.");
+        }
+
+        Player player = _players.Find(player => player.ID == id);
+
+        if (TryGetPlayer(id, out player))
+        {
+            BanPlayer(player, true);
+        }
+
+        Console.WriteLine("Игрок забанен.");
+    }
+
+    public void Unban()
+    {
+        string userInput;
+        int id;
+        Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
+
+        while (int.TryParse(userInput = Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
+        {
+            Console.WriteLine("Введите ID зарегестрированного игрока.");
+        }
+
+        Player player = _players.Find(player => player.ID == id);
+
+        if (TryGetPlayer(id, out player))
+        {
+            UnbanPlayer(player, true);
+        }
+
+        Console.WriteLine("Игрок разбанен.");
+    }
+
+    public void BanPlayer(Player player, bool isBan)
+    {
+        player.ToBan(isBan);
+    }
+
+    public void UnbanPlayer(Player player, bool isBan)
+    {
+        player.ToUnban(isBan);
+    }
+    private bool TryGetPlayer(int id, out Player player)
+    {
+        player = _players.Find(players => players.ID == id);
+
+        return player != null;
+    }
+
+    private bool IsPlayerExist(int id)
+    {
+        foreach (var player in _players)
+        {
+            if (player.ID == id)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

@@ -29,7 +29,7 @@ class Program
             switch (userInput)
             {
                 case ShowDataBaseCommand:
-                    data.ShowDataBase();
+                    data.ShowAllPlayers();
                     break;
 
                 case AddPlayerCommand:
@@ -75,14 +75,14 @@ class Player
     public int Level { get; private set; }
     public bool IsBan { get; private set; }
 
-    public void ToBan(bool banValue)
+    public void Ban()
     {
-        IsBan = banValue;
+        IsBan = true;
     }
 
-    public void ToUnban(bool unbanValue)
+    public void Unban()
     {
-        IsBan = unbanValue;
+        IsBan = false;
     }
 }
 
@@ -94,7 +94,8 @@ class DataBase
     {
         _players = new List<Player>();
     }
-    public void ShowDataBase()
+
+    public void ShowAllPlayers()
     {
         Console.Clear();
 
@@ -111,9 +112,9 @@ class DataBase
         Console.ReadKey();
         Console.Clear();
     }
+
     public void AddPlayer()
     {
-        string userInputInfo;
         string nameInput;
         bool isBan = false;
         int level;
@@ -123,14 +124,14 @@ class DataBase
 
         Console.WriteLine("Введите ID игрока: ");
 
-        while (int.TryParse(userInputInfo = Console.ReadLine(), out id) == false || IsPlayerExist(id) == true)
+        while (int.TryParse(Console.ReadLine(), out id) == false || IsPlayerExist(id) == true)
         {
             Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
         }
 
         Console.WriteLine("Введите уровень игрока: ");
 
-        while (int.TryParse(userInputInfo = Console.ReadLine(), out level) == false)
+        while (int.TryParse(Console.ReadLine(), out level) == false)
         {
             Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
         }
@@ -154,21 +155,21 @@ class DataBase
         string userInputInfo;
         int id;
 
+        Console.Clear();
+
         Console.WriteLine("Введите ID игрока: ");
 
-        while (int.TryParse(userInputInfo = Console.ReadLine(), out id) == false || IsPlayerExist(id) == true)
+        while (int.TryParse(userInputInfo = Console.ReadLine(), out id) == false)
         {
             Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
         }
 
-        Player player = _players.Find(player => player.ID == id);
-
-        if(TryGetPlayer(id, out player))
+        if (TryGetPlayer(id, out Player player))
         {
             _players.Remove(player);
         }
 
-        Console.WriteLine($"Пользователь удален.");
+        Console.WriteLine("Пользователь удален.");
         Console.ReadKey();
         Console.Clear();
     }
@@ -177,6 +178,9 @@ class DataBase
     {
         string userInput;
         int id;
+
+        Console.Clear();
+
         Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
 
         while (int.TryParse(userInput = Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
@@ -184,20 +188,23 @@ class DataBase
             Console.WriteLine("Введите ID зарегестрированного игрока.");
         }
 
-        Player player = _players.Find(player => player.ID == id);
-
-        if (TryGetPlayer(id, out player))
+        if (TryGetPlayer(id, out Player player))
         {
-            BanPlayer(player, true);
+            player.Ban();
         }
 
         Console.WriteLine("Игрок забанен.");
+        Console.ReadKey();
+        Console.Clear();
     }
 
     public void Unban()
     {
         string userInput;
         int id;
+
+        Console.Clear();
+
         Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
 
         while (int.TryParse(userInput = Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
@@ -205,28 +212,19 @@ class DataBase
             Console.WriteLine("Введите ID зарегестрированного игрока.");
         }
 
-        Player player = _players.Find(player => player.ID == id);
-
-        if (TryGetPlayer(id, out player))
+        if (TryGetPlayer(id, out Player player))
         {
-            UnbanPlayer(player, true);
+            player.Unban();
         }
 
         Console.WriteLine("Игрок разбанен.");
+        Console.ReadKey();
+        Console.Clear();
     }
 
-    public void BanPlayer(Player player, bool isBan)
-    {
-        player.ToBan(isBan);
-    }
-
-    public void UnbanPlayer(Player player, bool isBan)
-    {
-        player.ToUnban(isBan);
-    }
     private bool TryGetPlayer(int id, out Player player)
     {
-        player = _players.Find(players => players.ID == id);
+        player = _players.Find(player => player.ID == id);
 
         return player != null;
     }

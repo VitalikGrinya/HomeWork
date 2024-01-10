@@ -132,7 +132,7 @@ class Database
 
         id = ReadInt();
 
-        while(IsPlayerExist(id))
+        while(IsTryGetPlayer(id, out Player player))
         {
             Console.WriteLine("Пользователь с таким ID уже есть. Введите другой.");
             id = ReadInt();
@@ -146,9 +146,9 @@ class Database
 
         Console.Clear();
 
-        Player player = new Player(id, nameInput, level, isBan);
+        Player newPlayer = new Player(id, nameInput, level, isBan);
 
-        _players.Add(player);
+        _players.Add(newPlayer);
 
         Console.WriteLine($"Пользователь создан.");
         Console.ReadKey();
@@ -218,7 +218,7 @@ class Database
     public void UnbanPlayer()
     {
         int id;
-
+        //Player player;
         Console.Clear();
 
         if (_players.Count == 0)
@@ -266,18 +266,6 @@ class Database
         return player != null;
     }
 
-    private bool IsPlayerExist(int id)
-    {
-        foreach (Player player in _players)
-        {
-            if (player.Id == id)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
     private string GetUserInput(string message, string errorMessage)
     {
         bool success;

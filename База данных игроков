@@ -75,17 +75,17 @@ class Player
     public int Level { get; private set; }
     public bool IsBanned { get; private set; }
 
-    public void BanPlayer()
+    public void Ban()
     {
         IsBanned = true;
     }
 
-    public void UnbanPlayer()
+    public void Unban()
     {
         IsBanned = false;
     }
 
-    public void ShowAllUserInfo()
+    public void ShowInfo()
     {
         Console.WriteLine($"Пользователь {Name}#{Id} {Level}lvl Бан: {IsBanned}");
     }
@@ -111,7 +111,7 @@ class Database
 
         foreach (Player player in _players)
         {
-            player.ShowAllUserInfo();
+            player.ShowInfo();
         }
 
         Console.ReadKey();
@@ -128,11 +128,9 @@ class Database
 
         Console.Clear();
 
-        Console.Write("Введите ID игрока: ");
-
         id = ReadInt();
 
-        while(IsTryGetPlayer(id, out Player player))
+        while(TryGetPlayer(id, out Player player))
         {
             Console.WriteLine("Пользователь с таким ID уже есть. Введите другой.");
             id = ReadInt();
@@ -142,7 +140,7 @@ class Database
 
         level = ReadInt();
 
-        nameInput = GetUserInput("Введите никнейм игрока: ", "Введено некорректное значение, попробуй еще раз.");
+        nameInput = ReadString("Введите никнейм игрока: ", "Введено некорректное значение, попробуй еще раз.");
 
         Console.Clear();
 
@@ -167,11 +165,9 @@ class Database
         }
         else
         {
-            Console.WriteLine("Введите ID игрока: ");
-
             id = ReadInt();
 
-            if (IsTryGetPlayer(id, out Player player))
+            if (TryGetPlayer(id, out Player player))
             {
                 _players.Remove(player);
                 Console.WriteLine("Пользователь удален.");
@@ -197,13 +193,11 @@ class Database
         }
         else
         {
-            Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
-
             id = ReadInt();
 
-            if (IsTryGetPlayer(id, out Player player))
+            if (TryGetPlayer(id, out Player player))
             {
-                player.BanPlayer();
+                player.Ban();
                 Console.WriteLine("Игрок забанен.");
                 Console.ReadKey();
                 Console.Clear();
@@ -218,7 +212,6 @@ class Database
     public void UnbanPlayer()
     {
         int id;
-        //Player player;
         Console.Clear();
 
         if (_players.Count == 0)
@@ -227,13 +220,11 @@ class Database
         }
         else
         {
-            Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
-
             id = ReadInt();
 
-            if (IsTryGetPlayer(id, out Player player) && player.IsBanned == true)
+            if (TryGetPlayer(id, out Player player) && player.IsBanned == true)
             {
-                player.UnbanPlayer();
+                player.Unban();
                 Console.WriteLine("Игрок разбанен.");
                 Console.ReadKey();
                 Console.Clear();
@@ -259,16 +250,16 @@ class Database
         Console.Clear();
     }
 
-    private bool IsTryGetPlayer(int id, out Player player)
+    private bool TryGetPlayer(int id, out Player player)
     {
         player = _players.Find(player => player.Id == id);
 
         return player != null;
     }
 
-    private string GetUserInput(string message, string errorMessage)
+    private string ReadString(string message, string errorMessage)
     {
-        bool success;
+        bool isSuccess;
         string value;
 
         do
@@ -276,14 +267,14 @@ class Database
             Console.Write(message);
             value = Console.ReadLine();
 
-            success = !string.IsNullOrWhiteSpace(value);
+            isSuccess = !string.IsNullOrWhiteSpace(value);
 
-            if (success == false)
+            if (isSuccess == false)
             {
                 Console.WriteLine(errorMessage);
             }
         }
-        while (success == false);
+        while (isSuccess == false);
 
         return value;
     }
@@ -293,6 +284,7 @@ class Database
         int value;
         string userInput;
 
+        Console.Write("Введите ID игрока: ");
         userInput = Console.ReadLine();
 
         while (int.TryParse(userInput, out value) == false)

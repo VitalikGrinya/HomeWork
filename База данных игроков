@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace DataBase;
 class Program
 {
@@ -64,53 +66,57 @@ class Player
 {
     public Player(int id, string name, int level, bool isBan)
     {
-        ID = id;
+        Id = id;
         Name = name;
         Level = level;
-        IsBan = isBan;
+        IsBanned = isBan;
     }
 
-    public int ID { get; private set; }
+    public int Id { get; private set; }
     public string Name { get; private set; }
     public int Level { get; private set; }
-    public bool IsBan { get; private set; }
+    public bool IsBanned { get; private set; }
 
     public void Ban()
     {
-        IsBan = true;
+        IsBanned = true;
     }
 
     public void Unban()
     {
-        IsBan = false;
+        IsBanned = false;
+    }
+
+    public void ShowPlayers()
+    {
+        Console.WriteLine($"Пользователь {Name}#{Id} {Level}lvl Бан: {IsBanned}");
     }
 }
 
 class DataBase
 {
     private List<Player> _players;
-
     public DataBase()
     {
         _players = new List<Player>();
     }
-
     public void ShowAllPlayers()
     {
         Console.Clear();
 
-        foreach (var player in _players)
+        if (_players.Count == 0)
         {
-            Console.WriteLine($"Пользователь {player.Name}#{player.ID} {player.Level}lvl Бан: {player.IsBan}");
-        }    
+            ShowMessageEmptyData();
+        }
 
-        if(_players.Count == 0)
+        foreach (Player player in _players)
         {
-            Console.WriteLine("База данных пуста.");
+            player.ShowPlayers();
         }
 
         Console.ReadKey();
         Console.Clear();
+
     }
 
     public void AddPlayer()
@@ -122,22 +128,15 @@ class DataBase
 
         Console.Clear();
 
-        Console.WriteLine("Введите ID игрока: ");
+        Console.Write("Введите ID игрока: ");
 
-        while (int.TryParse(Console.ReadLine(), out id) == false || IsPlayerExist(id) == true)
-        {
-            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
-        }
+        id = GetUserInputInt();
 
-        Console.WriteLine("Введите уровень игрока: ");
+        Console.Write("Введите уровень игрока: ");
 
-        while (int.TryParse(Console.ReadLine(), out level) == false)
-        {
-            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
-        }
+        level = GetUserInputInt();
 
-        Console.WriteLine("Введите никнейм игрока: ");
-        nameInput = Console.ReadLine();
+        nameInput = GetUserInput("Введите никнейм игрока: ", "Введено некорректное значение, попробуй еще раз.");
 
         Console.Clear();
 
@@ -152,93 +151,174 @@ class DataBase
 
     public void RemovePlayer()
     {
-        string userInputInfo;
         int id;
 
         Console.Clear();
 
-        Console.WriteLine("Введите ID игрока: ");
-
-        while (int.TryParse(userInputInfo = Console.ReadLine(), out id) == false)
+        if (_players.Count == 0)
         {
-            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+            ShowMessageEmptyData();
         }
-
-        if (TryGetPlayer(id, out Player player))
+        else
         {
-            _players.Remove(player);
-        }
+            Console.WriteLine("Введите ID игрока: ");
 
-        Console.WriteLine("Пользователь удален.");
-        Console.ReadKey();
-        Console.Clear();
+            while (int.TryParse(Console.ReadLine(), out id) == false)
+            {
+                Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+            }
+
+            if (TryGetPlayer(id, out Player player))
+            {
+                _players.Remove(player);
+                Console.WriteLine("Пользователь удален.");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                ShowMassegeNoPlayer();
+            }
+
+        }
     }
 
     public void Ban()
     {
-        string userInput;
         int id;
 
         Console.Clear();
 
-        Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
-
-        while (int.TryParse(userInput = Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
+        if (_players.Count == 0)
         {
-            Console.WriteLine("Введите ID зарегестрированного игрока.");
+            ShowMessageEmptyData();
         }
-
-        if (TryGetPlayer(id, out Player player))
+        else
         {
-            player.Ban();
-        }
+            Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
 
-        Console.WriteLine("Игрок забанен.");
-        Console.ReadKey();
-        Console.Clear();
+            while (int.TryParse(Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
+            {
+                Console.WriteLine("Введите ID зарегестрированного игрока.");
+            }
+
+            if (TryGetPlayer(id, out Player player))
+            {
+                player.Ban();
+                Console.WriteLine("Игрок забанен.");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                ShowMassegeNoPlayer();
+            }
+        }
     }
 
     public void Unban()
     {
-        string userInput;
         int id;
 
         Console.Clear();
 
-        Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
-
-        while (int.TryParse(userInput = Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
+        if (_players.Count == 0)
         {
-            Console.WriteLine("Введите ID зарегестрированного игрока.");
+            ShowMessageEmptyData();
         }
-
-        if (TryGetPlayer(id, out Player player))
+        else
         {
-            player.Unban();
-        }
+            Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
 
-        Console.WriteLine("Игрок разбанен.");
+            while (int.TryParse(Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
+            {
+                Console.WriteLine("Введите ID зарегестрированного игрока.");
+            }
+
+            if (TryGetPlayer(id, out Player player))
+            {
+                player.Unban();
+                Console.WriteLine("Игрок разбанен.");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                ShowMassegeNoPlayer();
+            }
+
+        }
+    }
+
+    private void ShowMessageEmptyData()
+    {
+        Console.WriteLine("База данных пуста.");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    private void ShowMassegeNoPlayer()
+    {
+        Console.WriteLine("Пользователь с таким ID не найден.");
         Console.ReadKey();
         Console.Clear();
     }
 
     private bool TryGetPlayer(int id, out Player player)
     {
-        player = _players.Find(player => player.ID == id);
+        player = _players.Find(player => player.Id == id);
 
         return player != null;
     }
 
     private bool IsPlayerExist(int id)
     {
-        foreach (var player in _players)
+        foreach (Player player in _players)
         {
-            if (player.ID == id)
+            if (player.Id == id)
             {
                 return true;
             }
         }
 
         return false;
+    }
+    private string GetUserInput(string message, string errorMessage, bool addAnEmptyLineIfAnErrorOccured = true)
+    {
+        bool success = true;
+        string value;
+        do
+        {
+            Console.Write(message);
+            value = Console.ReadLine();
+            success = !string.IsNullOrWhiteSpace(value);
+            if (success == false)
+            {
+                Console.WriteLine(errorMessage);
+                if (addAnEmptyLineIfAnErrorOccured)
+                {
+                    Console.WriteLine();
+                }
+            }
+        }
+        while (success == false);
+
+        return value;
+    }
+
+    private static int GetUserInputInt()
+    {
+        int value;
+        string userInput;
+
+        userInput = Console.ReadLine();
+
+        while (int.TryParse(userInput, out value) == false)
+        {
+            Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+            userInput = Console.ReadLine();
+        }
+
+        return value;
     }
 }

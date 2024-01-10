@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace DataBase;
 class Program
 {
@@ -132,6 +130,12 @@ class DataBase
 
         id = GetUserInputInt();
 
+        while(IsPlayerExist(id))
+        {
+            Console.WriteLine("Пользователь с таким ID уже есть. Введите другой.");
+            id = GetUserInputInt();
+        }
+
         Console.Write("Введите уровень игрока: ");
 
         level = GetUserInputInt();
@@ -163,10 +167,7 @@ class DataBase
         {
             Console.WriteLine("Введите ID игрока: ");
 
-            while (int.TryParse(Console.ReadLine(), out id) == false)
-            {
-                Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
-            }
+            id = GetUserInputInt();
 
             if (TryGetPlayer(id, out Player player))
             {
@@ -197,10 +198,7 @@ class DataBase
         {
             Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
 
-            while (int.TryParse(Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
-            {
-                Console.WriteLine("Введите ID зарегестрированного игрока.");
-            }
+            id = GetUserInputInt();
 
             if (TryGetPlayer(id, out Player player))
             {
@@ -230,12 +228,9 @@ class DataBase
         {
             Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
 
-            while (int.TryParse(Console.ReadLine(), out id) == false || IsPlayerExist(id) == false)
-            {
-                Console.WriteLine("Введите ID зарегестрированного игрока.");
-            }
+            id = GetUserInputInt();
 
-            if (TryGetPlayer(id, out Player player))
+            if (TryGetPlayer(id, out Player player) && player.IsBanned == true)
             {
                 player.Unban();
                 Console.WriteLine("Игрок разбанен.");
@@ -244,9 +239,8 @@ class DataBase
             }
             else
             {
-                ShowMassegeNoPlayer();
+                ShowMassegeNoPlayer() ;
             }
-
         }
     }
 

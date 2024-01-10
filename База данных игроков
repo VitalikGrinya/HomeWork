@@ -1,9 +1,9 @@
-namespace DataBase;
+namespace Database;
 class Program
 {
     static void Main(string[] args)
     {
-        const string ShowDataBaseCommand = "1";
+        const string ShowDatabaseCommand = "1";
         const string AddPlayerCommand = "2";
         const string RemovePlayerCommand = "3";
         const string BanPlayerCommand = "4";
@@ -13,11 +13,11 @@ class Program
         string userInput;
         bool isWorking = true;
 
-        DataBase data = new DataBase();
+        Database database = new Database();
 
         while (isWorking)
         {
-            Console.WriteLine($"Введите - {ShowDataBaseCommand}, чтобы посмотреть базу данных.\n" +
+            Console.WriteLine($"Введите - {ShowDatabaseCommand}, чтобы посмотреть базу данных.\n" +
                               $"Введите - {AddPlayerCommand}, чтобы добавить игрока.\n" +
                               $"Введите - {RemovePlayerCommand}, чтобы удалить игрока.\n" +
                               $"Введите - {BanPlayerCommand}, чтобы забанить игрока.\n" +
@@ -28,24 +28,24 @@ class Program
 
             switch (userInput)
             {
-                case ShowDataBaseCommand:
-                    data.ShowAllPlayers();
+                case ShowDatabaseCommand:
+                    database.ShowAllPlayers();
                     break;
 
                 case AddPlayerCommand:
-                    data.AddPlayer();
+                    database.AddPlayer();
                     break;
 
                 case RemovePlayerCommand:
-                    data.RemovePlayer();
+                    database.RemovePlayer();
                     break;
 
                 case BanPlayerCommand:
-                    data.Ban();
+                    database.BanPlayer();
                     break;
 
                 case UnbanPlayerCommand:
-                    data.Unban();
+                    database.UnbanPlayer();
                     break;
 
                 case ExitCommand:
@@ -75,29 +75,31 @@ class Player
     public int Level { get; private set; }
     public bool IsBanned { get; private set; }
 
-    public void Ban()
+    public void BanPlayer()
     {
         IsBanned = true;
     }
 
-    public void Unban()
+    public void UnbanPlayer()
     {
         IsBanned = false;
     }
 
-    public void ShowPlayers()
+    public void ShowAllUserInfo()
     {
         Console.WriteLine($"Пользователь {Name}#{Id} {Level}lvl Бан: {IsBanned}");
     }
 }
 
-class DataBase
+class Database
 {
     private List<Player> _players;
-    public DataBase()
+
+    public Database()
     {
         _players = new List<Player>();
     }
+
     public void ShowAllPlayers()
     {
         Console.Clear();
@@ -109,7 +111,7 @@ class DataBase
 
         foreach (Player player in _players)
         {
-            player.ShowPlayers();
+            player.ShowAllUserInfo();
         }
 
         Console.ReadKey();
@@ -128,17 +130,17 @@ class DataBase
 
         Console.Write("Введите ID игрока: ");
 
-        id = GetUserInputInt();
+        id = ReadInt();
 
         while(IsPlayerExist(id))
         {
             Console.WriteLine("Пользователь с таким ID уже есть. Введите другой.");
-            id = GetUserInputInt();
+            id = ReadInt();
         }
 
         Console.Write("Введите уровень игрока: ");
 
-        level = GetUserInputInt();
+        level = ReadInt();
 
         nameInput = GetUserInput("Введите никнейм игрока: ", "Введено некорректное значение, попробуй еще раз.");
 
@@ -167,9 +169,9 @@ class DataBase
         {
             Console.WriteLine("Введите ID игрока: ");
 
-            id = GetUserInputInt();
+            id = ReadInt();
 
-            if (TryGetPlayer(id, out Player player))
+            if (IsTryGetPlayer(id, out Player player))
             {
                 _players.Remove(player);
                 Console.WriteLine("Пользователь удален.");
@@ -180,11 +182,10 @@ class DataBase
             {
                 ShowMassegeNoPlayer();
             }
-
         }
     }
 
-    public void Ban()
+    public void BanPlayer()
     {
         int id;
 
@@ -198,11 +199,11 @@ class DataBase
         {
             Console.WriteLine("Введите ID игрока, которго хотите забанить: ");
 
-            id = GetUserInputInt();
+            id = ReadInt();
 
-            if (TryGetPlayer(id, out Player player))
+            if (IsTryGetPlayer(id, out Player player))
             {
-                player.Ban();
+                player.BanPlayer();
                 Console.WriteLine("Игрок забанен.");
                 Console.ReadKey();
                 Console.Clear();
@@ -214,7 +215,7 @@ class DataBase
         }
     }
 
-    public void Unban()
+    public void UnbanPlayer()
     {
         int id;
 
@@ -228,11 +229,11 @@ class DataBase
         {
             Console.WriteLine("Введите ID игрока, которго хотите разбанить: ");
 
-            id = GetUserInputInt();
+            id = ReadInt();
 
-            if (TryGetPlayer(id, out Player player) && player.IsBanned == true)
+            if (IsTryGetPlayer(id, out Player player) && player.IsBanned == true)
             {
-                player.Unban();
+                player.UnbanPlayer();
                 Console.WriteLine("Игрок разбанен.");
                 Console.ReadKey();
                 Console.Clear();
@@ -258,7 +259,7 @@ class DataBase
         Console.Clear();
     }
 
-    private bool TryGetPlayer(int id, out Player player)
+    private bool IsTryGetPlayer(int id, out Player player)
     {
         player = _players.Find(player => player.Id == id);
 
@@ -277,23 +278,21 @@ class DataBase
 
         return false;
     }
-    private string GetUserInput(string message, string errorMessage, bool addAnEmptyLineIfAnErrorOccured = true)
+    private string GetUserInput(string message, string errorMessage)
     {
-        bool success = true;
+        bool success;
         string value;
 
         do
         {
             Console.Write(message);
             value = Console.ReadLine();
+
             success = !string.IsNullOrWhiteSpace(value);
+
             if (success == false)
             {
                 Console.WriteLine(errorMessage);
-                if (addAnEmptyLineIfAnErrorOccured)
-                {
-                    Console.WriteLine();
-                }
             }
         }
         while (success == false);
@@ -301,7 +300,7 @@ class DataBase
         return value;
     }
 
-    private static int GetUserInputInt()
+    private static int ReadInt()
     {
         int value;
         string userInput;

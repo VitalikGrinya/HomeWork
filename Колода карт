@@ -1,0 +1,191 @@
+namespace DeckOfCards;
+class Program
+{
+    static void Main(string[] args)
+    {
+        const string TakeCardCommand = "1";
+        const string ShowPlayerCardsCommand = "2";
+        const string ExitCommand = "3";
+
+        bool isWorking = true;
+
+        string userInput;
+
+        Deck deck = new Deck(new List<Card>());
+        Player player = new Player();
+
+
+        while (isWorking)
+        {
+            Console.WriteLine($"Для того, чтобы взять карту нажмите - {TakeCardCommand}.\n" +
+                              $"Для того, чтобы посмотреть карту нажмите - {ShowPlayerCardsCommand}.\n" +
+                              $"Для выхода нажмите - {ExitCommand}");
+
+            userInput = Console.ReadLine();
+            Console.Clear();
+
+            switch (userInput)
+            {
+                case TakeCardCommand:
+                    player.TakeSomeCards(deck.GiveCard());
+                    break;
+
+                case ShowPlayerCardsCommand:
+                    player.ShowCards();
+                    break;
+
+                case ExitCommand:
+                    isWorking = false;
+                    break;
+
+                default:
+                    Console.WriteLine("Такой команды я не знаю.");
+                    break;
+            }
+        }
+    }
+}
+
+class Deck
+{
+    private List<Card> _cards;
+    public Deck(List<Card> cards)
+    {
+        _cards = cards;
+
+        MakeCards();
+    }
+
+    public void MakeCards()
+    {
+        _cards.Add(new Card("9", "Пика"));
+        _cards.Add(new Card("10", "Пика"));
+        _cards.Add(new Card("Валет", "Пика"));
+        _cards.Add(new Card("Дама", "Пика"));
+        _cards.Add(new Card("Король", "Пика"));
+        _cards.Add(new Card("Король", "Пика"));
+        _cards.Add(new Card("Туз", "Пика"));
+        _cards.Add(new Card("9", "Крести"));
+        _cards.Add(new Card("10", "Крести"));
+        _cards.Add(new Card("Валет", "Крести"));
+        _cards.Add(new Card("Дама", "Крести"));
+        _cards.Add(new Card("Король", "Крести"));
+        _cards.Add(new Card("Король", "Крести"));
+        _cards.Add(new Card("Туз", "Крести"));
+        _cards.Add(new Card("9", "Буба"));
+        _cards.Add(new Card("10", "Буба"));
+        _cards.Add(new Card("Валет", "Буба"));
+        _cards.Add(new Card("Дама", "Буба"));
+        _cards.Add(new Card("Король", "Буба"));
+        _cards.Add(new Card("Король", "Буба"));
+        _cards.Add(new Card("Туз", "Буба"));
+        _cards.Add(new Card("9", "Черва"));
+        _cards.Add(new Card("10", "Черва"));
+        _cards.Add(new Card("Валет", "Черва"));
+        _cards.Add(new Card("Дама", "Черва"));
+        _cards.Add(new Card("Король", "Черва"));
+        _cards.Add(new Card("Король", "Черва"));
+        _cards.Add(new Card("Туз", "Черва"));
+
+        Shuffle(_cards);
+    }
+
+    private void Shuffle(List<Card> cards)
+    {
+
+        Random random = new Random();
+        Card tempCard;
+
+        if (cards.Count == 0)
+        {
+            Console.WriteLine("Карт нет");
+            return;
+        }
+        else
+        {
+            for (int i = cards.Count - 1; i > 0; i--)
+            {
+                int randomIndex;
+
+                randomIndex = random.Next(i + 1);
+                tempCard = cards[i];
+                cards[i] = cards[randomIndex];
+                cards[randomIndex] = tempCard;
+            }
+        }
+    }
+
+    public Card GiveCard()
+    {
+        if (_cards[0] != null)
+        {
+            Card card = _cards[0];
+            _cards.Remove(_cards[0]);
+
+            Console.WriteLine("Вы взяли карту.");
+
+            return card;
+        }
+        else
+        {
+            Console.WriteLine("Карт нет.");
+
+            return null;
+        }
+
+    }
+}
+
+class Card
+{
+    public Card(string valueCard, string cardSuit)
+    {
+        CardSuit = cardSuit;
+        ValueCard = valueCard;
+    }
+
+    public string CardSuit { get; private set; }
+    public string ValueCard { get; private set; }
+
+    public void ShowInfo()
+    {
+        Console.WriteLine($"Масть: {CardSuit}. Значение: {ValueCard}.");
+    }
+}
+
+class Player
+{
+    private List<Card> _userCards = new List<Card>();
+
+    public void TakeSomeCards(Card card)
+    {
+        if (card == null)
+        {
+            Console.WriteLine("Карт больше нет.");
+        }
+        else
+        {
+            _userCards.Add(card);
+        }
+
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    public void ShowCards()
+    {
+
+        for (int i = 0; i < _userCards.Count - 1; i++)
+        {
+            _userCards[i].ShowInfo();
+        }
+
+        if (_userCards.Count == 0)
+        {
+            Console.WriteLine("На руках нет карт.");
+        }
+
+        Console.ReadKey();
+        Console.Clear();
+    }
+}

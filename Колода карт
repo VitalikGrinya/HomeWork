@@ -5,7 +5,7 @@ namespace DeckCards
         static void Main(string[] args)
         {
             Dealer dealer = new Dealer();
-            dealer.WorkingApp();
+            dealer.ProcessApp();
         }
     }
 
@@ -14,7 +14,7 @@ namespace DeckCards
         private Player _player = new Player();
         private Deck _deck = new Deck();
 
-        public void WorkingApp()
+        public void ProcessApp()
         {
             const string AddPlayerCardCommand = "1";
             const string ShowPlayerCardCommand = "2";
@@ -34,11 +34,11 @@ namespace DeckCards
                 switch (userInput)
                 {
                     case AddPlayerCardCommand:
-                        GiveCardToPlayer();
+                        PassCardToPlayer();
                         break;
 
                     case ShowPlayerCardCommand:
-                        _player.ShowAllCard();
+                        _player.ShowAllCards();
                         break;
 
                     case ExitCommand:
@@ -55,7 +55,7 @@ namespace DeckCards
             }
         }
 
-       private void GiveCardToPlayer()
+       private void PassCardToPlayer()
         {
             if (_deck.IsEnoughCards())
             {
@@ -162,7 +162,7 @@ namespace DeckCards
             _cards.Push(card);
         }
 
-        public void ShowAllCard()
+        public void ShowAllCards()
         {
             Console.WriteLine("Карты игрока: ");
 

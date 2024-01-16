@@ -27,7 +27,7 @@ class Program
             switch (userInput)
             {
                 case TakeCardCommand:
-                    player.TakeSomeCards(deck.GiveCard());
+                    player.TakeCard(deck.GiveCard());
                     break;
 
                 case ShowPlayerCardsCommand:
@@ -48,46 +48,43 @@ class Program
 
 class Deck
 {
-    private List<Card> _cards;
+    private Crupier _crupier;
+    private List<Card> _card = new List<Card>();
     public Deck(List<Card> cards)
     {
-        _cards = cards;
+        _card = cards;
 
         MakeCards();
     }
 
     public void MakeCards()
     {
-        _cards.Add(new Card("9", "Пика"));
-        _cards.Add(new Card("10", "Пика"));
-        _cards.Add(new Card("Валет", "Пика"));
-        _cards.Add(new Card("Дама", "Пика"));
-        _cards.Add(new Card("Король", "Пика"));
-        _cards.Add(new Card("Король", "Пика"));
-        _cards.Add(new Card("Туз", "Пика"));
-        _cards.Add(new Card("9", "Крести"));
-        _cards.Add(new Card("10", "Крести"));
-        _cards.Add(new Card("Валет", "Крести"));
-        _cards.Add(new Card("Дама", "Крести"));
-        _cards.Add(new Card("Король", "Крести"));
-        _cards.Add(new Card("Король", "Крести"));
-        _cards.Add(new Card("Туз", "Крести"));
-        _cards.Add(new Card("9", "Буба"));
-        _cards.Add(new Card("10", "Буба"));
-        _cards.Add(new Card("Валет", "Буба"));
-        _cards.Add(new Card("Дама", "Буба"));
-        _cards.Add(new Card("Король", "Буба"));
-        _cards.Add(new Card("Король", "Буба"));
-        _cards.Add(new Card("Туз", "Буба"));
-        _cards.Add(new Card("9", "Черва"));
-        _cards.Add(new Card("10", "Черва"));
-        _cards.Add(new Card("Валет", "Черва"));
-        _cards.Add(new Card("Дама", "Черва"));
-        _cards.Add(new Card("Король", "Черва"));
-        _cards.Add(new Card("Король", "Черва"));
-        _cards.Add(new Card("Туз", "Черва"));
+        _card.Add(new Card("9", "Пика"));
+        _card.Add(new Card("10", "Пика"));
+        _card.Add(new Card("Валет", "Пика"));
+        _card.Add(new Card("Дама", "Пика"));
+        _card.Add(new Card("Король", "Пика"));
+        _card.Add(new Card("Туз", "Пика"));
+        _card.Add(new Card("9", "Крести"));
+        _card.Add(new Card("10", "Крести"));
+        _card.Add(new Card("Валет", "Крести"));
+        _card.Add(new Card("Дама", "Крести"));
+        _card.Add(new Card("Король", "Крести"));
+        _card.Add(new Card("Туз", "Крести"));
+        _card.Add(new Card("9", "Буба"));
+        _card.Add(new Card("10", "Буба"));
+        _card.Add(new Card("Валет", "Буба"));
+        _card.Add(new Card("Дама", "Буба"));
+        _card.Add(new Card("Король", "Буба"));
+        _card.Add(new Card("Туз", "Буба"));
+        _card.Add(new Card("9", "Черва"));
+        _card.Add(new Card("10", "Черва"));
+        _card.Add(new Card("Валет", "Черва"));
+        _card.Add(new Card("Дама", "Черва"));
+        _card.Add(new Card("Король", "Черва"));
+        _card.Add(new Card("Туз", "Черва"));
 
-        Shuffle(_cards);
+        Shuffle(_card);
     }
 
     private void Shuffle(List<Card> cards)
@@ -103,7 +100,7 @@ class Deck
         }
         else
         {
-            for (int i = cards.Count - 1; i > 0; i--)
+            for (int i = 0; i < _card.Count; i++)
             {
                 int randomIndex;
 
@@ -113,26 +110,26 @@ class Deck
                 cards[randomIndex] = tempCard;
             }
         }
+
     }
 
     public Card GiveCard()
     {
-        if (_cards[0] != null)
+        for (int i = 0; i < _card.Count; i++)
         {
-            Card card = _cards[0];
-            _cards.Remove(_cards[0]);
+            if (_card[i] != null)
+            {
+                Card card = _card[i];
 
-            Console.WriteLine("Вы взяли карту.");
+                _card.Remove(_card[i]);
 
-            return card;
-        }
-        else
-        {
-            Console.WriteLine("Карт нет.");
+                Console.WriteLine("Вы взяли карту.");
 
-            return null;
+                return card;
+            }
         }
 
+        return null;
     }
 }
 
@@ -155,15 +152,12 @@ class Card
 
 class Player
 {
+    private Crupier _crupier;
     private List<Card> _userCards = new List<Card>();
 
-    public void TakeSomeCards(Card card)
+    public void TakeCard(Card card)
     {
-        if (card == null)
-        {
-            Console.WriteLine("Карт больше нет.");
-        }
-        else
+        if (card != null)
         {
             _userCards.Add(card);
         }
@@ -175,7 +169,7 @@ class Player
     public void ShowCards()
     {
 
-        for (int i = 0; i < _userCards.Count - 1; i++)
+        for (int i = 0; i < _userCards.Count; i++)
         {
             _userCards[i].ShowInfo();
         }
@@ -187,5 +181,26 @@ class Player
 
         Console.ReadKey();
         Console.Clear();
+    }
+}
+
+class Crupier
+{
+    private Stack<Card> _deckCards = new Stack<Card>();
+    public bool TryGet(out Card card)
+    {
+        card = null;
+
+        if (_deckCards.Count > 0)
+        {
+            card = _deckCards.Pop();
+            Console.WriteLine("Вы взяли карту.");
+        }
+        else
+        {
+            Console.WriteLine("Карт больше нет");
+        }
+
+        return card == null;
     }
 }

@@ -1,0 +1,312 @@
+namespace Library
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+            const string AddBookCommand = "1";
+            const string RemoveBookCommand = "2";
+            const string ShowAllBooksCommand = "3";
+            const string ShowBooksForParametrCommand = "4";
+            const string ExitCommand = "5";
+
+            string userInput;
+
+            bool isWorking = true;
+
+            Librarian librarian = new Librarian();
+
+            while (isWorking)
+            {
+                Console.WriteLine($"Чтобы добавить книгу, нажмите - {AddBookCommand}.\n" +
+                                  $"Чтобы удалить книгу, нажмите - {RemoveBookCommand}.\n" +
+                                  $"Чтобы посмотреть все книги, нажмите - {ShowAllBooksCommand}.\n" +
+                                  $"Чтобы посмотреть книги по выбранному параметру, нажмите - {ShowBooksForParametrCommand}.\n" +
+                                  $"Чтобы выйти, нажмите - {ExitCommand}.");
+
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case AddBookCommand:
+                        librarian.AddBook();
+                        break;
+
+                    case RemoveBookCommand:
+                        librarian.RemoveBook();
+                        break;
+
+                    case ShowAllBooksCommand:
+                        librarian.ShowAllBooks();
+                        break;
+
+                    case ShowBooksForParametrCommand:
+                        librarian.ShowBooksForParametr();
+                        break;
+
+                    case ExitCommand:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Такой команды нет.");
+                        break;
+                }
+
+                Console.ReadLine();
+                Console.Clear();
+            }
+        }
+    }
+
+    class Book
+    {
+        public Book(int id, string name, string author, int yearOfRelease)
+        {
+            Id = id;
+            Name = name;
+            Author = author;
+            YearOfRelease = yearOfRelease;
+        }
+
+        public int Id { get; private set; }
+        public string Name { get; private set; }
+        public string Author { get; private set; }
+        public int YearOfRelease { get; private set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{Id} - Назавние: {Name}. Автор: {Author}. Год выпуска: {YearOfRelease}.");
+        }
+    }
+
+    class Librarian
+    {
+        private List<Book> _books;
+
+        public Librarian()
+        {
+            _books = new List<Book>();
+        }
+
+        public void AddBook()
+        {
+            Console.Write("Введите id книги: ");
+            int id = ReadInt();
+
+            while(TryGetBook(id, out Book someBook))
+            {
+                Console.WriteLine("Книга с таким номером уже существует");
+                id = ReadInt();
+            }
+
+            string nameInput = ReadString("Введите название книги: ", "Введено некорректное значение, попробуйте еще раз.");
+
+            string authorInput = ReadString("Введите автора книги: ", "Введено некорректное значение, попробуйте еще раз.");
+
+            Console.Write("Введите год издания книги: ");
+            int yearNumber = ReadInt();
+
+
+            Book book = new Book(id, nameInput, authorInput, yearNumber);
+            _books.Add(book);
+        }
+
+        public void RemoveBook()
+        {
+            if (_books.Count == 0)
+            {
+                Console.WriteLine("Книг нет.");
+            }
+            else
+            {
+                ShowAllBooks();
+
+                Console.Write("Введите id книги: ");
+                int id = ReadInt();
+
+                if (TryGetBook(id, out Book book))
+                {
+                    _books.Remove(book);
+                    Console.WriteLine("Книга удалена.");
+                }
+                else
+                {
+                    Console.WriteLine("Книги с таким номером нет.");
+                }
+            }
+        }
+
+        public void ShowAllBooks()
+        {
+            if(_books.Count == 0)
+            {
+                Console.WriteLine("Книг нет.");
+            }
+            else
+            {
+                foreach (Book book in _books)
+                {
+                    book.ShowInfo();
+                }
+            }
+        }
+
+        public void ShowBooksForParametr()
+        {
+            const string NameCommand = "1";
+            const string AuthorCommand = "2";
+            const string YearOfRelease = "3";
+
+            string userInput;
+
+            Console.WriteLine("Выберите параметр вывода:");
+            Console.WriteLine($"По имени: {NameCommand}.\nПо автору: {AuthorCommand}.\nПо году выпуска: {YearOfRelease}.");
+
+            userInput = Console.ReadLine();
+
+            switch (userInput)
+            {
+                case NameCommand:
+                    ShowBookByName(userInput);
+                    break;
+
+                case AuthorCommand:
+                    ShowBookByAuthor(userInput);
+                    break;
+
+                case YearOfRelease:
+                    ShowBookByYearOfRelease();
+                    break;
+
+                default:
+                    Console.WriteLine("Такого параметра нет.");
+                    break;
+            }
+        }
+
+        private int ReadInt()
+        {
+            int value;
+            string userInput;
+
+            userInput = Console.ReadLine();
+
+            while (int.TryParse(userInput, out value) == false)
+            {
+                Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+                userInput = Console.ReadLine();
+            }
+
+            return value;
+        }
+
+        private string ReadString(string message, string errorMessage)
+        {
+            bool isSuccess;
+            string value;
+
+            do
+            {
+                Console.Write(message);
+                value = Console.ReadLine();
+
+                isSuccess = !string.IsNullOrWhiteSpace(value);
+
+                if (isSuccess == false)
+                {
+                    Console.WriteLine(errorMessage);
+                }
+            }
+            while (isSuccess == false);
+
+            return value;
+        }
+
+        private bool TryGetBook(int id, out Book book)
+        {
+            book = _books.Find(book => book.Id == id);
+
+            return book != null;
+        }
+
+        private void ShowBookByName(string userInput)
+        {
+            if (_books.Count == 0)
+            {
+                Console.WriteLine("Книг нет.");
+            }
+            else
+            {
+                userInput = ReadString("Введите название книги: ","Введено некорректное значение, попробуйте еще раз."); 
+
+                foreach (Book book in _books)
+                {
+                    if (userInput == book.Name)
+                    {
+                        book.ShowInfo();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Книги с таким названием нету.");
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void ShowBookByAuthor(string userInput)
+        {
+            if (_books.Count == 0)
+            {
+                Console.WriteLine("Книг нет.");
+            }
+            else
+            {
+                userInput= ReadString("Назовите автора книги: ", "Введено некорректное значение, попробуйте еще раз.");
+
+                foreach (Book book in _books)
+                {
+                    if (userInput == book.Author)
+                    {
+                        book.ShowInfo();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Книг этого автора нет.");
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void ShowBookByYearOfRelease()
+        {
+            if (_books.Count == 0)
+            {
+                Console.WriteLine("Книг нет.");
+            }
+            else
+            {
+                int yearOfRelease;
+
+                Console.Write("Введите год выпуска книги: ");
+                yearOfRelease = ReadInt();
+
+                foreach (Book book in _books)
+                {
+                    if (yearOfRelease == book.YearOfRelease)
+                    {
+                        book.ShowInfo();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Книг данного года нет.");
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}

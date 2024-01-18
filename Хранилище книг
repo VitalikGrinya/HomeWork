@@ -95,7 +95,7 @@ namespace Library
             Console.Write("Введите id книги: ");
             int id = ReadInt();
 
-            while(TryGetBook(id, out Book someBook))
+            while (TryGetBook(id, out Book someBook))
             {
                 Console.WriteLine("Книга с таким номером уже существует");
                 id = ReadInt();
@@ -115,9 +115,9 @@ namespace Library
 
         public void RemoveBook()
         {
-            if (_books.Count == 0)
+            if (IsEmpty())
             {
-                Console.WriteLine("Книг нет.");
+                return;
             }
             else
             {
@@ -140,9 +140,9 @@ namespace Library
 
         public void ShowAllBooks()
         {
-            if(_books.Count == 0)
+            if (IsEmpty())
             {
-                Console.WriteLine("Книг нет.");
+                return;
             }
             else
             {
@@ -169,11 +169,11 @@ namespace Library
             switch (userInput)
             {
                 case NameCommand:
-                    ShowBookByName(userInput);
+                    ShowBookByName();
                     break;
 
                 case AuthorCommand:
-                    ShowBookByAuthor(userInput);
+                    ShowBookByAuthor();
                     break;
 
                 case YearOfRelease:
@@ -231,15 +231,27 @@ namespace Library
             return book != null;
         }
 
-        private void ShowBookByName(string userInput)
+        private bool IsEmpty()
         {
             if (_books.Count == 0)
             {
                 Console.WriteLine("Книг нет.");
             }
+
+            return false;
+        }
+
+        private void ShowBookByName()
+        {
+            string userInput;
+
+            if (IsEmpty())
+            {
+                return;
+            }
             else
             {
-                userInput = ReadString("Введите название книги: ","Введено некорректное значение, попробуйте еще раз."); 
+                userInput = ReadString("Введите название книги: ", "Введено некорректное значение, попробуйте еще раз.");
 
                 foreach (Book book in _books)
                 {
@@ -250,21 +262,22 @@ namespace Library
                     else
                     {
                         Console.WriteLine("Книги с таким названием нету.");
-                        break;
                     }
                 }
             }
         }
 
-        private void ShowBookByAuthor(string userInput)
+        private void ShowBookByAuthor()
         {
-            if (_books.Count == 0)
+            string userInput;
+
+            if (IsEmpty())
             {
-                Console.WriteLine("Книг нет.");
+                return;
             }
             else
             {
-                userInput= ReadString("Назовите автора книги: ", "Введено некорректное значение, попробуйте еще раз.");
+                userInput = ReadString("Назовите автора книги: ", "Введено некорректное значение, попробуйте еще раз.");
 
                 foreach (Book book in _books)
                 {
@@ -275,7 +288,6 @@ namespace Library
                     else
                     {
                         Console.WriteLine("Книг этого автора нет.");
-                        break;
                     }
                 }
             }
@@ -283,9 +295,9 @@ namespace Library
 
         private void ShowBookByYearOfRelease()
         {
-            if (_books.Count == 0)
+            if (IsEmpty())
             {
-                Console.WriteLine("Книг нет.");
+                return;
             }
             else
             {
@@ -303,7 +315,6 @@ namespace Library
                     else
                     {
                         Console.WriteLine("Книг данного года нет.");
-                        break;
                     }
                 }
             }

@@ -95,10 +95,11 @@ namespace Library
             Console.Write("Введите id книги: ");
             int id = ReadInt();
 
+
             while (TryGetBook(id, out Book someBook))
             {
-                Console.WriteLine("Книга с таким номером уже существует");
-                id = ReadInt();
+                Console.WriteLine("Книга с таким номером уже существует, ей присвоется ближайший свободный номер");
+                id++;
             }
 
             string nameInput = ReadString("Введите название книги: ", "Введено некорректное значение, попробуйте еще раз.");
@@ -206,11 +207,11 @@ namespace Library
         {
             bool isSuccess;
             string value;
-
+                
             do
             {
                 Console.Write(message);
-                value = Console.ReadLine();
+                value = Console.ReadLine().ToLower();
 
                 isSuccess = !string.IsNullOrWhiteSpace(value);
 
@@ -318,6 +319,11 @@ namespace Library
                     }
                 }
             }
+        }
+
+        private string ToLower(string text)
+        {
+            return ToLower(text);
         }
     }
 }

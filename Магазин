@@ -1,0 +1,246 @@
+namespace Store
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            const string ShowProductListCommand = "1";
+            const string SellProductCommand = "2";
+            const string ShowInventory = "3";
+            const string ExitCommand = "4";
+
+            bool isWorking = true;
+            string userInput;
+
+            Seller seller = new Seller();
+            Customer customer = new Customer();
+            Market market = new Market();
+
+            while (isWorking)
+            {
+                Console.WriteLine($"Для просмотря товара нажмите - {ShowProductListCommand}.\n" +
+                                  $"Для покупки товара нажмите - {SellProductCommand}.\n" +
+                                  $"Для просмотря инвентаря нажмите - {ShowInventory}.\n" +
+                                  $"Для выхода нажмите - {ExitCommand}.");
+
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case ShowProductListCommand:
+                        seller.ShowProducts();
+                        break;
+
+                    case SellProductCommand:
+                        market.Trade(seller, customer);
+                        break;
+
+                    case ShowInventory:
+                        customer.ShowInvertory();
+                        break;
+
+                    case ExitCommand:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Введена неверная команда.");
+                        break;
+                }
+
+                Console.ReadLine();
+                Console.Clear();
+            }
+        }
+    }
+
+    class Product
+    {
+        public Product() { }
+        public Product(string name, string level, int price)
+        {
+            Name = name;
+            Level = level;
+            Price = price;
+        }
+
+        public string Name { get; private set; }
+        public string Level { get; private set; }
+        public int Price { get; private set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{Name}. Класс - {Level}. {Price}$.");
+        }
+    }
+
+    class Seller
+    {
+        private List<Product> _products;
+
+        public Seller()
+        {
+            _products = new List<Product>();
+            MakeProducts();
+        }
+
+        public void MakeProducts()
+        {
+            _products.Add(new Product("Меч истины", "Легендарный", 5000));
+            _products.Add(new Product("Книга: некромантия для чайников", "Базовый", 15));
+            _products.Add(new Product("Щенок цербера", "Мифический", 2500));
+            _products.Add(new Product("Карта двадцати минутного приключения", "Героический", 400));
+            _products.Add(new Product("Мантия невидимости", "Легендарный", 4500));
+        }
+
+        public void ShowProducts()
+        {
+            foreach (Product products in _products)
+            {
+                products.ShowInfo();
+            }
+        }
+
+        public Product TakeProducts(int userInput)
+        {
+            Product newProduct = new Product();
+
+            if (TryGetProduct(userInput, out Product product) == true)
+            {
+                newProduct = product;
+            }
+
+            return newProduct;
+        }
+
+        private bool TryGetProduct(int number, out Product product)
+        {
+            product = _products.Find(product => product.Price == number);
+            return product != null;
+        }
+
+        public void RemoveProducts(Product product)
+        {
+            _products.Remove(product);
+        }
+
+        public bool ProductCountZero()
+        {
+            if (_products.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    class Customer
+    {
+        private List<Product> _inventory;
+
+        public Customer()
+        {
+
+            _inventory = new List<Product>();
+        }
+
+        public int Money { get; private set; } = 15000;
+
+        public void ShowInvertory()
+        {
+            if (_inventory.Count == 0)
+            {
+                Console.WriteLine("Инвентарь пуст.");
+            }
+            else
+            {
+                foreach (Product products in _inventory)
+                {
+                    Console.WriteLine($"{products.Name} (->{products.Level}<-)");
+                }
+            }
+        }
+
+        public void AddProduct(Product product)
+        {
+            _inventory.Add(product);
+        }
+
+        public void GiveMoney(Product product)
+        {
+            Money -= product.Price;
+        }
+    }
+
+    class Market
+    {
+        private Seller _seller;
+        private Customer _customer;
+
+        public void Trade(Seller seller, Customer customer)
+        {
+            int numberOfProduct;
+
+            _seller = seller;
+            _customer = customer;
+
+            seller.ShowProducts();
+
+            if (_seller.ProductCountZero())
+            {
+                Console.WriteLine("Товары закончились.");
+            }
+            else
+            {
+                Console.WriteLine($"Ваши деньги: {customer.Money}");
+                Console.Write("Введите цену на товар, который хотите купить: ");
+
+                numberOfProduct = ReadInt();
+
+                if (IsEnoughMoney(_customer, _seller.TakeProducts(numberOfProduct)))
+                {
+                    _customer.GiveMoney(_seller.TakeProducts(numberOfProduct));
+                    _customer.AddProduct(_seller.TakeProducts(numberOfProduct));
+                    _seller.RemoveProducts(_seller.TakeProducts(numberOfProduct));
+
+                }
+                else
+                {
+                    Console.WriteLine("Недостаточно средств.");
+                }
+            }
+        }
+
+        private bool IsEnoughMoney(Customer customer, Product product)
+        {
+            if (customer.Money >= product.Price)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private int ReadInt()
+        {
+            int value;
+
+            string userInput;
+
+            userInput = Console.ReadLine();
+
+            while (int.TryParse(userInput, out value) == false)
+            {
+                Console.WriteLine("Введено некорректное значение, попробуй еще раз.");
+                userInput = Console.ReadLine();
+            }
+
+            return value;
+        }
+    }
+}

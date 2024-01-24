@@ -56,7 +56,6 @@ namespace Store
 
     class Product
     {
-        public Product() { }
         public Product(string name, string level, int price)
         {
             Name = name;
@@ -74,103 +73,95 @@ namespace Store
         }
     }
 
-    class Seller
+    abstract class Person
     {
-        private List<Product> _products;
+        protected List<Product> Products;
 
+        public virtual void ShowProducts()
+        {
+            foreach (Product products in Products)
+            {
+                products.ShowInfo();
+            }
+        }
+    }
+
+    class Seller : Person
+    {
         public Seller()
         {
-            _products = new List<Product>();
+            Products = new List<Product>();
             MakeProducts();
         }
 
         public void MakeProducts()
         {
-            _products.Add(new Product("Меч истины", "Легендарный", 5000));
-            _products.Add(new Product("Книга: некромантия для чайников", "Базовый", 15));
-            _products.Add(new Product("Щенок цербера", "Мифический", 2500));
-            _products.Add(new Product("Карта двадцати минутного приключения", "Героический", 400));
-            _products.Add(new Product("Мантия невидимости", "Легендарный", 4500));
-        }
-
-        public void ShowProducts()
-        {
-            foreach (Product products in _products)
-            {
-                products.ShowInfo();
-            }
+            Products.Add(new Product("Меч истины", "Легендарный", 5000));
+            Products.Add(new Product("Книга: некромантия для чайников", "Базовый", 15));
+            Products.Add(new Product("Щенок цербера", "Мифический", 2500));
+            Products.Add(new Product("Карта двадцати минутного приключения", "Героический", 400));
+            Products.Add(new Product("Мантия невидимости", "Легендарный", 4500));
         }
 
         public Product TakeProducts(int userInput)
         {
-            Product newProduct = new Product();
-
             if (TryGetProduct(userInput, out Product product) == true)
             {
-                newProduct = product;
+                return product;
             }
-
-            return newProduct;
+            else
+            {
+                return null;
+            }
         }
 
-        private bool TryGetProduct(int number, out Product product)
+        public bool TryGetProduct(int price, out Product product)
         {
-            product = _products.Find(product => product.Price == number);
+            product = Products.Find(product => product.Price == price);
             return product != null;
         }
 
         public void RemoveProducts(Product product)
         {
-            _products.Remove(product);
+            Products.Remove(product);
         }
 
-        public bool ProductCountZero()
+        public bool IsEmpty()
         {
-            if (_products.Count == 0)
+            if (Products.Count == 0)
             {
+                Console.WriteLine("Товар закончился");
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 
-    class Customer
+    class Customer : Person
     {
-        private List<Product> _inventory;
-
         public Customer()
         {
-
-            _inventory = new List<Product>();
+            Products = new List<Product>();
         }
 
         public int Money { get; private set; } = 15000;
 
         public void ShowInvertory()
         {
-            if (_inventory.Count == 0)
+            if (Products.Count == 0)
             {
                 Console.WriteLine("Инвентарь пуст.");
             }
             else
             {
-                foreach (Product products in _inventory)
-                {
-                    Console.WriteLine($"{products.Name} (->{products.Level}<-)");
-                }
+                ShowProducts();
             }
         }
 
-        public void AddProduct(Product product)
+        public void Buy(Product product)
         {
-            _inventory.Add(product);
-        }
-
-        public void GiveMoney(Product product)
-        {
+            Products.Add(product);
             Money -= product.Price;
         }
     }
@@ -182,47 +173,36 @@ namespace Store
 
         public void Trade(Seller seller, Customer customer)
         {
-            int numberOfProduct;
+            int price;
 
             _seller = seller;
             _customer = customer;
 
             seller.ShowProducts();
 
-            if (_seller.ProductCountZero())
+            if (_seller.IsEmpty())
             {
-                Console.WriteLine("Товары закончились.");
+                return;
             }
             else
             {
                 Console.WriteLine($"Ваши деньги: {customer.Money}");
                 Console.Write("Введите цену на товар, который хотите купить: ");
 
-                numberOfProduct = ReadInt();
+                price = ReadInt();
 
-                if (IsEnoughMoney(_customer, _seller.TakeProducts(numberOfProduct)))
+                if (_seller.TryGetProduct(price, out Product product))
                 {
-                    _customer.GiveMoney(_seller.TakeProducts(numberOfProduct));
-                    _customer.AddProduct(_seller.TakeProducts(numberOfProduct));
-                    _seller.RemoveProducts(_seller.TakeProducts(numberOfProduct));
-
+                    if (customer.Money >= product.Price)
+                    {
+                        _customer.Buy(product);
+                        _seller.RemoveProducts(product);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Недостаточно средств.");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Недостаточно средств.");
-                }
-            }
-        }
-
-        private bool IsEnoughMoney(Customer customer, Product product)
-        {
-            if (customer.Money >= product.Price)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 

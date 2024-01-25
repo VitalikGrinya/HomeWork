@@ -53,11 +53,6 @@ namespace ConfiguratorPassengersTrains
 
     class Configurator
     {
-        private List<Direction> _directions;
-        public Configurator()
-        {
-            _directions = new List<Direction>();
-        }
         public void CreateDirection()
         {
             string inputLandingPiont;

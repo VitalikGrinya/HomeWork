@@ -1,0 +1,97 @@
+namespace ConfiguratorPassengersTrains
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            bool isWorkink = true;
+
+            while (isWorkink)
+            {
+                Configurator configurator = new Configurator();
+                configurator.MakeAll();
+            }
+        }
+    }
+
+    class Direction
+    {
+        public Direction(string landingPoint, string disembarkationPoint)
+        {
+            LandingPoint = landingPoint;
+            DisembarkationPoint = disembarkationPoint;
+        }
+
+        public string LandingPoint { get; private set; }
+        public string DisembarkationPoint { get; private set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"Поезд межрегиональных линий экономкласса: {LandingPoint} - {DisembarkationPoint}");
+        }
+    }
+
+    class Configurator
+    {
+        public void CreateDirection()
+        {
+            string inputLandingPiont;
+            string inputDisembarkationPiont;
+
+            Console.WriteLine("Откуда вы хотите ехать: ");
+            inputLandingPiont = Console.ReadLine();
+
+            Console.WriteLine("Куда вы хотите ехать");
+            inputDisembarkationPiont = Console.ReadLine();
+
+            Direction direction = new Direction(inputLandingPiont, inputDisembarkationPiont);
+
+            direction.ShowInfo();
+        }
+
+        public void SellTicket()
+        {
+            Random random = new Random();
+
+            int passengersCount;
+            int minPassengersCount = 1;
+            int maxPassengersCount = 1000;
+
+            passengersCount = random.Next(minPassengersCount, maxPassengersCount + 1);
+            Console.WriteLine("Количество пассажиров в поезде: " + passengersCount);
+
+            CreateTrain(passengersCount);
+        }
+
+        public void CreateTrain(int value)
+        {
+            int carrigeCount = 50;
+            int extraCarrige = 1;
+            int trainCount;
+            int busyPlaceInCarrige;
+            int freePlaceInCarrige;
+
+            trainCount = (value / carrigeCount) + extraCarrige;
+
+            busyPlaceInCarrige = value % carrigeCount;
+
+            freePlaceInCarrige = carrigeCount - busyPlaceInCarrige;
+
+            Console.WriteLine($"Количество вагонов: {trainCount}.\nКоличество свободных мест: {freePlaceInCarrige}");
+        }
+
+        public void GetTrain()
+        {
+            Console.WriteLine("Поезд уехал.");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public void MakeAll()
+        {
+            CreateDirection();
+            SellTicket();
+            GetTrain();
+        }
+    }
+}

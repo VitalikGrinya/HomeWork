@@ -81,6 +81,7 @@ namespace ConfiguratorPassengersTrains
         public void GetTrain()
         {
             Console.WriteLine("Поезд уехал.");
+            Console.ReadKey();
             Console.Clear();
         }
 

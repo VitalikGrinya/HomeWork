@@ -11,9 +11,8 @@ namespace ConfiguratorPassengersTrains
 
             string userInput;
 
-
-
             Configurator configurator = new Configurator();
+
             while (isWorking)
             {
                 Console.WriteLine($"Для создания поезда нажмите - {ConstructConfigurationCommand}.\n" +
@@ -75,9 +74,7 @@ namespace ConfiguratorPassengersTrains
                     direction.ShowInfo();
                     break;
                 }
-
             }
-
         }
 
         public void SellTicket()
@@ -108,10 +105,9 @@ namespace ConfiguratorPassengersTrains
             trainCount = (value / carrigeCount) + extraCarrige;
 
             Console.WriteLine($"Количество вагонов: {trainCount}.");
-            
         }
 
-        public void GetTrain()
+        public void TakeTrain()
         {
             Console.WriteLine("Поезд уехал.");
             Console.ReadKey();
@@ -122,7 +118,7 @@ namespace ConfiguratorPassengersTrains
         {
             CreateDirection();
             SellTicket();
-            GetTrain();
+            TakeTrain();
         }
 
         private string ReadString(string message)
@@ -133,9 +129,11 @@ namespace ConfiguratorPassengersTrains
             do
             {
                 Console.Write(message);
-                value = Console.ReadLine().ToUpper();
 
-                isSuccess = !string.IsNullOrWhiteSpace(value);
+                value = Console.ReadLine().ToUpper();
+                string.IsNullOrWhiteSpace(value);
+
+                isSuccess = true;
             }
             while (isSuccess == false);
 

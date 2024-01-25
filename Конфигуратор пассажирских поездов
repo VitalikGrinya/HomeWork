@@ -4,9 +4,9 @@ namespace ConfiguratorPassengersTrains
     {
         static void Main(string[] args)
         {
-            bool isWorkink = true;
+            bool isWorking = true;
 
-            while (isWorkink)
+            while (isWorking)
             {
                 Configurator configurator = new Configurator();
                 configurator.MakeAll();
@@ -38,11 +38,9 @@ namespace ConfiguratorPassengersTrains
             string inputLandingPiont;
             string inputDisembarkationPiont;
 
-            Console.WriteLine("Откуда вы хотите ехать: ");
-            inputLandingPiont = Console.ReadLine();
+            inputLandingPiont = ReadString("Откуда вы хотите ехать: ");
 
-            Console.WriteLine("Куда вы хотите ехать");
-            inputDisembarkationPiont = Console.ReadLine();
+            inputDisembarkationPiont = ReadString("Куда вы хотите ехать: ");
 
             Direction direction = new Direction(inputLandingPiont, inputDisembarkationPiont);
 
@@ -83,7 +81,6 @@ namespace ConfiguratorPassengersTrains
         public void GetTrain()
         {
             Console.WriteLine("Поезд уехал.");
-            Console.ReadKey();
             Console.Clear();
         }
 
@@ -92,6 +89,23 @@ namespace ConfiguratorPassengersTrains
             CreateDirection();
             SellTicket();
             GetTrain();
+        }
+
+        private string ReadString(string message)
+        {
+            bool isSuccess;
+            string value;
+
+            do
+            {
+                Console.Write(message);
+                value = Console.ReadLine().ToLower();
+
+                isSuccess = !string.IsNullOrWhiteSpace(value);
+            }
+            while (isSuccess == false);
+
+            return value;
         }
     }
 }

@@ -4,12 +4,32 @@ namespace ConfiguratorPassengersTrains
     {
         static void Main(string[] args)
         {
+            const string ConstructConfigurationCommand = "1";
+            const string ExitCommand = "2";
+
             bool isWorking = true;
 
+            string userInput;
+
+
+
+            Configurator configurator = new Configurator();
             while (isWorking)
             {
-                Configurator configurator = new Configurator();
-                configurator.MakeAll();
+                Console.WriteLine($"Для создания поезда нажмите - {ConstructConfigurationCommand}.\n" +
+                                  $"Для выхода нажмите - {ExitCommand}.");
+                userInput = Console.ReadLine();
+
+                switch(userInput)
+                {
+                    case ConstructConfigurationCommand:
+                        configurator.MakeAll();
+                        break;
+
+                    case ExitCommand:
+                        isWorking = false;
+                        break;
+                }
             }
         }
     }
@@ -33,18 +53,36 @@ namespace ConfiguratorPassengersTrains
 
     class Configurator
     {
+        private List<Direction> _directions;
+        public Configurator()
+        {
+            _directions = new List<Direction>();
+        }
         public void CreateDirection()
         {
             string inputLandingPiont;
             string inputDisembarkationPiont;
+            bool isWorking = true;
 
-            inputLandingPiont = ReadString("Откуда вы хотите ехать: ");
+            while(isWorking)
+            {
+                inputLandingPiont = ReadString("Откуда вы хотите ехать: ");
 
-            inputDisembarkationPiont = ReadString("Куда вы хотите ехать: ");
+                inputDisembarkationPiont = ReadString("Куда вы хотите ехать: ");
 
-            Direction direction = new Direction(inputLandingPiont, inputDisembarkationPiont);
+                if(inputLandingPiont == inputDisembarkationPiont)
+                {
+                    Console.WriteLine("Вы уже находитесь в этом месте.");
+                }
+                else
+                {
+                    Direction direction = new Direction(inputLandingPiont, inputDisembarkationPiont);
+                    direction.ShowInfo();
+                    break;
+                }
 
-            direction.ShowInfo();
+            }
+
         }
 
         public void SellTicket()
@@ -54,7 +92,7 @@ namespace ConfiguratorPassengersTrains
             int passengersCount;
             int minPassengersCount = 1;
             int maxPassengersCount = 1000;
-
+            
             passengersCount = random.Next(minPassengersCount, maxPassengersCount + 1);
             Console.WriteLine("Количество пассажиров в поезде: " + passengersCount);
 
@@ -63,19 +101,19 @@ namespace ConfiguratorPassengersTrains
 
         public void CreateTrain(int value)
         {
-            int carrigeCount = 50;
+            Random random = new Random();
+
+            int minnCarrigeCount = 30;
+            int maxnCarrigeCount = 60;
+            int carrigeCount;
             int extraCarrige = 1;
             int trainCount;
-            int busyPlaceInCarrige;
-            int freePlaceInCarrige;
 
+            carrigeCount= random.Next(minnCarrigeCount, maxnCarrigeCount+1);
             trainCount = (value / carrigeCount) + extraCarrige;
 
-            busyPlaceInCarrige = value % carrigeCount;
-
-            freePlaceInCarrige = carrigeCount - busyPlaceInCarrige;
-
-            Console.WriteLine($"Количество вагонов: {trainCount}.\nКоличество свободных мест: {freePlaceInCarrige}");
+            Console.WriteLine($"Количество вагонов: {trainCount}.");
+            
         }
 
         public void GetTrain()
@@ -100,7 +138,7 @@ namespace ConfiguratorPassengersTrains
             do
             {
                 Console.Write(message);
-                value = Console.ReadLine().ToLower();
+                value = Console.ReadLine().ToUpper();
 
                 isSuccess = !string.IsNullOrWhiteSpace(value);
             }

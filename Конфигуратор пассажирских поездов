@@ -41,8 +41,8 @@ namespace ConfiguratorPassengersTrains
             DisembarkationPoint = disembarkationPoint;
         }
 
-        public string LandingPoint { get; private set; }
-        public string DisembarkationPoint { get; private set; }
+        private string LandingPoint { get; set; }
+        private string DisembarkationPoint { get; set; }
 
         public void ShowInfo()
         {
@@ -52,7 +52,7 @@ namespace ConfiguratorPassengersTrains
 
     class Configurator
     {
-        public void CreateDirection()
+        private void CreateDirection()
         {
             string inputLandingPiont;
             string inputDisembarkationPiont;
@@ -72,12 +72,12 @@ namespace ConfiguratorPassengersTrains
                 {
                     Direction direction = new Direction(inputLandingPiont, inputDisembarkationPiont);
                     direction.ShowInfo();
-                    break;
+                    isWorking = false;
                 }
             }
         }
 
-        public void SellTicket()
+        private void SellTicket()
         {
             Random random = new Random();
 
@@ -91,7 +91,7 @@ namespace ConfiguratorPassengersTrains
             CreateTrain(passengersCount);
         }
 
-        public void CreateTrain(int value)
+        private void CreateTrain(int value)
         {
             Random random = new Random();
 
@@ -107,7 +107,7 @@ namespace ConfiguratorPassengersTrains
             Console.WriteLine($"Количество вагонов: {trainCount}.");
         }
 
-        public void TakeTrain()
+        private void TakeTrain()
         {
             Console.WriteLine("Поезд уехал.");
             Console.ReadKey();

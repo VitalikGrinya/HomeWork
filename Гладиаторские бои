@@ -17,19 +17,22 @@ namespace GladiatorsFights
         public int Health { get; protected set; }
         public int Attack { get; protected set; }
 
+        public abstract Warrior Clone();
+
         public virtual void ShowWarriors()
         {
             Console.WriteLine($"{Id}. {Name}. Здоровье - {Health}. Сила - {Attack}.\n{Ability}.");
         }
 
-        private void TakeDamage(int attack)
+        public virtual void TakeDamage(int attack)
         {
             Health -= attack;
         }
 
-        public void MakeAttack(Warrior warrior)
+        public virtual void MakeAttack(Warrior warrior)
         {
             warrior.TakeDamage(Attack);
+            UseAbility();
         }
 
         public virtual void UseAbility() { }
@@ -60,13 +63,13 @@ namespace GladiatorsFights
             int minChanceValue = 1;
             int maxChanceValue = 2;
             int individualAttackChance;
-            int individualAttack = 2;
+            int individualAttack = 5;
 
             individualAttackChance = random.Next(minChanceValue, maxChanceValue + 1);
 
             if (individualAttackChance == 1)
             {
-                _attack += individualAttack;
+                Attack += individualAttack;
             }
         }
 
@@ -74,12 +77,17 @@ namespace GladiatorsFights
         {
             IndividualAbility();
         }
+
+        public override Warrior Clone()
+        {
+            return new Assassin();
+        }
     }
 
     class Berserk : Warrior
     {
         private string _name = "Берсерк";
-        private string _ability = "Особая способность - при количестве жизней меньше 30% урон увеличивается в 2 раза";
+        private string _ability = "Особая способность - при количестве жизней меньше 50% урон увеличивается в 2 раза";
 
         private int _health = 200;
         private int _attack = 10;
@@ -96,14 +104,18 @@ namespace GladiatorsFights
 
         public void IndividualAbility()
         {
-            int individualAttack = 2;
+            int minHealthValue = 100;
+            int individualAttack = 3;
 
-            float healthPercentage = 0.3f;
-            float lowHealth = _health * healthPercentage;
+            int furyAttack = _attack * individualAttack;
 
-            if (_health <= lowHealth)
+            if (Health <= minHealthValue)
             {
-                _attack *= individualAttack;
+                Attack = furyAttack;
+            }
+            else
+            {
+                Attack = _attack;
             }
         }
 
@@ -111,12 +123,17 @@ namespace GladiatorsFights
         {
             IndividualAbility();
         }
+
+        public override Warrior Clone()
+        {
+            return new Berserk();
+        }
     }
 
     class Knight : Warrior
     {
         private string _name = "Рыцарь";
-        private string _ability = "Особая способность - при смерти восстанавливает часть жизней.";
+        private string _ability = "Особая способность - на грани смерти восстанавливает часть жизней";
 
         private int _health = 150;
         private int _attack = 20;
@@ -133,17 +150,24 @@ namespace GladiatorsFights
 
         public void IndividualAbility()
         {
-            int holyPower = 50;
+            int deathHealthValue = 0;
+            int minHealthValue = 10;
+            int holyPower = 30;
 
-            if (_health <= 0)
+            if (Health <= minHealthValue && Health > deathHealthValue)
             {
-                _health += holyPower;
+                Health = holyPower;
             }
         }
 
         public override void UseAbility()
         {
             IndividualAbility();
+        }
+
+        public override Warrior Clone()
+        {
+            return new Knight();
         }
     }
 
@@ -180,13 +204,22 @@ namespace GladiatorsFights
 
             if (criticalDamageChance == 1)
             {
-                _attack *= criticalDamagePower;
+                Attack *= criticalDamagePower;
+            }
+            else
+            {
+                Attack = _attack;
             }
         }
 
         public override void UseAbility()
         {
             IndividualAbility();
+        }
+
+        public override Warrior Clone()
+        {
+            return new Samurai();
         }
     }
 
@@ -220,15 +253,20 @@ namespace GladiatorsFights
 
             healingChance = random.Next(minChance, maxChance + 1);
 
-            if (healingChance == 3 && _health < maxHealth && _health > 0)
+            if (healingChance == 3 && Health < maxHealth && Health > 0)
             {
-                _health += roarHealing;
+                Health += roarHealing;
             }
         }
 
         public override void UseAbility()
         {
             IndividualAbility();
+        }
+
+        public override Warrior Clone()
+        {
+            return new Viking();
         }
     }
 
@@ -282,17 +320,23 @@ namespace GladiatorsFights
             Console.Write("Выберете второго гладиатора: ");
             secondWarrior = ReadInt();
 
+            if (firstWarrior == secondWarrior)
+            {
+                _firstWarrior = _firstWarrior.Clone();
+                _secondWarrior = _secondWarrior.Clone();
+            }
+
             while (isWorking)
             {
                 ChooseWarrior(firstWarrior, out _firstWarrior);
                 _firstWarrior.UseAbility();
+
                 ChooseWarrior(secondWarrior, out _secondWarrior);
                 _secondWarrior.UseAbility();
 
                 Console.ReadKey();
-                //Console.Clear();
 
-                while (_firstWarrior.Health >= 0 && _secondWarrior.Health >= 0)
+                while (_firstWarrior.Health > 0 && _secondWarrior.Health > 0)
                 {
                     _firstWarrior.MakeAttack(_secondWarrior);
                     _secondWarrior.MakeAttack(_firstWarrior);
@@ -300,6 +344,19 @@ namespace GladiatorsFights
                 }
 
                 isWorking = false;
+            }
+
+            if (_firstWarrior.Health > 0 && _secondWarrior.Health <= 0)
+            {
+                Console.WriteLine($"{_firstWarrior.Name} - победил.");
+            }
+            else if (_firstWarrior.Health <= 0 && _secondWarrior.Health > 0)
+            {
+                Console.WriteLine($"{_secondWarrior.Name} - победил.");
+            }
+            else if (_firstWarrior.Health <= 0 && _secondWarrior.Health <= 0)
+            {
+                Console.WriteLine("Ничья");
             }
         }
 
@@ -313,7 +370,7 @@ namespace GladiatorsFights
 
             while (int.TryParse(userInput, out value) == false)
             {
-                Console.Write("Введено некоректное значение. Попробуй еще раз: ");
+                Console.Write("Введено некорректное значение. Попробуй еще раз: ");
                 userInput = Console.ReadLine();
             }
 
@@ -331,10 +388,8 @@ namespace GladiatorsFights
         {
             while (TryGetWarrior(id, out warrior) == false)
             {
-                Console.Write("Такого гладиатора нет. Попробуйте еще раз: ");
+                Console.Write("Введено некорректное значение. Попробуйте еще раз: ");
                 id = ReadInt();
-
-                TryGetWarrior(id, out warrior);
             }
         }
     }

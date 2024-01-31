@@ -1,0 +1,341 @@
+namespace GladiatorsFights
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Battle battle = new Battle();
+            battle.Fight();
+        }
+    }
+
+    abstract class Warrior
+    {
+        public string Ability { get; protected set; }
+        public string Name { get; protected set; }
+        public int Id { get; protected set; }
+        public int Health { get; protected set; }
+        public int Attack { get; protected set; }
+
+        public virtual void ShowWarriors()
+        {
+            Console.WriteLine($"{Id}. {Name}. Здоровье - {Health}. Сила - {Attack}.\n{Ability}.");
+        }
+
+        private void TakeDamage(int attack)
+        {
+            Health -= attack;
+        }
+
+        public void MakeAttack(Warrior warrior)
+        {
+            warrior.TakeDamage(Attack);
+        }
+
+        public virtual void UseAbility() { }
+    }
+
+    class Assassin : Warrior
+    {
+        private string _name = "Убийца";
+        private string _ability = "Особая способность - кровотечение отнимает 2 единицы здоровья после удара";
+
+        private int _health = 100;
+        private int _attack = 18;
+        private int _id = 1;
+
+        public Assassin()
+        {
+            Id = _id;
+            Name = _name;
+            Health = _health;
+            Attack = _attack;
+            Ability = _ability;
+        }
+
+        private void IndividualAbility()
+        {
+            Random random = new Random();
+
+            int minChanceValue = 1;
+            int maxChanceValue = 2;
+            int individualAttackChance;
+            int individualAttack = 2;
+
+            individualAttackChance = random.Next(minChanceValue, maxChanceValue + 1);
+
+            if (individualAttackChance == 1)
+            {
+                _attack += individualAttack;
+            }
+        }
+
+        public override void UseAbility()
+        {
+            IndividualAbility();
+        }
+    }
+
+    class Berserk : Warrior
+    {
+        private string _name = "Берсерк";
+        private string _ability = "Особая способность - при количестве жизней меньше 30% урон увеличивается в 2 раза";
+
+        private int _health = 200;
+        private int _attack = 10;
+        private int _id = 2;
+
+        public Berserk()
+        {
+            Id = _id;
+            Name = _name;
+            Health = _health;
+            Attack = _attack;
+            Ability = _ability;
+        }
+
+        public void IndividualAbility()
+        {
+            int individualAttack = 2;
+
+            float healthPercentage = 0.3f;
+            float lowHealth = _health * healthPercentage;
+
+            if (_health <= lowHealth)
+            {
+                _attack *= individualAttack;
+            }
+        }
+
+        public override void UseAbility()
+        {
+            IndividualAbility();
+        }
+    }
+
+    class Knight : Warrior
+    {
+        private string _name = "Рыцарь";
+        private string _ability = "Особая способность - при смерти восстанавливает часть жизней.";
+
+        private int _health = 150;
+        private int _attack = 20;
+        private int _id = 3;
+
+        public Knight()
+        {
+            Id = _id;
+            Name = _name;
+            Health = _health;
+            Attack = _attack;
+            Ability = _ability;
+        }
+
+        public void IndividualAbility()
+        {
+            int holyPower = 50;
+
+            if (_health <= 0)
+            {
+                _health += holyPower;
+            }
+        }
+
+        public override void UseAbility()
+        {
+            IndividualAbility();
+        }
+    }
+
+    class Samurai : Warrior
+    {
+        private string _name = "Самурай";
+        private string _ability = "Особая способность - шанс критического урона 33%";
+
+        private int _health = 100;
+        private int _attack = 25;
+        private int _id = 4;
+
+        public Samurai()
+        {
+            Id = _id;
+            Name = _name;
+            Health = _health;
+            Attack = _attack;
+            Ability = _ability;
+        }
+
+        public void IndividualAbility()
+        {
+            Attack = _attack;
+
+            Random random = new Random();
+
+            int maxChance = 3;
+            int minChance = 1;
+            int criticalDamageChance;
+            int criticalDamagePower = 2;
+
+            criticalDamageChance = random.Next(minChance, maxChance + 1);
+
+            if (criticalDamageChance == 1)
+            {
+                _attack *= criticalDamagePower;
+            }
+        }
+
+        public override void UseAbility()
+        {
+            IndividualAbility();
+        }
+    }
+
+    class Viking : Warrior
+    {
+        private string _name = "Викинг";
+        private string _ability = "Особая способность - исцеляющий крик восстанавливает 6 единиц здоровья";
+
+        private int _health = 120;
+        private int _attack = 13;
+        private int _id = 5;
+
+        public Viking()
+        {
+            Id = _id;
+            Name = _name;
+            Health = _health;
+            Attack = _attack;
+            Ability = _ability;
+        }
+
+        public void IndividualAbility()
+        {
+            Random random = new Random();
+
+            int maxChance = 3;
+            int minChance = 1;
+            int maxHealth = 120;
+            int roarHealing = 6;
+            int healingChance;
+
+            healingChance = random.Next(minChance, maxChance + 1);
+
+            if (healingChance == 3 && _health < maxHealth && _health > 0)
+            {
+                _health += roarHealing;
+            }
+        }
+
+        public override void UseAbility()
+        {
+            IndividualAbility();
+        }
+    }
+
+    class Battle
+    {
+        private Warrior _firstWarrior;
+        private Warrior _secondWarrior;
+
+        private List<Warrior> _warriors = new List<Warrior>();
+
+        public Battle()
+        {
+            CreateWariors();
+        }
+
+        public void CreateWariors()
+        {
+            Assassin assassin = new Assassin();
+            Berserk berserk = new Berserk();
+            Knight knight = new Knight();
+            Samurai samurai = new Samurai();
+            Viking viking = new Viking();
+
+            _warriors.Add(assassin);
+            _warriors.Add(berserk);
+            _warriors.Add(knight);
+            _warriors.Add(samurai);
+            _warriors.Add(viking);
+        }
+
+        public void ShowInfo()
+        {
+            foreach (Warrior warrior in _warriors)
+            {
+                warrior.ShowWarriors();
+            }
+        }
+
+        public void Fight()
+        {
+            bool isWorking = true;
+
+            int firstWarrior;
+            int secondWarrior;
+
+            ShowInfo();
+
+            Console.Write("\nВыберете первого гладиатора: ");
+            firstWarrior = ReadInt();
+
+            Console.Write("Выберете второго гладиатора: ");
+            secondWarrior = ReadInt();
+
+            while (isWorking)
+            {
+                ChooseWarrior(firstWarrior, out _firstWarrior);
+                _firstWarrior.UseAbility();
+                ChooseWarrior(secondWarrior, out _secondWarrior);
+                _secondWarrior.UseAbility();
+
+                Console.ReadKey();
+                //Console.Clear();
+
+                while (_firstWarrior.Health >= 0 && _secondWarrior.Health >= 0)
+                {
+                    _firstWarrior.MakeAttack(_secondWarrior);
+                    _secondWarrior.MakeAttack(_firstWarrior);
+                    Console.WriteLine($"{_firstWarrior.Name} здоровье {_firstWarrior.Health} <---> {_secondWarrior.Name} здоровье {_secondWarrior.Health}");
+                }
+
+                isWorking = false;
+            }
+        }
+
+        private int ReadInt()
+        {
+            string userInput;
+
+            int value;
+
+            userInput = Console.ReadLine();
+
+            while (int.TryParse(userInput, out value) == false)
+            {
+                Console.Write("Введено некоректное значение. Попробуй еще раз: ");
+                userInput = Console.ReadLine();
+            }
+
+            return value;
+        }
+
+        private bool TryGetWarrior(int id, out Warrior warrior)
+        {
+            warrior = _warriors.Find(warrior => warrior.Id == id);
+
+            return warrior != null;
+        }
+
+        private void ChooseWarrior(int id, out Warrior warrior)
+        {
+            while (TryGetWarrior(id, out warrior) == false)
+            {
+                Console.Write("Такого гладиатора нет. Попробуйте еще раз: ");
+                id = ReadInt();
+
+                TryGetWarrior(id, out warrior);
+            }
+        }
+    }
+}

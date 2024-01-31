@@ -1,3 +1,5 @@
+using System;
+
 namespace GladiatorsFights
 {
     internal class Program
@@ -151,12 +153,12 @@ namespace GladiatorsFights
         public void IndividualAbility()
         {
             int deathHealthValue = 0;
-            int minHealthValue = 10;
-            int holyPower = 30;
+            int minHealthValue = 25;
+            int holyPower = 40;
 
             if (Health <= minHealthValue && Health > deathHealthValue)
             {
-                Health = holyPower;
+                Attack = holyPower;
             }
         }
 
@@ -309,37 +311,23 @@ namespace GladiatorsFights
         {
             bool isWorking = true;
 
-            int firstWarrior;
-            int secondWarrior;
-
             ShowInfo();
-
-            Console.Write("\nВыберете первого гладиатора: ");
-            firstWarrior = ReadInt();
-
-            Console.Write("Выберете второго гладиатора: ");
-            secondWarrior = ReadInt();
-
-            if (firstWarrior == secondWarrior)
-            {
-                _firstWarrior = _firstWarrior.Clone();
-                _secondWarrior = _secondWarrior.Clone();
-            }
 
             while (isWorking)
             {
-                ChooseWarrior(firstWarrior, out _firstWarrior);
-                _firstWarrior.UseAbility();
-
-                ChooseWarrior(secondWarrior, out _secondWarrior);
-                _secondWarrior.UseAbility();
+                if (TryChooseFirstWarrior(out _firstWarrior) == false || TryChooseSecondWarrior(out _secondWarrior) == false)
+                {
+                    Console.Write("Введено некорректное значение. Попробуй еще раз: ");
+                }
 
                 Console.ReadKey();
 
                 while (_firstWarrior.Health > 0 && _secondWarrior.Health > 0)
                 {
                     _firstWarrior.MakeAttack(_secondWarrior);
+                    _firstWarrior.UseAbility();
                     _secondWarrior.MakeAttack(_firstWarrior);
+                    _secondWarrior.UseAbility();
                     Console.WriteLine($"{_firstWarrior.Name} здоровье {_firstWarrior.Health} <---> {_secondWarrior.Name} здоровье {_secondWarrior.Health}");
                 }
 
@@ -360,37 +348,53 @@ namespace GladiatorsFights
             }
         }
 
-        private int ReadInt()
+        private bool TryChooseWarriors(out Warrior warriors)
         {
-            string userInput;
+            bool isWorking = true;
 
-            int value;
+            warriors = null;
 
-            userInput = Console.ReadLine();
-
-            while (int.TryParse(userInput, out value) == false)
+            while (isWorking)
             {
-                Console.Write("Введено некорректное значение. Попробуй еще раз: ");
-                userInput = Console.ReadLine();
+                string userInput = Console.ReadLine();
+
+                if (int.TryParse(userInput, out int result))
+                {
+                    int index = result - 1;
+
+                    if (index >= 0 && index < _warriors.Count)
+                    {
+                        warriors = _warriors[index].Clone();
+
+                        return true;
+                    }
+
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Такого гладиатора нет");
+                }
             }
 
-            return value;
+            Console.ReadKey();
+            Console.Clear();
+
+            return false;
         }
 
-        private bool TryGetWarrior(int id, out Warrior warrior)
+        private bool TryChooseFirstWarrior(out Warrior warrior)
         {
-            warrior = _warriors.Find(warrior => warrior.Id == id);
+            Console.Write("\nВыберете первого гладиатора: ");
 
-            return warrior != null;
+            return TryChooseWarriors(out warrior);
         }
 
-        private void ChooseWarrior(int id, out Warrior warrior)
+        private bool TryChooseSecondWarrior(out Warrior warrior)
         {
-            while (TryGetWarrior(id, out warrior) == false)
-            {
-                Console.Write("Введено некорректное значение. Попробуйте еще раз: ");
-                id = ReadInt();
-            }
+            Console.Write("Выберете второго гладиатора: ");
+
+            return TryChooseWarriors(out warrior);
         }
     }
 }

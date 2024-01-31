@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Linq;
 
 namespace GladiatorsFights
 {
@@ -13,6 +14,13 @@ namespace GladiatorsFights
 
     abstract class Warrior
     {
+        public Warrior(string name, int health, int attack)
+        {
+            Name = name;
+            Health = health;
+            Attack = attack;
+        }
+
         public string Ability { get; protected set; }
         public string Name { get; protected set; }
         public int Id { get; protected set; }
@@ -21,14 +29,21 @@ namespace GladiatorsFights
 
         public abstract Warrior Clone();
 
-        public virtual void ShowWarriors()
+        public virtual void ShowWarrior()
         {
             Console.WriteLine($"{Id}. {Name}. Здоровье - {Health}. Сила - {Attack}.\n{Ability}.");
         }
 
         public virtual void TakeDamage(int attack)
         {
+            int minHealthValue = 0;
+
             Health -= attack;
+
+            if (Health < minHealthValue)
+            {
+                Health = minHealthValue;
+            }
         }
 
         public virtual void MakeAttack(Warrior warrior)
@@ -49,7 +64,7 @@ namespace GladiatorsFights
         private int _attack = 18;
         private int _id = 1;
 
-        public Assassin()
+        public Assassin(string name, int health, int attack) : base(name, health, attack)
         {
             Id = _id;
             Name = _name;
@@ -58,18 +73,14 @@ namespace GladiatorsFights
             Ability = _ability;
         }
 
-        private void IndividualAbility()
+        private void UseIndividualAbility()
         {
-            Random random = new Random();
-
             int minChanceValue = 1;
             int maxChanceValue = 2;
-            int individualAttackChance;
+            int attackChance = 1;
             int individualAttack = 5;
 
-            individualAttackChance = random.Next(minChanceValue, maxChanceValue + 1);
-
-            if (individualAttackChance == 1)
+            if (Utilites.GenerateInt(minChanceValue, maxChanceValue) == attackChance)
             {
                 Attack += individualAttack;
             }
@@ -77,12 +88,12 @@ namespace GladiatorsFights
 
         public override void UseAbility()
         {
-            IndividualAbility();
+            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Assassin();
+            return new Assassin(_name, _health, _attack);
         }
     }
 
@@ -95,7 +106,7 @@ namespace GladiatorsFights
         private int _attack = 10;
         private int _id = 2;
 
-        public Berserk()
+        public Berserk(string name, int health, int attack) : base(name, health, attack)
         {
             Id = _id;
             Name = _name;
@@ -104,7 +115,7 @@ namespace GladiatorsFights
             Ability = _ability;
         }
 
-        public void IndividualAbility()
+        public void UseIndividualAbility()
         {
             int minHealthValue = 100;
             int individualAttack = 3;
@@ -123,12 +134,12 @@ namespace GladiatorsFights
 
         public override void UseAbility()
         {
-            IndividualAbility();
+            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Berserk();
+            return new Berserk(_name, _health, _attack);
         }
     }
 
@@ -141,7 +152,7 @@ namespace GladiatorsFights
         private int _attack = 20;
         private int _id = 3;
 
-        public Knight()
+        public Knight(string name, int health, int attack) : base(name, health, attack)
         {
             Id = _id;
             Name = _name;
@@ -150,7 +161,7 @@ namespace GladiatorsFights
             Ability = _ability;
         }
 
-        public void IndividualAbility()
+        public void UseIndividualAbility()
         {
             int deathHealthValue = 0;
             int minHealthValue = 25;
@@ -164,12 +175,12 @@ namespace GladiatorsFights
 
         public override void UseAbility()
         {
-            IndividualAbility();
+            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Knight();
+            return new Knight(_name, _health, _attack);
         }
     }
 
@@ -182,7 +193,7 @@ namespace GladiatorsFights
         private int _attack = 25;
         private int _id = 4;
 
-        public Samurai()
+        public Samurai(string name, int health, int attack) : base(name, health, attack)
         {
             Id = _id;
             Name = _name;
@@ -191,20 +202,16 @@ namespace GladiatorsFights
             Ability = _ability;
         }
 
-        public void IndividualAbility()
+        public void UseIndividualAbility()
         {
             Attack = _attack;
 
-            Random random = new Random();
-
             int maxChance = 3;
             int minChance = 1;
-            int criticalDamageChance;
+            int criticalDamageChance = 1;
             int criticalDamagePower = 2;
 
-            criticalDamageChance = random.Next(minChance, maxChance + 1);
-
-            if (criticalDamageChance == 1)
+            if (Utilites.GenerateInt(minChance, maxChance) == criticalDamageChance)
             {
                 Attack *= criticalDamagePower;
             }
@@ -216,12 +223,12 @@ namespace GladiatorsFights
 
         public override void UseAbility()
         {
-            IndividualAbility();
+            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Samurai();
+            return new Samurai(_name, _health, _attack);
         }
     }
 
@@ -234,7 +241,7 @@ namespace GladiatorsFights
         private int _attack = 13;
         private int _id = 5;
 
-        public Viking()
+        public Viking(string name, int health, int attack) : base(name, health, attack)
         {
             Id = _id;
             Name = _name;
@@ -243,19 +250,16 @@ namespace GladiatorsFights
             Ability = _ability;
         }
 
-        public void IndividualAbility()
+        public void UseIndividualAbility()
         {
-            Random random = new Random();
-
             int maxChance = 3;
             int minChance = 1;
             int maxHealth = 120;
+            int minHealth = 0;
             int roarHealing = 6;
-            int healingChance;
+            int healingChance = 1;
 
-            healingChance = random.Next(minChance, maxChance + 1);
-
-            if (healingChance == 3 && Health < maxHealth && Health > 0)
+            if (Utilites.GenerateInt(minChance, maxChance) == healingChance && Health < maxHealth && Health > minHealth)
             {
                 Health += roarHealing;
             }
@@ -263,12 +267,12 @@ namespace GladiatorsFights
 
         public override void UseAbility()
         {
-            IndividualAbility();
+            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Viking();
+            return new Viking(_name, _health, _attack);
         }
     }
 
@@ -286,11 +290,11 @@ namespace GladiatorsFights
 
         public void CreateWariors()
         {
-            Assassin assassin = new Assassin();
-            Berserk berserk = new Berserk();
-            Knight knight = new Knight();
-            Samurai samurai = new Samurai();
-            Viking viking = new Viking();
+            Assassin assassin = new Assassin("Убийца", 100, 18);
+            Berserk berserk = new Berserk("Берсерк", 200, 10);
+            Knight knight = new Knight("Рыцарь", 150, 20);
+            Samurai samurai = new Samurai("Самурай", 100, 25);
+            Viking viking = new Viking("Викинг", 120, 13);
 
             _warriors.Add(assassin);
             _warriors.Add(berserk);
@@ -303,7 +307,7 @@ namespace GladiatorsFights
         {
             foreach (Warrior warrior in _warriors)
             {
-                warrior.ShowWarriors();
+                warrior.ShowWarrior();
             }
         }
 
@@ -315,7 +319,7 @@ namespace GladiatorsFights
 
             while (isWorking)
             {
-                if (TryChooseFirstWarrior(out _firstWarrior) == false || TryChooseSecondWarrior(out _secondWarrior) == false)
+                if (TryChooseWarrior(out _firstWarrior) == false || TryChooseWarrior(out _secondWarrior) == false)
                 {
                     Console.Write("Введено некорректное значение. Попробуй еще раз: ");
                 }
@@ -326,8 +330,10 @@ namespace GladiatorsFights
                 {
                     _firstWarrior.MakeAttack(_secondWarrior);
                     _firstWarrior.UseAbility();
+
                     _secondWarrior.MakeAttack(_firstWarrior);
                     _secondWarrior.UseAbility();
+
                     Console.WriteLine($"{_firstWarrior.Name} здоровье {_firstWarrior.Health} <---> {_secondWarrior.Name} здоровье {_secondWarrior.Health}");
                 }
 
@@ -348,7 +354,7 @@ namespace GladiatorsFights
             }
         }
 
-        private bool TryChooseWarriors(out Warrior warriors)
+        private bool TryChooseWarrior(out Warrior warriors)
         {
             bool isWorking = true;
 
@@ -356,6 +362,8 @@ namespace GladiatorsFights
 
             while (isWorking)
             {
+                Console.Write("\nГладиатор номер - ");
+
                 string userInput = Console.ReadLine();
 
                 if (int.TryParse(userInput, out int result))
@@ -377,24 +385,17 @@ namespace GladiatorsFights
                 }
             }
 
-            Console.ReadKey();
-            Console.Clear();
-
             return false;
         }
+    }
 
-        private bool TryChooseFirstWarrior(out Warrior warrior)
+    static class Utilites
+    {
+        static public int GenerateInt(int minValue, int maxValue)
         {
-            Console.Write("\nВыберете первого гладиатора: ");
+            Random random = new Random();
 
-            return TryChooseWarriors(out warrior);
-        }
-
-        private bool TryChooseSecondWarrior(out Warrior warrior)
-        {
-            Console.Write("Выберете второго гладиатора: ");
-
-            return TryChooseWarriors(out warrior);
+            return random.Next(minValue, maxValue + 1);
         }
     }
 }

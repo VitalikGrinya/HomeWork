@@ -1,6 +1,3 @@
-using System;
-using System.Xml.Linq;
-
 namespace GladiatorsFights
 {
     internal class Program
@@ -14,31 +11,31 @@ namespace GladiatorsFights
 
     abstract class Warrior
     {
-        public Warrior(string name, int health, int attack)
+        public Warrior(string name, int health, int damage)
         {
             Name = name;
             Health = health;
-            Attack = attack;
+            Damage = damage;
         }
 
         public string Ability { get; protected set; }
         public string Name { get; protected set; }
         public int Id { get; protected set; }
         public int Health { get; protected set; }
-        public int Attack { get; protected set; }
+        public int Damage { get; protected set; }
 
         public abstract Warrior Clone();
 
-        public virtual void ShowWarrior()
+        public virtual void ShowGladiatorInfo()
         {
-            Console.WriteLine($"{Id}. {Name}. Здоровье - {Health}. Сила - {Attack}.\n{Ability}.");
+            Console.WriteLine($"{Id}. {Name}. Здоровье - {Health}. Сила - {Damage}.\n{Ability}.");
         }
 
-        public virtual void TakeDamage(int attack)
+        public virtual void TakeDamage(int damage)
         {
             int minHealthValue = 0;
 
-            Health -= attack;
+            Health -= damage;
 
             if (Health < minHealthValue)
             {
@@ -46,11 +43,7 @@ namespace GladiatorsFights
             }
         }
 
-        public virtual void MakeAttack(Warrior warrior)
-        {
-            warrior.TakeDamage(Attack);
-            UseAbility();
-        }
+        public virtual void Attack(Warrior warrior){ }
 
         public virtual void UseAbility() { }
     }
@@ -58,19 +51,18 @@ namespace GladiatorsFights
     class Assassin : Warrior
     {
         private string _name = "Убийца";
-        private string _ability = "Особая способность - кровотечение отнимает 2 единицы здоровья после удара";
 
         private int _health = 100;
-        private int _attack = 18;
+        private int _damage = 18;
         private int _id = 1;
 
-        public Assassin(string name, int health, int attack) : base(name, health, attack)
+        public Assassin(string name, int health, int damage) : base(name, health, damage)
         {
             Id = _id;
             Name = _name;
             Health = _health;
-            Attack = _attack;
-            Ability = _ability;
+            Damage = _damage;
+            Ability = "Особая способность - Проворство. Увеличивает силу удара в два раза";
         }
 
         private void UseIndividualAbility()
@@ -78,87 +70,93 @@ namespace GladiatorsFights
             int minChanceValue = 1;
             int maxChanceValue = 2;
             int attackChance = 1;
-            int individualAttack = 5;
+            int individualAttack = 2;
 
             if (Utilites.GenerateInt(minChanceValue, maxChanceValue) == attackChance)
             {
-                Attack += individualAttack;
+                Damage = _damage * individualAttack;
+            }
+            else
+            {
+                Damage = _damage;
             }
         }
 
-        public override void UseAbility()
+        public override void Attack(Warrior assasin)
         {
+            assasin.TakeDamage(Damage);
             UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Assassin(_name, _health, _attack);
+            return new Assassin(_name, _health, _damage);
         }
     }
 
     class Berserk : Warrior
     {
         private string _name = "Берсерк";
-        private string _ability = "Особая способность - при количестве жизней меньше 50% урон увеличивается в 2 раза";
 
-        private int _health = 200;
-        private int _attack = 10;
+        private int _health = 500;
+        private int _damage = 10;
         private int _id = 2;
 
-        public Berserk(string name, int health, int attack) : base(name, health, attack)
+        public Berserk(string name, int health, int damage) : base(name, health, damage)
         {
             Id = _id;
             Name = _name;
             Health = _health;
-            Attack = _attack;
-            Ability = _ability;
+            Damage = _damage;
+            Ability = "Особая способность - Ярость. При накоплении ярости атакует дважды";
         }
 
         public void UseIndividualAbility()
         {
-            int minHealthValue = 100;
-            int individualAttack = 3;
+            int individualAttack = 2;
+            int fury = 2;
+            int furyAttack = _damage * individualAttack;
 
-            int furyAttack = _attack * individualAttack;
-
-            if (Health <= minHealthValue)
+            for(int i = 0; i <= fury; i++)
             {
-                Attack = furyAttack;
-            }
-            else
-            {
-                Attack = _attack;
+                if (i == fury)
+                {
+                    Damage = furyAttack;
+                }
+                else if (i <= fury) 
+                {
+                    Damage = _damage;
+                }
             }
         }
 
-        public override void UseAbility()
+        public override void Attack(Warrior berserk)
         {
+            berserk.TakeDamage(Damage);
             UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Berserk(_name, _health, _attack);
+            return new Berserk(_name, _health, _damage);
         }
     }
 
     class Knight : Warrior
     {
         private string _name = "Рыцарь";
-        private string _ability = "Особая способность - на грани смерти восстанавливает часть жизней";
 
         private int _health = 150;
-        private int _attack = 20;
+        private int _damage = 20;
         private int _id = 3;
 
-        public Knight(string name, int health, int attack) : base(name, health, attack)
+        public Knight(string name, int health, int damage) : base(name, health, damage)
         {
             Id = _id;
             Name = _name;
             Health = _health;
-            Attack = _attack;
-            Ability = _ability;
+            Damage = _damage;
+            Ability = "Особая способность - на грани смерти восстанавливает часть жизней";
         }
 
         public void UseIndividualAbility()
@@ -169,42 +167,42 @@ namespace GladiatorsFights
 
             if (Health <= minHealthValue && Health > deathHealthValue)
             {
-                Attack = holyPower;
+                Damage = holyPower;
             }
         }
 
-        public override void UseAbility()
+        public override void Attack(Warrior knight)
         {
+            knight.TakeDamage(Damage);
             UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Knight(_name, _health, _attack);
+            return new Knight(_name, _health, _damage);
         }
     }
 
     class Samurai : Warrior
     {
         private string _name = "Самурай";
-        private string _ability = "Особая способность - шанс критического урона 33%";
 
         private int _health = 100;
-        private int _attack = 25;
+        private int _damage = 25;
         private int _id = 4;
 
-        public Samurai(string name, int health, int attack) : base(name, health, attack)
+        public Samurai(string name, int health, int damage) : base(name, health, damage)
         {
             Id = _id;
             Name = _name;
             Health = _health;
-            Attack = _attack;
-            Ability = _ability;
+            Damage = _damage;
+            Ability = "Особая способность - шанс критического урона 33%";
         }
 
         public void UseIndividualAbility()
         {
-            Attack = _attack;
+            Damage = _damage;
 
             int maxChance = 3;
             int minChance = 1;
@@ -213,41 +211,41 @@ namespace GladiatorsFights
 
             if (Utilites.GenerateInt(minChance, maxChance) == criticalDamageChance)
             {
-                Attack *= criticalDamagePower;
+                Damage *= criticalDamagePower;
             }
             else
             {
-                Attack = _attack;
+                Damage = _damage;
             }
         }
 
-        public override void UseAbility()
+        public override void Attack(Warrior samurai)
         {
+            samurai.TakeDamage(Damage);
             UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Samurai(_name, _health, _attack);
+            return new Samurai(_name, _health, _damage);
         }
     }
 
     class Viking : Warrior
     {
         private string _name = "Викинг";
-        private string _ability = "Особая способность - исцеляющий крик восстанавливает 6 единиц здоровья";
 
         private int _health = 120;
-        private int _attack = 13;
+        private int _damage = 13;
         private int _id = 5;
 
-        public Viking(string name, int health, int attack) : base(name, health, attack)
+        public Viking(string name, int health, int damage) : base(name, health, damage)
         {
             Id = _id;
             Name = _name;
             Health = _health;
-            Attack = _attack;
-            Ability = _ability;
+            Damage = _damage;
+            Ability = "Особая способность - исцеляющий крик восстанавливает 6 единиц здоровья";
         }
 
         public void UseIndividualAbility()
@@ -265,14 +263,15 @@ namespace GladiatorsFights
             }
         }
 
-        public override void UseAbility()
+        public override void Attack(Warrior Viking)
         {
+            Viking.TakeDamage(Damage);
             UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Viking(_name, _health, _attack);
+            return new Viking(_name, _health, _damage);
         }
     }
 
@@ -288,26 +287,20 @@ namespace GladiatorsFights
             CreateWariors();
         }
 
-        public void CreateWariors()
+        private void CreateWariors()
         {
-            Assassin assassin = new Assassin("Убийца", 100, 18);
-            Berserk berserk = new Berserk("Берсерк", 200, 10);
-            Knight knight = new Knight("Рыцарь", 150, 20);
-            Samurai samurai = new Samurai("Самурай", 100, 25);
-            Viking viking = new Viking("Викинг", 120, 13);
-
-            _warriors.Add(assassin);
-            _warriors.Add(berserk);
-            _warriors.Add(knight);
-            _warriors.Add(samurai);
-            _warriors.Add(viking);
+            _warriors.Add(new Assassin("Убийца", 100, 18));
+            _warriors.Add(new Berserk("Берсерк", 200, 10));
+            _warriors.Add(new Knight("Рыцарь", 150, 20));
+            _warriors.Add(new Samurai("Самурай", 100, 25));
+            _warriors.Add(new Viking("Викинг", 120, 13));
         }
 
-        public void ShowInfo()
+        private void ShowInfo()
         {
             foreach (Warrior warrior in _warriors)
             {
-                warrior.ShowWarrior();
+                warrior.ShowGladiatorInfo();
             }
         }
 
@@ -321,19 +314,18 @@ namespace GladiatorsFights
             {
                 if (TryChooseWarrior(out _firstWarrior) == false || TryChooseWarrior(out _secondWarrior) == false)
                 {
-                    Console.Write("Введено некорректное значение. Попробуй еще раз: ");
+                    Console.Write("Введено некорректное значение. Введите данные гладиаторов заново: ");
+                    continue;
                 }
 
                 Console.ReadKey();
 
                 while (_firstWarrior.Health > 0 && _secondWarrior.Health > 0)
                 {
-                    _firstWarrior.MakeAttack(_secondWarrior);
+                    _firstWarrior.Attack(_secondWarrior);
                     _firstWarrior.UseAbility();
-
-                    _secondWarrior.MakeAttack(_firstWarrior);
+                    _secondWarrior.Attack(_firstWarrior);
                     _secondWarrior.UseAbility();
-
                     Console.WriteLine($"{_firstWarrior.Name} здоровье {_firstWarrior.Health} <---> {_secondWarrior.Name} здоровье {_secondWarrior.Health}");
                 }
 

@@ -24,7 +24,6 @@ namespace GladiatorsFights
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
         public int AttackNumber { get; protected set; }
-        public int Mana { get; protected set; }
 
         public abstract Warrior Clone();
 
@@ -46,8 +45,6 @@ namespace GladiatorsFights
         }
 
         public virtual void Attack(Warrior warrior) { }
-
-        public virtual void UseAbility() { }
     }
 
     class Assassin : Warrior
@@ -55,9 +52,6 @@ namespace GladiatorsFights
         public Assassin(string name, int health, int damage) : base(name, health, damage)
         {
             Id = 1;
-            Name = name;
-            Health = health;
-            Damage = damage;
             Ability = "Особая способность - Проворство. Увеличивает силу удара в два раза";
         }
 
@@ -66,17 +60,17 @@ namespace GladiatorsFights
             int minChanceValue = 1;
             int maxChanceValue = 3;
             int attackChance = 1;
-            int individualAttack = 36;
+            int boostOrNerf = 2;
 
             if (Utilites.GenerateInt(minChanceValue, maxChanceValue) != attackChance)
             {
-
                 warrior.TakeDamage(Damage);
             }
             else
             {
-                Damage = individualAttack;
+                Damage *= boostOrNerf;
                 warrior.TakeDamage(Damage);
+                Damage /= boostOrNerf;
             }
         }
 
@@ -91,9 +85,6 @@ namespace GladiatorsFights
         public Berserk(string name, int health, int damage) : base(name, health, damage)
         {
             Id = 2;
-            Name = name;
-            Health = health;
-            Damage = damage;
             Ability = "Особая способность - Ярость. При накоплении ярости атакует дважды";
             AttackNumber = 0;
         }
@@ -123,9 +114,6 @@ namespace GladiatorsFights
         public Knight(string name, int health, int damage) : base(name, health, damage)
         {
             Id = 3;
-            Name = name;
-            Health = health;
-            Damage = damage;
             Ability = "Особая способность - Святая молитва. Восстанавливает часть жизней";
             AttackNumber = 1;
         }
@@ -157,33 +145,32 @@ namespace GladiatorsFights
 
     class Samurai : Warrior
     {
+        private int _mana = 3;
         public Samurai(string name, int health, int damage) : base(name, health, damage)
         {
             Id = 4;
-            Name = name;
-            Health = health;
-            Damage = damage;
             Ability = "Особая способность - Вихрь. Усиляет удар за счет маны.";
-            Mana = 3;
         }
 
         public override void Attack(Warrior warrior)
         {
             int minManaValue = 0;
-            int bufDamageValue = 30;
-            int baseDamage = 25;
+            int boostDamageValue = 5;
 
-            if (Mana > minManaValue)
+            if (_mana > minManaValue)
             {
-                Damage = bufDamageValue;
+                Damage += boostDamageValue;
                 warrior.TakeDamage(Damage);
-                Mana--;
+                Damage -= boostDamageValue;
+                _mana--;
             }
             else
             {
-                Damage = baseDamage;
                 warrior.TakeDamage(Damage);
             }
+
+
+            Console.WriteLine(_mana);
         }
 
         public override Warrior Clone()
@@ -197,9 +184,6 @@ namespace GladiatorsFights
         public Viking(string name, int health, int damage) : base(name, health, damage)
         {
             Id = 5;
-            Name = name;
-            Health = health;
-            Damage = damage;
             Ability = "Особая способность - Уворот. Уклоняется од удара";
         }
 
@@ -223,7 +207,6 @@ namespace GladiatorsFights
             {
                 Health -= damage;
             }
-
         }
 
         public override Warrior Clone()
@@ -242,23 +225,6 @@ namespace GladiatorsFights
         public Battle()
         {
             CreateWariors();
-        }
-
-        private void CreateWariors()
-        {
-            _warriors.Add(new Assassin("Убийца", 100, 18));
-            _warriors.Add(new Berserk("Берсерк", 200, 10));
-            _warriors.Add(new Knight("Рыцарь", 150, 20));
-            _warriors.Add(new Samurai("Самурай", 100, 25));
-            _warriors.Add(new Viking("Викинг", 120, 13));
-        }
-
-        private void ShowInfo()
-        {
-            foreach (Warrior warrior in _warriors)
-            {
-                warrior.ShowGladiatorInfo();
-            }
         }
 
         public void Fight()
@@ -280,26 +246,43 @@ namespace GladiatorsFights
                 while (_firstWarrior.Health > 0 && _secondWarrior.Health > 0)
                 {
                     _firstWarrior.Attack(_secondWarrior);
-                    _firstWarrior.UseAbility();
+
                     _secondWarrior.Attack(_firstWarrior);
-                    _secondWarrior.UseAbility();
+                    
                     Console.WriteLine($"{_firstWarrior.Name} здоровье {_firstWarrior.Health} <---> {_secondWarrior.Name} здоровье {_secondWarrior.Health}");
                 }
 
                 isWorking = false;
             }
 
-            if (_firstWarrior.Health > 0 && _secondWarrior.Health <= 0)
+            if (_firstWarrior.Health <= 0 && _secondWarrior.Health <= 0)
+            {
+                Console.WriteLine("Ничья");
+            }
+            else if (_firstWarrior.Health > 0)
             {
                 Console.WriteLine($"{_firstWarrior.Name} - победил.");
             }
-            else if (_firstWarrior.Health <= 0 && _secondWarrior.Health > 0)
+            else if (_secondWarrior.Health > 0)
             {
                 Console.WriteLine($"{_secondWarrior.Name} - победил.");
             }
-            else if (_firstWarrior.Health <= 0 && _secondWarrior.Health <= 0)
+        }
+
+        private void CreateWariors()
+        {
+            _warriors.Add(new Assassin("Убийца", 100, 18));
+            _warriors.Add(new Berserk("Берсерк", 200, 10));
+            _warriors.Add(new Knight("Рыцарь", 150, 20));
+            _warriors.Add(new Samurai("Самурай", 100, 25));
+            _warriors.Add(new Viking("Викинг", 120, 13));
+        }
+
+        private void ShowInfo()
+        {
+            foreach (Warrior warrior in _warriors)
             {
-                Console.WriteLine("Ничья");
+                warrior.ShowGladiatorInfo();
             }
         }
 

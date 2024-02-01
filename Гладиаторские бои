@@ -23,6 +23,8 @@ namespace GladiatorsFights
         public int Id { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
+        public int AttackNumber { get; protected set; }
+        public int Mana { get; protected set; }
 
         public abstract Warrior Clone();
 
@@ -43,235 +45,190 @@ namespace GladiatorsFights
             }
         }
 
-        public virtual void Attack(Warrior warrior){ }
+        public virtual void Attack(Warrior warrior) { }
 
         public virtual void UseAbility() { }
     }
 
     class Assassin : Warrior
     {
-        private string _name = "Убийца";
-
-        private int _health = 100;
-        private int _damage = 18;
-        private int _id = 1;
-
         public Assassin(string name, int health, int damage) : base(name, health, damage)
         {
-            Id = _id;
-            Name = _name;
-            Health = _health;
-            Damage = _damage;
+            Id = 1;
+            Name = name;
+            Health = health;
+            Damage = damage;
             Ability = "Особая способность - Проворство. Увеличивает силу удара в два раза";
         }
 
-        private void UseIndividualAbility()
+        public override void Attack(Warrior warrior)
         {
             int minChanceValue = 1;
-            int maxChanceValue = 2;
+            int maxChanceValue = 3;
             int attackChance = 1;
-            int individualAttack = 2;
+            int individualAttack = 36;
 
-            if (Utilites.GenerateInt(minChanceValue, maxChanceValue) == attackChance)
+            if (Utilites.GenerateInt(minChanceValue, maxChanceValue) != attackChance)
             {
-                Damage = _damage * individualAttack;
+
+                warrior.TakeDamage(Damage);
             }
             else
             {
-                Damage = _damage;
+                Damage = individualAttack;
+                warrior.TakeDamage(Damage);
             }
-        }
-
-        public override void Attack(Warrior assasin)
-        {
-            assasin.TakeDamage(Damage);
-            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Assassin(_name, _health, _damage);
+            return new Assassin(Name, Health, Damage);
         }
     }
 
     class Berserk : Warrior
     {
-        private string _name = "Берсерк";
-
-        private int _health = 500;
-        private int _damage = 10;
-        private int _id = 2;
-
         public Berserk(string name, int health, int damage) : base(name, health, damage)
         {
-            Id = _id;
-            Name = _name;
-            Health = _health;
-            Damage = _damage;
+            Id = 2;
+            Name = name;
+            Health = health;
+            Damage = damage;
             Ability = "Особая способность - Ярость. При накоплении ярости атакует дважды";
+            AttackNumber = 0;
         }
 
-        public void UseIndividualAbility()
+        public override void Attack(Warrior warrior)
         {
-            int individualAttack = 2;
-            int fury = 2;
-            int furyAttack = _damage * individualAttack;
+            int fury = 3;
 
-            for(int i = 0; i <= fury; i++)
+            warrior.TakeDamage(Damage);
+
+            AttackNumber++;
+
+            if (AttackNumber % fury == 0)
             {
-                if (i == fury)
-                {
-                    Damage = furyAttack;
-                }
-                else if (i <= fury) 
-                {
-                    Damage = _damage;
-                }
+                warrior.TakeDamage(Damage);
             }
-        }
-
-        public override void Attack(Warrior berserk)
-        {
-            berserk.TakeDamage(Damage);
-            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Berserk(_name, _health, _damage);
+            return new Berserk(Name, Health, Damage);
         }
     }
 
     class Knight : Warrior
     {
-        private string _name = "Рыцарь";
-
-        private int _health = 150;
-        private int _damage = 20;
-        private int _id = 3;
-
         public Knight(string name, int health, int damage) : base(name, health, damage)
         {
-            Id = _id;
-            Name = _name;
-            Health = _health;
-            Damage = _damage;
-            Ability = "Особая способность - на грани смерти восстанавливает часть жизней";
+            Id = 3;
+            Name = name;
+            Health = health;
+            Damage = damage;
+            Ability = "Особая способность - Святая молитва. Восстанавливает часть жизней";
+            AttackNumber = 1;
         }
 
-        public void UseIndividualAbility()
+        public override void Attack(Warrior warrior)
         {
-            int deathHealthValue = 0;
-            int minHealthValue = 25;
-            int holyPower = 40;
+            warrior.TakeDamage(Damage);
+        }
 
-            if (Health <= minHealthValue && Health > deathHealthValue)
+        public override void TakeDamage(int damage)
+        {
+            int takeAttack = 4;
+            int holyPower = 10;
+
+            Health -= damage;
+            AttackNumber++;
+
+            if (takeAttack % AttackNumber == 0)
             {
-                Damage = holyPower;
+                Health += holyPower;
             }
-        }
-
-        public override void Attack(Warrior knight)
-        {
-            knight.TakeDamage(Damage);
-            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Knight(_name, _health, _damage);
+            return new Knight(Name, Health, Damage);
         }
     }
 
     class Samurai : Warrior
     {
-        private string _name = "Самурай";
-
-        private int _health = 100;
-        private int _damage = 25;
-        private int _id = 4;
-
         public Samurai(string name, int health, int damage) : base(name, health, damage)
         {
-            Id = _id;
-            Name = _name;
-            Health = _health;
-            Damage = _damage;
-            Ability = "Особая способность - шанс критического урона 33%";
+            Id = 4;
+            Name = name;
+            Health = health;
+            Damage = damage;
+            Ability = "Особая способность - Вихрь. Усиляет удар за счет маны.";
+            Mana = 3;
         }
 
-        public void UseIndividualAbility()
+        public override void Attack(Warrior warrior)
         {
-            Damage = _damage;
+            int minManaValue = 0;
+            int bufDamageValue = 30;
+            int baseDamage = 25;
 
-            int maxChance = 3;
-            int minChance = 1;
-            int criticalDamageChance = 1;
-            int criticalDamagePower = 2;
-
-            if (Utilites.GenerateInt(minChance, maxChance) == criticalDamageChance)
+            if (Mana > minManaValue)
             {
-                Damage *= criticalDamagePower;
+                Damage = bufDamageValue;
+                warrior.TakeDamage(Damage);
+                Mana--;
             }
             else
             {
-                Damage = _damage;
+                Damage = baseDamage;
+                warrior.TakeDamage(Damage);
             }
-        }
-
-        public override void Attack(Warrior samurai)
-        {
-            samurai.TakeDamage(Damage);
-            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Samurai(_name, _health, _damage);
+            return new Samurai(Name, Health, Damage);
         }
     }
 
     class Viking : Warrior
     {
-        private string _name = "Викинг";
-
-        private int _health = 120;
-        private int _damage = 13;
-        private int _id = 5;
-
         public Viking(string name, int health, int damage) : base(name, health, damage)
         {
-            Id = _id;
-            Name = _name;
-            Health = _health;
-            Damage = _damage;
-            Ability = "Особая способность - исцеляющий крик восстанавливает 6 единиц здоровья";
+            Id = 5;
+            Name = name;
+            Health = health;
+            Damage = damage;
+            Ability = "Особая способность - Уворот. Уклоняется од удара";
         }
 
-        public void UseIndividualAbility()
+        public override void Attack(Warrior warrior)
         {
-            int maxChance = 3;
+            warrior.TakeDamage(Damage);
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            int maxChance = 2;
             int minChance = 1;
-            int maxHealth = 120;
-            int minHealth = 0;
-            int roarHealing = 6;
-            int healingChance = 1;
+            int evasionChance = 1;
+            int minHealthValue = 0;
 
-            if (Utilites.GenerateInt(minChance, maxChance) == healingChance && Health < maxHealth && Health > minHealth)
+            if (Utilites.GenerateInt(minChance, maxChance) == evasionChance)
             {
-                Health += roarHealing;
+                Health -= minHealthValue;
             }
-        }
+            else
+            {
+                Health -= damage;
+            }
 
-        public override void Attack(Warrior Viking)
-        {
-            Viking.TakeDamage(Damage);
-            UseIndividualAbility();
         }
 
         public override Warrior Clone()
         {
-            return new Viking(_name, _health, _damage);
+            return new Viking(Name, Health, Damage);
         }
     }
 

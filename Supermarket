@@ -1,0 +1,162 @@
+namespace supermarket
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Supermarket supermarket = new Supermarket();
+            supermarket.Work();
+        }
+    }
+
+    class Customer
+    {
+        private List<Product> _products;
+        private int _minProductsCount = 0;
+
+        public Customer(int money)
+        {
+            Money = money;
+            _products = new List<Product>();
+        }
+
+        public int Money { get; private set; }
+
+        public void FillBasket(List<Product> products)
+        {
+            int minProducts = 1;
+            int maxProducts = 5;
+
+            int countProducts = Utilities.RandomGenerate(minProducts, maxProducts + 1);
+
+            for (int i = 0; i < countProducts; i++)
+            {
+                _products.Add(products[Utilities.RandomGenerate(_minProductsCount, products.Count)]);
+            }
+        }
+
+        public int TryPay()
+        {
+            while (CalculateProductsCost() > Money)
+            {
+                RemoveRandomProduct();
+            }
+
+            int allPrice = CalculateProductsCost();
+            Money -= allPrice;
+
+            Console.WriteLine("Следующий.");
+
+            return allPrice;
+        }
+
+        private int CalculateProductsCost()
+        {
+            int sum = 0;
+
+            for (int i = 0; i < _products.Count; i++)
+            {
+                sum += _products[i].Price;
+            }
+
+            return sum;
+        }
+
+        private void RemoveRandomProduct()
+        {
+            int randomIndex = Utilities.RandomGenerate(_minProductsCount, _products.Count);
+
+            Product product = _products[randomIndex];
+            Console.WriteLine($"Покупатель убирает товар: {product.Name}");
+            _products.Remove(product);
+        }
+    }
+
+    class Supermarket
+    {
+        private Queue<Customer> _customers = new Queue<Customer>();
+        private List<Product> _products;
+        private int _money = 0;
+
+        public Supermarket()
+        {
+            _products = new List<Product>()
+            {
+                new Product("Молоко", 100),
+                new Product("Сало", 150),
+                new Product("Хлеб", 20),
+                new Product("Лук", 15),
+                new Product("Девяток яиц", 250),
+                new Product("Борщ", 450)
+            };
+        }
+
+        public void Work()
+        {
+            int minusCount = 37;
+            char minus = '-';
+            CreateCustomersQueue();
+
+            while (_customers.Count > 0)
+            {
+                Console.WriteLine($"Количество человек в очереди: {_customers.Count}.");
+                Console.WriteLine();
+
+                Customer customer = _customers.Dequeue();
+
+                _money += customer.TryPay();
+
+                Console.WriteLine(new string(minus, minusCount));
+            }
+
+            ShowInfoMoney();
+        }
+
+        private void ShowInfoMoney()
+        {
+            Console.WriteLine($"Супермаркет заработал {_money}");
+        }
+
+        private void CreateCustomersQueue()
+        {
+            int minMoney = 200;
+            int maxMoney = 600;
+
+            int minCustomersCount = 5;
+            int maxCustomersCount = 10;
+
+            int customersCount = Utilities.RandomGenerate(minCustomersCount, maxCustomersCount);
+
+            for (int i = 0; i < customersCount; i++)
+            {
+                Customer customers = new Customer(Utilities.RandomGenerate(minMoney, maxMoney));
+
+                customers.FillBasket(_products.ToList());
+
+                _customers.Enqueue(customers);
+            }
+        }
+    }
+
+    class Product
+    {
+        public Product(string name, int price)
+        {
+            Name = name;
+            Price = price;
+        }
+
+        public string Name { get; private set; }
+        public int Price { get; private set; }
+    }
+
+    static class Utilities
+    {
+        static public int RandomGenerate(int minValue, int maxValue)
+        {
+            Random random = new Random();
+
+            return random.Next(minValue, maxValue);
+        }
+    }
+}

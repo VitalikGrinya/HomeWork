@@ -12,6 +12,7 @@ namespace supermarket
     class Customer
     {
         private List<Product> _products;
+
         public Customer(int money)
         {
             Money = money;
@@ -22,7 +23,7 @@ namespace supermarket
 
         public void FillBasket(List<Product> products)
         {
-            int _minProductsCount = 0;
+            int minProductsCount = 0;
             int minProducts = 1;
             int maxProducts = 5;
 
@@ -30,7 +31,7 @@ namespace supermarket
 
             for (int i = 0; i < countProducts; i++)
             {
-                _products.Add(products[Utilities.GenerateInt(_minProductsCount, products.Count)]);
+                _products.Add(products[Utilities.GenerateInt(minProductsCount, products.Count)]);
             }
         }
 
@@ -68,9 +69,9 @@ namespace supermarket
 
         private void RemoveRandomProduct()
         {
-            int _minProductsCount = 0;
+            int minProductsCount = 0;
 
-            int randomIndex = Utilities.GenerateInt(_minProductsCount, _products.Count);
+            int randomIndex = Utilities.GenerateInt(minProductsCount, _products.Count);
 
             Product product = _products[randomIndex];
             Console.WriteLine($"Покупатель убирает товар: {product.Name}");
@@ -157,10 +158,11 @@ namespace supermarket
 
     static class Utilities
     {
-        private static Random random = new Random();
+        private static Random s_random = new Random();
+
         public static int GenerateInt(int minValue, int maxValue)
         {
-            return random.Next(minValue, maxValue);
+            return s_random.Next(minValue, maxValue);
         }
     }
 }

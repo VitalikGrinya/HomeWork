@@ -35,14 +35,16 @@ namespace supermarket
             }
         }
 
-        public bool TryPay()
+        public bool TryRemove()
         {
             while (CalculateTotalPrice() > Money)
             {
                 RemoveRandomProduct();
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public int Pay()
@@ -76,6 +78,11 @@ namespace supermarket
             Product product = _products[randomIndex];
             Console.WriteLine($"Покупатель убирает товар: {product.Name}");
             _products.Remove(product);
+
+            if(_products.Count == minProductsCount)
+            {
+                Console.WriteLine("Покупатель ушел с пустыми руками  :(");
+            }
         }
     }
 
@@ -112,7 +119,7 @@ namespace supermarket
 
                 Customer customer = _customers.Dequeue();
 
-                if (customer.TryPay())
+                if (customer.TryRemove())
                 {
                     _money += customer.Pay();
                 }

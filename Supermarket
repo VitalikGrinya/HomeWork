@@ -35,19 +35,7 @@ namespace supermarket
             }
         }
 
-        public int Pay()
-        {
-            while (CalculateTotalPrice() > Money)
-            {
-                RemoveRandomProduct();
-            }
-
-            Money -= CalculateTotalPrice();
-
-            return Money;
-        }
-
-        private int CalculateTotalPrice()
+        public int CalculateTotalPrice()
         {
             int sum = 0;
 
@@ -59,7 +47,7 @@ namespace supermarket
             return sum;
         }
 
-        private void RemoveRandomProduct()
+        public void RemoveRandomProduct()
         {
             int minProductsCount = 0;
 
@@ -109,7 +97,12 @@ namespace supermarket
 
                 Customer customer = _customers.Dequeue();
 
-                _money += customer.Pay();
+                while (customer.CalculateTotalPrice() > customer.Money)
+                {
+                    customer.RemoveRandomProduct();
+                }
+
+                _money += customer.Money;
 
                 Console.WriteLine("\nСледующий.");
                 Console.WriteLine(new string(lineUnit, lineLength));

@@ -12,8 +12,6 @@ namespace supermarket
     class Customer
     {
         private List<Product> _products;
-        private int _minProductsCount = 0;
-
         public Customer(int money)
         {
             Money = money;
@@ -24,33 +22,39 @@ namespace supermarket
 
         public void FillBasket(List<Product> products)
         {
+            int _minProductsCount = 0;
             int minProducts = 1;
             int maxProducts = 5;
 
-            int countProducts = Utilities.RandomGenerate(minProducts, maxProducts + 1);
+            int countProducts = Utilities.GenerateInt(minProducts, maxProducts + 1);
 
             for (int i = 0; i < countProducts; i++)
             {
-                _products.Add(products[Utilities.RandomGenerate(_minProductsCount, products.Count)]);
+                _products.Add(products[Utilities.GenerateInt(_minProductsCount, products.Count)]);
             }
         }
 
-        public int TryPay()
+        public bool TryPay()
         {
-            while (CalculateProductsCost() > Money)
+            while (CalculateTotalPrice() > Money)
             {
                 RemoveRandomProduct();
             }
 
-            int allPrice = CalculateProductsCost();
-            Money -= allPrice;
+            return true;
+        }
+
+        public int Pay()
+        {
+            int totalPrice = CalculateTotalPrice();
+            Money -= totalPrice;
 
             Console.WriteLine("Следующий.");
 
-            return allPrice;
+            return totalPrice;
         }
 
-        private int CalculateProductsCost()
+        private int CalculateTotalPrice()
         {
             int sum = 0;
 
@@ -64,7 +68,9 @@ namespace supermarket
 
         private void RemoveRandomProduct()
         {
-            int randomIndex = Utilities.RandomGenerate(_minProductsCount, _products.Count);
+            int _minProductsCount = 0;
+
+            int randomIndex = Utilities.GenerateInt(_minProductsCount, _products.Count);
 
             Product product = _products[randomIndex];
             Console.WriteLine($"Покупатель убирает товар: {product.Name}");
@@ -93,8 +99,9 @@ namespace supermarket
 
         public void Work()
         {
-            int minusCount = 37;
-            char minus = '-';
+            int lineLength = 37;
+            char lineUnit = '-';
+
             CreateCustomersQueue();
 
             while (_customers.Count > 0)
@@ -104,16 +111,14 @@ namespace supermarket
 
                 Customer customer = _customers.Dequeue();
 
-                _money += customer.TryPay();
+                if (customer.TryPay())
+                {
+                    _money += customer.Pay();
+                }
 
-                Console.WriteLine(new string(minus, minusCount));
+                Console.WriteLine(new string(lineUnit, lineLength));
             }
 
-            ShowInfoMoney();
-        }
-
-        private void ShowInfoMoney()
-        {
             Console.WriteLine($"Супермаркет заработал {_money}");
         }
 
@@ -125,11 +130,11 @@ namespace supermarket
             int minCustomersCount = 5;
             int maxCustomersCount = 10;
 
-            int customersCount = Utilities.RandomGenerate(minCustomersCount, maxCustomersCount);
+            int customersCount = Utilities.GenerateInt(minCustomersCount, maxCustomersCount);
 
             for (int i = 0; i < customersCount; i++)
             {
-                Customer customers = new Customer(Utilities.RandomGenerate(minMoney, maxMoney));
+                Customer customers = new Customer(Utilities.GenerateInt(minMoney, maxMoney));
 
                 customers.FillBasket(_products.ToList());
 
@@ -146,16 +151,15 @@ namespace supermarket
             Price = price;
         }
 
-        public string Name { get; private set; }
-        public int Price { get; private set; }
+        public string Name { get; }
+        public int Price { get; }
     }
 
     static class Utilities
     {
-        static public int RandomGenerate(int minValue, int maxValue)
+        private static Random random = new Random();
+        public static int GenerateInt(int minValue, int maxValue)
         {
-            Random random = new Random();
-
             return random.Next(minValue, maxValue);
         }
     }

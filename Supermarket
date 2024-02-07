@@ -49,18 +49,11 @@ namespace supermarket
 
         public void RemoveRandomProduct()
         {
-            int minProductsCount = 0;
-
-            int randomIndex = Utilities.GenerateInt(minProductsCount, _products.Count);
+            int randomIndex = Utilities.GenerateInt(0, _products.Count);
 
             Product product = _products[randomIndex];
             Console.WriteLine($"Покупатель убирает товар: {product.Name}");
-            _products.Remove(product);
-
-            if (_products.Count == minProductsCount)
-            {
-                Console.WriteLine("Покупатель ушел с пустыми руками  :(");
-            }
+            _products.Remove(_products[randomIndex]);
         }
     }
 
@@ -100,9 +93,13 @@ namespace supermarket
                 while (customer.CalculateTotalPrice() > customer.Money)
                 {
                     customer.RemoveRandomProduct();
+                    _money += customer.CalculateTotalPrice();
                 }
 
-                _money += customer.Money;
+                if(_products.Count == 0)
+                {
+                    Console.WriteLine("Покупатель ушел с пустыми руками :(");
+                }
 
                 Console.WriteLine("\nСледующий.");
                 Console.WriteLine(new string(lineUnit, lineLength));

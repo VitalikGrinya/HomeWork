@@ -23,7 +23,7 @@ namespace War
         public int Damage { get; protected set; }
         public string Ability { get; protected set; }
 
-        public virtual void ShowWarriorInfo()
+        public virtual void ShowSoliderInfo()
         {
             Console.WriteLine($"{Name} здоровье - {Health}, урон - {Damage}\n{Ability}\n");
         }
@@ -255,6 +255,30 @@ namespace War
                 isWorking = false;
             }
 
+            ShowRooundWinner();
+
+            Console.WriteLine("\nКоличество бойцов в первой команде - " + _redTeam.Count);
+            Console.WriteLine("Количество бойцов во второй команде - " + _blueTeam.Count);
+
+            ShowWinnerTeam();
+
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        private void CreateWarriors()
+        {
+            _redTeam.Add(new Dragon("Дракон", 200, 15));
+            _redTeam.Add(new Witch("Ведьма", 100, 8));
+            _redTeam.Add(new Goblin("Гоблин", 80, 10));
+
+            _blueTeam.Add(new Knight("Рыцарь", 150, 15));
+            _blueTeam.Add(new Pastor("Священник", 80, 6));
+            _blueTeam.Add(new GoblinSlayer("Убийца гоблинов", 180, 10));
+        }
+
+        private void ShowRooundWinner()
+        {
             if (_redTeamWarrior.Health <= 0 && _blueTeamWarrior.Health <= 0)
             {
                 Console.WriteLine("Ничья.");
@@ -274,10 +298,10 @@ namespace War
 
                 _blueTeam.Remove(_blueTeamWarrior);
             }
+        }
 
-            Console.WriteLine("\nКоличество бойцов в первой команде - " + _redTeam.Count);
-            Console.WriteLine("Количество бойцов во второй команде - " + _blueTeam.Count);
-
+        private void ShowWinnerTeam()
+        {
             if (_redTeam.Count == 0)
             {
                 Console.WriteLine("\nПобеждает вторая команда O:)");
@@ -286,24 +310,10 @@ namespace War
             {
                 Console.WriteLine("\nПобеждает первая команда >:3");
             }
-            else if(_blueTeam.Count == 0 && _redTeam.Count == 0)
+            else if (_blueTeam.Count == 0 && _redTeam.Count == 0)
             {
                 Console.WriteLine("Штош ничья получается Т_Т");
             }
-
-            Console.ReadKey();
-            Console.Clear();
-        }
-
-        private void CreateWarriors()
-        {
-            _redTeam.Add(new Dragon("Дракон", 200, 15));
-            _redTeam.Add(new Witch("Ведьма", 100, 8));
-            _redTeam.Add(new Goblin("Гоблин", 80, 10));
-
-            _blueTeam.Add(new Knight("Рыцарь", 150, 15));
-            _blueTeam.Add(new Pastor("Священник", 80, 6));
-            _blueTeam.Add(new GoblinSlayer("Убийца годлинов", 180, 10));
         }
 
         private bool TryGetWarrior(out Warrior warriors, List<Warrior> warrior)
@@ -361,7 +371,7 @@ namespace War
         {
             foreach (Warrior warrior in warriors)
             {
-                warrior.ShowWarriorInfo();
+                warrior.ShowSoliderInfo();
             }
         }
     }

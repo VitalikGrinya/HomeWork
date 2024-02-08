@@ -1,0 +1,378 @@
+namespace War
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Fight fight = new Fight();
+            fight.Battle();
+        }
+    }
+
+    abstract class Warrior
+    {
+        public Warrior(string name, int health, int damage)
+        {
+            Name = name;
+            Health = health;
+            Damage = damage;
+        }
+
+        public string Name { get; protected set; }
+        public int Health { get; protected set; }
+        public int Damage { get; protected set; }
+        public string Ability { get; protected set; }
+
+        public virtual void ShowWarriorInfo()
+        {
+            Console.WriteLine($"{Name} здоровье - {Health}, урон - {Damage}\n{Ability}\n");
+        }
+
+        public virtual void TakeDamage(int damage)
+        {
+            Health -= damage;
+
+            if (Health < 0)
+            {
+                Health = 0;
+            }
+        }
+
+        public virtual void Attack(Warrior warrior) { }
+    }
+
+    class Dragon : Warrior
+    {
+        public Dragon(string name, int health, int damage) : base(name, health, damage)
+        {
+            Ability = "Дыхание дракона. Урон огнем и последующее горение.";
+        }
+
+        public override void Attack(Warrior warrior)
+        {
+            int minChanceValue = 1;
+            int maxChanceValue = 3;
+            int chanceValue = 1;
+            int burn = 5;
+
+            if (Utilities.GenerateInt(minChanceValue, maxChanceValue) == chanceValue)
+            {
+                warrior.TakeDamage(Damage);
+                Damage -= burn;
+
+                warrior.TakeDamage(Damage);
+                Damage += burn;
+            }
+            else
+            {
+                warrior.TakeDamage(Damage);
+            }
+        }
+    }
+
+    class Witch : Warrior
+    {
+        public Witch(string name, int health, int damage) : base(name, health, damage)
+        {
+            Ability = "Заклятие. Когда осталась одна единица жизни, восстанавливается 20 единиц здоровья.";
+        }
+
+        public override void Attack(Warrior warrior)
+        {
+            warrior.TakeDamage(Damage);
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            int magicHealth = 20;
+
+            if (Health <= 1)
+            {
+                Health = magicHealth;
+            }
+            else
+            {
+                Health -= damage;
+            }
+        }
+    }
+
+    class Goblin : Warrior
+    {
+        public Goblin(string name, int health, int damage) : base(name, health, damage)
+        {
+            Ability = "Проворство. Возможность сделать две атаки.";
+        }
+
+        public override void Attack(Warrior warrior)
+        {
+            int minChanceValue = 1;
+            int maxChanceValue = 3;
+            int chanceValue = 1;
+
+            warrior.TakeDamage(Damage);
+
+            if (Utilities.GenerateInt(minChanceValue, maxChanceValue) == chanceValue)
+            {
+                warrior.TakeDamage(Damage);
+            }
+        }
+    }
+
+    class Knight : Warrior
+    {
+        public Knight(string name, int health, int damage) : base(name, health, damage)
+        {
+            Ability = "Оглушение. Противник пропускает ход.";
+        }
+
+        public override void Attack(Warrior warrior)
+        {
+            warrior.TakeDamage(Damage);
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            int minChanceValue = 1;
+            int maxChanceValue = 4;
+            int chanceValue = 1;
+
+            if (Utilities.GenerateInt(minChanceValue, maxChanceValue) == chanceValue)
+            {
+                damage = 0;
+                Health -= damage;
+            }
+            else
+            {
+                Health -= damage;
+
+                if (Health < 0)
+                {
+                    Health = 0;
+                }
+            }
+        }
+    }
+
+    class Pastor : Warrior
+    {
+        public Pastor(string name, int health, int damage) : base(name, health, damage)
+        {
+            Ability = "Детская травма. Вызывает детскую травму у противника, урон снижается в два раза";
+        }
+
+        public override void Attack(Warrior warrior)
+        {
+            warrior.TakeDamage(Damage);
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            int minChanceValue = 1;
+            int maxChanceValue = 4;
+            int chanceValue = 1;
+            int halfDamage = 2;
+
+            if (Utilities.GenerateInt(minChanceValue, maxChanceValue) == chanceValue)
+            {
+                damage /= halfDamage;
+                Health -= damage;
+                damage *= halfDamage;
+            }
+            else
+            {
+                Health -= damage;
+            }
+        }
+    }
+
+    class GoblinSlayer : Warrior
+    {
+        public GoblinSlayer(string name, int health, int damage) : base(name, health, damage)
+        {
+            Ability = "Отравление. Удар ядовитым клинком отнимает жизни у соперника до смерти.";
+        }
+
+        public override void Attack(Warrior warrior)
+        {
+            int venomAttack = 3;
+
+            warrior.TakeDamage(Damage);
+
+            if (warrior.Health > 0)
+            {
+                warrior.TakeDamage(venomAttack);
+            }
+        }
+    }
+
+    class Fight
+    {
+        private Warrior _redTeamWarrior;
+        private Warrior _blueTeamWarrior;
+
+        private List<Warrior> _redTeam = new List<Warrior>();
+        private List<Warrior> _blueTeam = new List<Warrior>();
+
+        public Fight()
+        {
+            CreateWarriors();
+        }
+
+        public void Battle()
+        {
+            while (_redTeam.Count > 0 && _blueTeam.Count > 0)
+            {
+                MakeRound();
+            }
+        }
+
+        private void MakeRound()
+        {
+            bool isWorking = true;
+
+            ShowTeams();
+
+            while (isWorking)
+            {
+                if (TryGetWarrior(out _redTeamWarrior, _redTeam) == false || TryGetWarrior(out _blueTeamWarrior, _blueTeam) == false)
+                {
+                    Console.WriteLine("Введено некорректное значение. Попробуй еще раз.");
+                    continue;
+                }
+
+                Console.ReadKey();
+
+                while (_redTeamWarrior.Health > 0 && _blueTeamWarrior.Health > 0)
+                {
+                    _redTeamWarrior.Attack(_blueTeamWarrior);
+                    _blueTeamWarrior.Attack(_redTeamWarrior);
+
+                    Console.WriteLine($"{_redTeamWarrior.Name} здоровье {_redTeamWarrior.Health}. <---> {_blueTeamWarrior.Name} здоровье {_blueTeamWarrior.Health}.");
+
+                }
+
+                isWorking = false;
+            }
+
+            if (_redTeamWarrior.Health <= 0 && _blueTeamWarrior.Health <= 0)
+            {
+                Console.WriteLine("Ничья.");
+
+                _redTeam.Remove(_redTeamWarrior);
+                _blueTeam.Remove(_blueTeamWarrior);
+            }
+            else if (_redTeamWarrior.Health <= 0 && _blueTeamWarrior.Health > 0)
+            {
+                Console.WriteLine($"\nПобеждает {_blueTeamWarrior.Name} из второй команды.");
+
+                _redTeam.Remove(_redTeamWarrior);
+            }
+            else if (_redTeamWarrior.Health > 0 && _blueTeamWarrior.Health <= 0)
+            {
+                Console.WriteLine($"\nПобеждает {_redTeamWarrior.Name} из первой команды.");
+
+                _blueTeam.Remove(_blueTeamWarrior);
+            }
+
+            Console.WriteLine("\nКоличество бойцов в первой команде - " + _redTeam.Count);
+            Console.WriteLine("Количество бойцов во второй команде - " + _blueTeam.Count);
+
+            if (_redTeam.Count == 0)
+            {
+                Console.WriteLine("\nПобеждает вторая команда O:)");
+            }
+            else if (_blueTeam.Count == 0)
+            {
+                Console.WriteLine("\nПобеждает первая команда >:3");
+            }
+            else if(_blueTeam.Count == 0 && _redTeam.Count == 0)
+            {
+                Console.WriteLine("Штош ничья получается Т_Т");
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        private void CreateWarriors()
+        {
+            _redTeam.Add(new Dragon("Дракон", 200, 15));
+            _redTeam.Add(new Witch("Ведьма", 100, 8));
+            _redTeam.Add(new Goblin("Гоблин", 80, 10));
+
+            _blueTeam.Add(new Knight("Рыцарь", 150, 15));
+            _blueTeam.Add(new Pastor("Священник", 80, 6));
+            _blueTeam.Add(new GoblinSlayer("Убийца годлинов", 180, 10));
+        }
+
+        private bool TryGetWarrior(out Warrior warriors, List<Warrior> warrior)
+        {
+            bool isWorking = true;
+
+            warriors = null;
+
+            while (isWorking)
+            {
+                Console.Write("Соперник: ");
+
+                string userInput = Console.ReadLine();
+
+                if (int.TryParse(userInput, out int result))
+                {
+                    int index = result - 1;
+
+                    if (index >= 0 && index <= warrior.Count)
+                    {
+                        warriors = warrior[index];
+
+                        return true;
+                    }
+
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Такого воина нет");
+                }
+            }
+
+            return false;
+        }
+
+        private void ShowTeams()
+        {
+            char symbol = '=';
+
+            int symbolLength = 80;
+
+            Console.WriteLine("Первая команда: ");
+            ShowInfo(_redTeam);
+
+            Console.WriteLine(new string(symbol, symbolLength));
+
+            Console.WriteLine("\nВторая команда: ");
+            ShowInfo(_blueTeam);
+
+            Console.WriteLine(new string(symbol, symbolLength));
+        }
+
+        private void ShowInfo(List<Warrior> warriors)
+        {
+            foreach (Warrior warrior in warriors)
+            {
+                warrior.ShowWarriorInfo();
+            }
+        }
+    }
+
+    static class Utilities
+    {
+        private static Random s_random = new Random();
+
+        public static int GenerateInt(int minValue, int maxValue)
+        {
+            return s_random.Next(minValue, maxValue);
+        }
+    }
+}

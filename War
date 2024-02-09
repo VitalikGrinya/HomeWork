@@ -93,6 +93,11 @@ namespace War
             else
             {
                 Health -= damage;
+
+                if (Health < 0)
+                {
+                    Health = 0;
+                }
             }
         }
     }
@@ -182,6 +187,11 @@ namespace War
             else
             {
                 Health -= damage;
+
+                if (Health < 0)
+                {
+                    Health = 0;
+                }
             }
         }
     }
@@ -208,171 +218,132 @@ namespace War
 
     class Fight
     {
-        private Warrior _redTeamWarrior;
-        private Warrior _blueTeamWarrior;
-
-        private List<Warrior> _redTeam = new List<Warrior>();
-        private List<Warrior> _blueTeam = new List<Warrior>();
-
-        public Fight()
-        {
-            CreateWarriors();
-        }
-
+        private Team _redTeam = new Team();
+        private Team _blueTeam = new Team();
         public void Battle()
         {
-            while (_redTeam.Count > 0 && _blueTeam.Count > 0)
+            while (_redTeam.TeamCount() > 0 && _blueTeam.TeamCount() > 0)
             {
                 MakeRound();
             }
+
+            ShowWinnerTeam();
         }
 
         private void MakeRound()
         {
-            bool isWorking = true;
+            ShowWarriorsCountInTeam();
+            ShowTeamsInfo();
 
-            ShowTeams();
+            _redTeam.Attack(_blueTeam);
+            _blueTeam.Attack(_redTeam);
 
-            while (isWorking)
-            {
-                if (TryGetWarrior(out _redTeamWarrior, _redTeam) == false || TryGetWarrior(out _blueTeamWarrior, _blueTeam) == false)
-                {
-                    Console.WriteLine("Введено некорректное значение. Попробуй еще раз.");
-                    continue;
-                }
-
-                Console.ReadKey();
-
-                while (_redTeamWarrior.Health > 0 && _blueTeamWarrior.Health > 0)
-                {
-                    _redTeamWarrior.Attack(_blueTeamWarrior);
-                    _blueTeamWarrior.Attack(_redTeamWarrior);
-
-                    Console.WriteLine($"{_redTeamWarrior.Name} здоровье {_redTeamWarrior.Health}. <---> {_blueTeamWarrior.Name} здоровье {_blueTeamWarrior.Health}.");
-
-                }
-
-                isWorking = false;
-            }
-
-            ShowRooundWinner();
-
-            Console.WriteLine("\nКоличество бойцов в первой команде - " + _redTeam.Count);
-            Console.WriteLine("Количество бойцов во второй команде - " + _blueTeam.Count);
-
-            ShowWinnerTeam();
+            _redTeam.RemoveWarrior();
+            _blueTeam.RemoveWarrior();
 
             Console.ReadKey();
             Console.Clear();
         }
 
-        private void CreateWarriors()
+        private void ShowWarriorsCountInTeam()
         {
-            _redTeam.Add(new Dragon("Дракон", 200, 15));
-            _redTeam.Add(new Witch("Ведьма", 100, 8));
-            _redTeam.Add(new Goblin("Гоблин", 80, 10));
-
-            _blueTeam.Add(new Knight("Рыцарь", 150, 15));
-            _blueTeam.Add(new Pastor("Священник", 80, 6));
-            _blueTeam.Add(new GoblinSlayer("Убийца гоблинов", 180, 10));
+            Console.WriteLine("Количество бойцов в первой команде - " + _redTeam.TeamCount());
+            Console.WriteLine("Количество бойцов во второй команде - " + _blueTeam.TeamCount());
         }
 
-        private void ShowRooundWinner()
-        {
-            if (_redTeamWarrior.Health <= 0 && _blueTeamWarrior.Health <= 0)
-            {
-                Console.WriteLine("Ничья.");
-
-                _redTeam.Remove(_redTeamWarrior);
-                _blueTeam.Remove(_blueTeamWarrior);
-            }
-            else if (_redTeamWarrior.Health <= 0 && _blueTeamWarrior.Health > 0)
-            {
-                Console.WriteLine($"\nПобеждает {_blueTeamWarrior.Name} из второй команды.");
-
-                _redTeam.Remove(_redTeamWarrior);
-            }
-            else if (_redTeamWarrior.Health > 0 && _blueTeamWarrior.Health <= 0)
-            {
-                Console.WriteLine($"\nПобеждает {_redTeamWarrior.Name} из первой команды.");
-
-                _blueTeam.Remove(_blueTeamWarrior);
-            }
-        }
-
-        private void ShowWinnerTeam()
-        {
-            if (_redTeam.Count == 0)
-            {
-                Console.WriteLine("\nПобеждает вторая команда O:)");
-            }
-            else if (_blueTeam.Count == 0)
-            {
-                Console.WriteLine("\nПобеждает первая команда >:3");
-            }
-            else if (_blueTeam.Count == 0 && _redTeam.Count == 0)
-            {
-                Console.WriteLine("Штош ничья получается Т_Т");
-            }
-        }
-
-        private bool TryGetWarrior(out Warrior warriors, List<Warrior> warrior)
-        {
-            bool isWorking = true;
-
-            warriors = null;
-
-            while (isWorking)
-            {
-                Console.Write("Соперник: ");
-
-                string userInput = Console.ReadLine();
-
-                if (int.TryParse(userInput, out int result))
-                {
-                    int index = result - 1;
-
-                    if (index >= 0 && index <= warrior.Count)
-                    {
-                        warriors = warrior[index];
-
-                        return true;
-                    }
-
-                    return false;
-                }
-                else
-                {
-                    Console.WriteLine("Такого воина нет");
-                }
-            }
-
-            return false;
-        }
-
-        private void ShowTeams()
+        private void ShowTeamsInfo()
         {
             char symbol = '=';
 
             int symbolLength = 80;
 
-            Console.WriteLine("Первая команда: ");
-            ShowInfo(_redTeam);
+            Console.WriteLine("\nПервая команда: ");
+            _redTeam.ShowInfo();
 
             Console.WriteLine(new string(symbol, symbolLength));
 
             Console.WriteLine("\nВторая команда: ");
-            ShowInfo(_blueTeam);
+            _blueTeam.ShowInfo();
 
             Console.WriteLine(new string(symbol, symbolLength));
         }
 
-        private void ShowInfo(List<Warrior> warriors)
+        private void ShowWinnerTeam()
         {
-            foreach (Warrior warrior in warriors)
+            if (_redTeam.TeamCount() == 0)
+            {
+                Console.WriteLine("\nПобеждает вторая команда O:)");
+            }
+            else if (_blueTeam.TeamCount() == 0)
+            {
+                Console.WriteLine("\nПобеждает первая команда >:3");
+            }
+            else if (_redTeam.TeamCount() == 0 && _blueTeam.TeamCount() == 0)
+            {
+                Console.WriteLine("Штош ничья получается Т_Т");
+            }
+        }
+    }
+
+    class Team
+    {
+        private List<Warrior> _warriors = new List<Warrior>();
+
+        public Team()
+        {
+            CreateWarriors();
+        }
+
+        public void ShowInfo()
+        {
+            foreach (Warrior warrior in _warriors)
             {
                 warrior.ShowSoliderInfo();
             }
+        }
+
+        public int TeamCount() { return _warriors.Count; }
+
+        public void Attack(Team enemyTeam)
+        {
+            for (int i = 0; i < _warriors.Count; i++)
+            {
+                Warrior enemy = GenerateRandomWarriorInTeam();
+
+                _warriors[i].Attack(enemy);
+            }
+        }
+
+        public Warrior GenerateRandomWarriorInTeam()
+        {
+            int minIndexWarrior = 0;
+            int maxIndexWarrior = _warriors.Count;
+
+            int randomIndexWarrior = Utilities.GenerateInt(minIndexWarrior, maxIndexWarrior);
+
+            return _warriors[randomIndexWarrior];
+        }
+
+        public void RemoveWarrior()
+        {
+            for (int i = 0; i < _warriors.Count; i++)
+            {
+                if (_warriors[i].Health <= 0)
+                {
+                    _warriors.Remove(_warriors[i]);
+
+                    i--;
+                }
+            }
+        }
+        private void CreateWarriors()
+        {
+            _warriors.Add(new Dragon("Дракон", 200, 15));
+            _warriors.Add(new Witch("Ведьма", 100, 8));
+            _warriors.Add(new Goblin("Гоблин", 80, 10));
+            _warriors.Add(new Knight("Рыцарь", 150, 15));
+            _warriors.Add(new Pastor("Священник", 80, 6));
+            _warriors.Add(new GoblinSlayer("Убийца гоблинов", 180, 10));
         }
     }
 

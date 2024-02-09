@@ -220,6 +220,7 @@ namespace War
     {
         private Team _redTeam = new Team();
         private Team _blueTeam = new Team();
+
         public void Battle()
         {
             while (_redTeam.TeamCount() > 0 && _blueTeam.TeamCount() > 0)
@@ -270,17 +271,17 @@ namespace War
 
         private void ShowWinnerTeam()
         {
-            if (_redTeam.TeamCount() == 0)
+            if (_redTeam.TeamCount() == 0 && _blueTeam.TeamCount() == 0)
             {
-                Console.WriteLine("\nПобеждает вторая команда O:)");
+                Console.WriteLine("Штош ничья получается Т_Т");
             }
             else if (_blueTeam.TeamCount() == 0)
             {
                 Console.WriteLine("\nПобеждает первая команда >:3");
             }
-            else if (_redTeam.TeamCount() == 0 && _blueTeam.TeamCount() == 0)
+            else if (_redTeam.TeamCount() == 0)
             {
-                Console.WriteLine("Штош ничья получается Т_Т");
+                Console.WriteLine("\nПобеждает вторая команда O:)");
             }
         }
     }
@@ -326,16 +327,15 @@ namespace War
 
         public void RemoveWarrior()
         {
-            for (int i = 0; i < _warriors.Count; i++)
+            for (int i = _warriors.Count - 1; i >= 0; i--)
             {
                 if (_warriors[i].Health <= 0)
                 {
                     _warriors.Remove(_warriors[i]);
-
-                    i--;
                 }
             }
         }
+
         private void CreateWarriors()
         {
             _warriors.Add(new Dragon("Дракон", 200, 15));

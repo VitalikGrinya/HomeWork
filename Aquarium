@@ -1,0 +1,175 @@
+namespace War
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Aqurium aqurium = new Aqurium();
+            aqurium.Work();
+        }
+    }
+
+    class Fish
+    {
+        public Fish(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+
+        public string Name { get; private set; }
+        public int Age { get; set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}.");
+        }
+    }
+
+    class Aqurium
+    {
+        private List<Fish> _fish = new List<Fish>();
+
+        public void Work()
+        {
+            const string AddFishCommand = "1";
+            const string WatchFishCommand = "2";
+            const string ForgetFishCommand = "3";
+
+            bool isWorking = true;
+
+            Console.WriteLine($"Чтобы добавить рыбу, нажмите - {AddFishCommand}.\n" +
+                              $"Чтобы наблюдать за ростом рыб, нажмите - {WatchFishCommand}.\n" +
+                              $"Чтобы выйти из программы и забить на рыб, нажмите - {ForgetFishCommand}.");
+
+            while (isWorking)
+            {
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case AddFishCommand:
+                        AddFish();
+                        break;
+
+                    case WatchFishCommand:
+                        WatchFish();
+                        break;
+
+                    case ForgetFishCommand:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Введена неверная команда, попробуй еще раз.");
+                        break;
+                }
+            }
+        }
+
+        private void AddFish()
+        {
+            string name;
+
+            int maxFishValue = 5;
+
+            if (_fish.Count == maxFishValue)
+            {
+                Console.WriteLine("Больше рыб добавить нельзя.");
+            }
+            else
+            {
+                int age;
+
+                name = Utilites.ReadString("Введите имя рыбы: ");
+
+                Console.Write("Введите возраст рыбы: ");
+                string ageInput = Console.ReadLine();
+
+                while (int.TryParse(ageInput, out age) == false)
+                {
+                    Console.WriteLine("Что-то пошло не так, попробуйте еще раз.");
+                    ageInput = Console.ReadLine();
+                }
+
+                Fish fish = new Fish(name, age);
+                _fish.Add(fish);
+
+                Console.WriteLine("Рыбка добавлена в аквариум.");
+                ShowFishsLifeCyrcle();
+                RemoveDeadFish();
+            }
+        }
+
+        private void WatchFish()
+        {
+            while (_fish.Count > 0)
+            {
+                Thread.Sleep(1000);
+                ShowFishsLifeCyrcle();
+                RemoveDeadFish();
+            }
+        }
+
+        private void RemoveDeadFish()
+        {               
+            while(TryGetToRemoveDeadFish(out Fish fish) == true)
+            {
+                _fish.Remove(fish);
+            }
+        }
+
+        private void ShowFishsLifeCyrcle()
+        {
+            int maxAge = 6;
+            
+            foreach (Fish fish in _fish)
+            {
+                fish.ShowInfo();
+                fish.Age++;
+
+                if(fish.Age >= maxAge)
+                {
+                    Console.WriteLine("Рыбка уснула брюхом вверх.");
+                }
+            }
+        }
+
+        private bool TryGetToRemoveDeadFish(out Fish fish)
+        {
+            int maxAge = 6;
+
+            fish = _fish.Find(fish => fish.Age == maxAge);
+
+            return fish != null;
+        }
+    }
+
+    static class Utilites
+    {
+        static public string ReadString(string message)
+        {
+            bool isWorking;
+
+            string value;
+
+            do
+            {
+                Console.Write(message);
+                value = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    isWorking = false;
+                }
+                else
+                {
+                    isWorking = true;
+                }
+            }
+            while (isWorking == false);
+
+            return value;
+        }
+    }
+}

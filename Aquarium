@@ -1,5 +1,3 @@
-using System.Xml.Linq;
-
 namespace Aquarium
 {
     internal class Program
@@ -57,7 +55,7 @@ namespace Aquarium
         public int Age { get; private set; }
         public int MaxAge { get; private set; }
 
-        public void ShowFishLifeCyrcle()
+        public void IncreaseLife()
         {
             ShowInfo();
 
@@ -71,7 +69,7 @@ namespace Aquarium
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Када усё - {MaxAge}");
+            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Когда к Одину - {MaxAge}");
         }
     }
 
@@ -119,7 +117,7 @@ namespace Aquarium
         {
             foreach(Fish fish in _fishs)
             {
-                fish.ShowFishLifeCyrcle();
+                fish.IncreaseLife();
             }
         }
 
@@ -127,7 +125,7 @@ namespace Aquarium
         {
             while (TryGetToRemoveDeadFish(out Fish fish) == true)
             {
-                _fishs.Remove(fish);
+                Console.WriteLine("Рыбка отправилась к Одину");
             }
         }
 
@@ -135,6 +133,7 @@ namespace Aquarium
         {
             fish = _fishs.Find(fish => fish.Age > fish.MaxAge);
 
+            _fishs.Remove(fish);
             return fish != null;
         }
     }

@@ -55,6 +55,11 @@ namespace Aquarium
         public int Age { get; private set; }
         public int MaxAge { get; private set; }
 
+        public bool IsLife
+        {
+            get { return MaxAge - Age >= 0; }
+        }
+
         public void IncreaseLife()
         {
             ShowInfo();
@@ -115,7 +120,7 @@ namespace Aquarium
 
         public void ShowFishsLife()
         {
-            foreach(Fish fish in _fishs)
+            foreach (Fish fish in _fishs)
             {
                 fish.IncreaseLife();
             }
@@ -123,18 +128,13 @@ namespace Aquarium
 
         private void RemoveDeadFish()
         {
-            while (TryGetToRemoveDeadFish(out Fish fish) == true)
+            for (int i = _fishs.Count - 1; i >= 0; i--)
             {
-                Console.WriteLine("Рыбка отправилась к Одину");
+                if (_fishs[i].IsLife == false)
+                {
+                    _fishs.RemoveAt(i);
+                }
             }
-        }
-
-        private bool TryGetToRemoveDeadFish(out Fish fish)
-        {
-            fish = _fishs.Find(fish => fish.Age > fish.MaxAge);
-
-            _fishs.Remove(fish);
-            return fish != null;
         }
     }
 
@@ -151,16 +151,22 @@ namespace Aquarium
             Console.Write("Введите возраст рыбки: ");
             string userInput = Console.ReadLine();
 
-            while(int.TryParse(userInput, out age) == false)
+            while (int.TryParse(userInput, out age) == false)
             {
                 Console.WriteLine("Что-то пошло не так, попробуй еще раз.");
                 userInput = Console.ReadLine();
+
             }
-            
-            int maxAge = Utilites.GenerateInt(minValueMaxAge,maxValueMaxAge);
+
+            if (age < 0)
+            {
+                age = 0;
+            }
+
+            int maxAge = Utilites.GenerateInt(minValueMaxAge, maxValueMaxAge);
 
             Fish fish = new Fish(name, age, maxAge);
-            
+
             return fish;
         }
     }

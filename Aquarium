@@ -1,11 +1,46 @@
+using System.Xml.Linq;
+
 namespace Aquarium
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Aquariumier aquariumier = new Aquariumier();
-            aquariumier.Work();
+            const string AddFishCommand = "1";
+            const string WatchFishCommand = "2";
+            const string ForgetFishCommand = "3";
+
+            bool isWorking = true;
+
+            Aquarium aquarium = new Aquarium();
+
+            Console.WriteLine($"Чтобы добавить рыбу, нажмите - {AddFishCommand}.\n" +
+                              $"Чтобы наблюдать за ростом рыб, нажмите - {WatchFishCommand}.\n" +
+                              $"Чтобы выйти из программы и забить на рыб, нажмите - {ForgetFishCommand}.");
+
+            while (isWorking)
+            {
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case AddFishCommand:
+                        aquarium.AddFish();
+                        break;
+
+                    case WatchFishCommand:
+                        aquarium.WatchFish();
+                        break;
+
+                    case ForgetFishCommand:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Введена неверная команда, попробуй еще раз.");
+                        break;
+                }
+            }
         }
     }
 
@@ -25,6 +60,7 @@ namespace Aquarium
         public void ShowFishLifeCyrcle()
         {
             ShowInfo();
+
             Age++;
 
             if (Age > MaxAge)
@@ -35,19 +71,17 @@ namespace Aquarium
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Пора в мир иной - {MaxAge}");
+            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Када усё - {MaxAge}");
         }
     }
 
     class Aquarium
     {
+        private Aquariumier _aquariumier = new Aquariumier();
         private List<Fish> _fishs = new List<Fish>();
 
         public void AddFish()
         {
-            string name;
-            int minValueMaxAge = 5;
-            int maxValueMaxAge = 10;
             int maxFishValue = 5;
 
             if (_fishs.Count == maxFishValue)
@@ -56,22 +90,8 @@ namespace Aquarium
             }
             else
             {
-                int age;
+                Fish fish = _aquariumier.CreateFish();
 
-                name = Utilites.ReadString("Введите имя рыбы: ");
-
-                Console.Write("Введите возраст рыбы: ");
-                string ageInput = Console.ReadLine();
-
-                while (int.TryParse(ageInput, out age) == false)
-                {
-                    Console.WriteLine("Что-то пошло не так, попробуйте еще раз.");
-                    ageInput = Console.ReadLine();
-                }
-
-                int maxAge = Utilites.GenerateInt(minValueMaxAge, maxValueMaxAge);
-
-                Fish fish = new Fish(name, age, maxAge);
                 _fishs.Add(fish);
 
                 Console.WriteLine("Рыбка добавлена в аквариум.");
@@ -121,46 +141,30 @@ namespace Aquarium
 
     class Aquariumier
     {
-        private Aquarium _aquarium = new Aquarium();
-
-        public void Work()
+        public Fish CreateFish()
         {
-            const string AddFishCommand = "1";
-            const string WatchFishCommand = "2";
-            const string ForgetFishCommand = "3";
+            int minValueMaxAge = 5;
+            int maxValueMaxAge = 10;
+            int age;
 
-            bool isWorking = true;
+            string name = Utilites.ReadString("Введите имя рыбки: ");
 
-            Console.WriteLine($"Чтобы добавить рыбу, нажмите - {AddFishCommand}.\n" +
-                              $"Чтобы наблюдать за ростом рыб, нажмите - {WatchFishCommand}.\n" +
-                              $"Чтобы выйти из программы и забить на рыб, нажмите - {ForgetFishCommand}.");
+            Console.Write("Введите возраст рыбки: ");
+            string userInput = Console.ReadLine();
 
-            while (isWorking)
+            while(int.TryParse(userInput, out age) == false)
             {
-                string userInput = Console.ReadLine();
-
-                switch (userInput)
-                {
-                    case AddFishCommand:
-                        _aquarium.AddFish();
-                        break;
-
-                    case WatchFishCommand:
-                        _aquarium.WatchFish();
-                        break;
-
-                    case ForgetFishCommand:
-                        isWorking = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Введена неверная команда, попробуй еще раз.");
-                        break;
-                }
+                Console.WriteLine("Что-то пошло не так, попробуй еще раз.");
+                userInput = Console.ReadLine();
             }
+            
+            int maxAge = Utilites.GenerateInt(minValueMaxAge,maxValueMaxAge);
+
+            Fish fish = new Fish(name, age, maxAge);
+            
+            return fish;
         }
     }
-
 
     static class Utilites
     {

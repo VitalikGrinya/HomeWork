@@ -35,7 +35,7 @@ namespace Aquarium
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Када усё - {MaxAge}");
+            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Пора в мир иной - {MaxAge}");
         }
     }
 

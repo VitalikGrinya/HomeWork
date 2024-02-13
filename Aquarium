@@ -1,34 +1,127 @@
-namespace War
+namespace Aquarium
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Aqurium aqurium = new Aqurium();
-            aqurium.Work();
+            Aquariumier aquariumier = new Aquariumier();
+            aquariumier.Work();
         }
     }
 
     class Fish
     {
-        public Fish(string name, int age)
+        public Fish(string name, int age, int maxAge)
         {
             Name = name;
             Age = age;
+            MaxAge = maxAge;
         }
 
         public string Name { get; private set; }
         public int Age { get; set; }
+        public int MaxAge { get; private set; }
+
+        public void ShowFishLifeCyrcle()
+        {
+            ShowInfo();
+            Age++;
+
+            if (Age > MaxAge)
+            {
+                Console.WriteLine("Рыбка уснула брюхом вверх.");
+            }
+        }
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}.");
+            Console.WriteLine($"Имя рыбки - {Name}. Возраст - {Age}. Када усё - {MaxAge}");
         }
     }
 
-    class Aqurium
+    class Aquarium
     {
-        private List<Fish> _fish = new List<Fish>();
+        private List<Fish> _fishs = new List<Fish>();
+
+        public void AddFish()
+        {
+            string name;
+            int minValueMaxAge = 5;
+            int maxValueMaxAge = 10;
+            int maxFishValue = 5;
+
+            if (_fishs.Count == maxFishValue)
+            {
+                Console.WriteLine("Больше рыб добавить нельзя.");
+            }
+            else
+            {
+                int age;
+
+                name = Utilites.ReadString("Введите имя рыбы: ");
+
+                Console.Write("Введите возраст рыбы: ");
+                string ageInput = Console.ReadLine();
+
+                while (int.TryParse(ageInput, out age) == false)
+                {
+                    Console.WriteLine("Что-то пошло не так, попробуйте еще раз.");
+                    ageInput = Console.ReadLine();
+                }
+
+                int maxAge = Utilites.GenerateInt(minValueMaxAge, maxValueMaxAge);
+
+                Fish fish = new Fish(name, age, maxAge);
+                _fishs.Add(fish);
+
+                Console.WriteLine("Рыбка добавлена в аквариум.");
+                ShowFishsLife();
+                RemoveDeadFish();
+            }
+        }
+
+        public void WatchFish()
+        {
+            int symbolLenth = 65;
+            char symbol = '-';
+            Console.Clear();
+
+            while (_fishs.Count > 0)
+            {
+                Thread.Sleep(500);
+                ShowFishsLife();
+                Console.WriteLine(new string(symbol, symbolLenth));
+                RemoveDeadFish();
+            }
+        }
+
+        public void ShowFishsLife()
+        {
+            foreach(Fish fish in _fishs)
+            {
+                fish.ShowFishLifeCyrcle();
+            }
+        }
+
+        private void RemoveDeadFish()
+        {
+            while (TryGetToRemoveDeadFish(out Fish fish) == true)
+            {
+                _fishs.Remove(fish);
+            }
+        }
+
+        private bool TryGetToRemoveDeadFish(out Fish fish)
+        {
+            fish = _fishs.Find(fish => fish.Age > fish.MaxAge);
+
+            return fish != null;
+        }
+    }
+
+    class Aquariumier
+    {
+        private Aquarium _aquarium = new Aquarium();
 
         public void Work()
         {
@@ -49,11 +142,11 @@ namespace War
                 switch (userInput)
                 {
                     case AddFishCommand:
-                        AddFish();
+                        _aquarium.AddFish();
                         break;
 
                     case WatchFishCommand:
-                        WatchFish();
+                        _aquarium.WatchFish();
                         break;
 
                     case ForgetFishCommand:
@@ -66,88 +159,19 @@ namespace War
                 }
             }
         }
-
-        private void AddFish()
-        {
-            string name;
-
-            int maxFishValue = 5;
-
-            if (_fish.Count == maxFishValue)
-            {
-                Console.WriteLine("Больше рыб добавить нельзя.");
-            }
-            else
-            {
-                int age;
-
-                name = Utilites.ReadString("Введите имя рыбы: ");
-
-                Console.Write("Введите возраст рыбы: ");
-                string ageInput = Console.ReadLine();
-
-                while (int.TryParse(ageInput, out age) == false)
-                {
-                    Console.WriteLine("Что-то пошло не так, попробуйте еще раз.");
-                    ageInput = Console.ReadLine();
-                }
-
-                Fish fish = new Fish(name, age);
-                _fish.Add(fish);
-
-                Console.WriteLine("Рыбка добавлена в аквариум.");
-                ShowFishsLifeCyrcle();
-                RemoveDeadFish();
-            }
-        }
-
-        private void WatchFish()
-        {
-            while (_fish.Count > 0)
-            {
-                Thread.Sleep(1000);
-                ShowFishsLifeCyrcle();
-                RemoveDeadFish();
-            }
-        }
-
-        private void RemoveDeadFish()
-        {               
-            while(TryGetToRemoveDeadFish(out Fish fish) == true)
-            {
-                _fish.Remove(fish);
-            }
-        }
-
-        private void ShowFishsLifeCyrcle()
-        {
-            int maxAge = 6;
-            
-            foreach (Fish fish in _fish)
-            {
-                fish.ShowInfo();
-                fish.Age++;
-
-                if(fish.Age >= maxAge)
-                {
-                    Console.WriteLine("Рыбка уснула брюхом вверх.");
-                }
-            }
-        }
-
-        private bool TryGetToRemoveDeadFish(out Fish fish)
-        {
-            int maxAge = 6;
-
-            fish = _fish.Find(fish => fish.Age == maxAge);
-
-            return fish != null;
-        }
     }
+
 
     static class Utilites
     {
-        static public string ReadString(string message)
+        private static Random s_random = new Random();
+
+        public static int GenerateInt(int minValue, int maxValue)
+        {
+            return s_random.Next(minValue, maxValue);
+        }
+
+        public static string ReadString(string message)
         {
             bool isWorking;
 

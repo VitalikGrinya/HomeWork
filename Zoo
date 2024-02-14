@@ -1,0 +1,140 @@
+namespace Zoo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            const string ShowTigersCage = "1";
+            const string ShowWolfsCage = "2";
+            const string ShowTurtesCage = "3";
+            const string ExitZoo = "4";
+
+            bool isWorking = true;
+
+            Cage cage = new Cage();
+
+            while (isWorking)
+            {
+                Console.WriteLine($"Выберите куда вы хотите пройти:\n" +
+                                  $"Пойти посмотреть на тигров - {ShowTigersCage}.\n" +
+                                  $"Пойти посмотреть на волков - {ShowWolfsCage}.\n" +
+                                  $"Пойти посмотреть на черепах - {ShowTurtesCage}.\n" +
+                                  $"Пойти посмотреть на выход - {ExitZoo}.");
+
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case ShowTigersCage:
+                        cage.ShowTigerInfo();
+                        break;
+
+                    case ShowWolfsCage:
+                        cage.ShowWolfInfo();
+                        break;
+
+                    case ShowTurtesCage:
+                        cage.ShowTurtleInfo();
+                        break;
+
+                    case ExitZoo:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Введено некорректное значение.");
+                        break;
+                }
+
+                Console.ReadKey();
+                Console.Clear();   
+            }
+        }
+    }
+
+    class Animal
+    {
+        public Animal(string name, string voice, int residentsCount, int menCount, int womenCount)
+        {
+            Name = name;
+            Voice = voice;
+            ResidentsCount = residentsCount;
+            MenCount = menCount;
+            WomenCount = womenCount;
+
+            ChangeResidentsCount();
+        }
+
+        public string Name { get; protected set; }
+        public string Voice { get; protected set; }
+        public int ResidentsCount { get; protected set; }
+        public int MenCount { get; protected set; }
+        public int WomenCount { get; protected set; }
+
+        private int ChangeResidentsCount()
+        {
+            if(MenCount + WomenCount > ResidentsCount)
+            {
+                ResidentsCount = MenCount + WomenCount;
+            }
+
+            return ResidentsCount;
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{Name}. Что говорит: {Voice}. Количество осыбей в клетке {ResidentsCount}. " +
+                              $"Количество самцов: {MenCount}. Количество самок: {WomenCount}.");
+        }
+    }
+
+    class Cage
+    {
+        private List<Animal> _animals = new List<Animal>();
+
+        public Cage()
+        {
+            CreateAnimal();
+        }
+
+        public void ShowTigerInfo()
+        {
+            foreach (Animal animal in _animals)
+            {
+                if (animal.Name == "Тигр")
+                {
+                    animal.ShowInfo();
+                }
+            }
+        }
+
+        public void ShowWolfInfo()
+        {
+            foreach (Animal animal in _animals)
+            {
+                if (animal.Name == "Волк")
+                {
+                    animal.ShowInfo();
+                }
+            }
+        }
+
+        public void ShowTurtleInfo()
+        {
+            foreach (Animal animal in _animals)
+            {
+                if (animal.Name == "Черепаха")
+                {
+                    animal.ShowInfo();
+                }
+            }
+        }
+
+        private void CreateAnimal()
+        {
+            _animals.Add(new Animal("Тигр", "*рычит на тигрином", 5, 3, 3));
+            _animals.Add(new Animal("Волк", "ауф", 6, 5, 1));
+            _animals.Add(new Animal("Черепаха", "кавабанга", 8, 4, 4));
+        }
+    }
+}

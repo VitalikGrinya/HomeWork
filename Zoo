@@ -132,7 +132,7 @@ namespace Zoo
 
         private void CreateAnimal()
         {
-            _animals.Add(new Animal("Тигр", "*рычит на тигрином", 5, 3, 3));
+            _animals.Add(new Animal("Тигр", "*рычит на тигрином", 5, 2, 3));
             _animals.Add(new Animal("Волк", "ауф", 6, 5, 1));
             _animals.Add(new Animal("Черепаха", "кавабанга", 8, 4, 4));
         }

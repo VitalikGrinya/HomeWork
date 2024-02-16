@@ -13,8 +13,7 @@ namespace Zoo
     {
         public void Work()
         {
-            const string ChooseCagesCommand = "1";
-            const string ExitCommand = "2";
+            int exitCommand = 0;
 
             bool isWorking = true;
 
@@ -59,24 +58,25 @@ namespace Zoo
 
             while (isWorking)
             {
-                Console.WriteLine($"Чтобы подойти к вольеру с тиграми, нажмите - {ChooseCagesCommand}.\n" +
-                                  $"Чтобы выйти из зоопарка, нажмите - {ExitCommand}");
+                Console.WriteLine($"Чтобы выйти из зоопарка, нажмите - {exitCommand}.\n" +
+                                  $"Чтобы перейти к выбору вальеров, нажмите любую другую цифру.");
 
                 string userInput = Console.ReadLine();
 
-                switch (userInput)
+                if (int.TryParse(userInput, out int value))
                 {
-                    case ChooseCagesCommand:
-                        zoo.ShowCage();
-                        break;
-
-                    case ExitCommand:
+                    if (value == exitCommand)
+                    {
                         isWorking = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Введено некорректное условие.");
-                        break;
+                    }
+                    else
+                    {
+                        zoo.ShowCage();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Попробуй еще раз.");
                 }
 
                 Console.ReadKey();
@@ -172,7 +172,7 @@ namespace Zoo
 
             cageIndex--;
 
-            if (cageIndex >= _cages.Count)
+            if (cageIndex >= _cages.Count || cageIndex < 0)
             {
                 Console.WriteLine("У нас нет такого вальера.");
             }

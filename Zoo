@@ -13,10 +13,8 @@ namespace Zoo
     {
         public void Work()
         {
-            const string ChooseTigersCageCommand = "1";
-            const string ChooseWolfsCageCommand = "2";
-            const string ChooseTurtlesCageCommand = "3";
-            const string ExitCommand = "4";
+            const string ChooseCagesCommand = "1";
+            const string ExitCommand = "2";
 
             bool isWorking = true;
 
@@ -43,34 +41,33 @@ namespace Zoo
                 new Animal("Крыса","Самец","Гаси толпой")
             });
 
+            Cage parrotsCage = new Cage("Попугаи", new List<Animal>()
+            {
+                new Animal("Попугай","Самец","Дэжаву"),
+                new Animal("Попугай","Самка","Айв джаст бин ин зис плэйс бефор"),
+                new Animal("Попугай","Самка","Хайер он зе стрит"),
+                new Animal("Попугай","Самка","Энд ай ноу итс май тайм ту гоу"),
+            });
+
             Zoo zoo = new Zoo(new List<Cage>()
             {
                 tigersCage,
                 wolfsCage,
-                turtlesCage
+                turtlesCage,
+                parrotsCage
             });
 
             while (isWorking)
             {
-                Console.WriteLine($"Чтобы подойти к вольеру с тиграми, нажмите - {ChooseTigersCageCommand}.\n" +
-                                  $"Чтобы подойти к вольеру с волками, нажмите - {ChooseWolfsCageCommand}.\n" +
-                                  $"Чтобы подойти к вольеру с черепахами, нажмите - {ChooseTurtlesCageCommand}.\n" +
+                Console.WriteLine($"Чтобы подойти к вольеру с тиграми, нажмите - {ChooseCagesCommand}.\n" +
                                   $"Чтобы выйти из зоопарка, нажмите - {ExitCommand}");
 
                 string userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
-                    case ChooseTigersCageCommand:
-                        zoo.ShowCage(userInput);
-                        break;
-
-                    case ChooseWolfsCageCommand:
-                        zoo.ShowCage(userInput);
-                        break;
-
-                    case ChooseTurtlesCageCommand:
-                        zoo.ShowCage(userInput);
+                    case ChooseCagesCommand:
+                        zoo.ShowCage();
                         break;
 
                     case ExitCommand:
@@ -122,10 +119,10 @@ namespace Zoo
         public void ShowInfo()
         {
             Console.WriteLine($"\nВольер: {Name}");
-            AddAnimals();
+            ShowAnimals();
         }
 
-        private void AddAnimals()
+        private void ShowAnimals()
         {
             ShowAnimalsCount();
 
@@ -156,20 +153,41 @@ namespace Zoo
         {
             _cages = cages;
         }
-        
-        public void ShowCage(string userInput)
+
+        public void ShowCage()
         {
             int cageIndex;
 
-            while(int.TryParse(userInput, out cageIndex) == false)
+            Console.WriteLine("Введите номер вальера, к которому хотите подойти: ");
+
+            ShowCages();
+
+            string userInput = Console.ReadLine();
+
+            while (int.TryParse(userInput, out cageIndex) == false)
             {
                 Console.WriteLine("Ты определенно что-то напутал.");
-                userInput= Console.ReadLine();
+                userInput = Console.ReadLine();
             }
 
             cageIndex--;
 
-            _cages[cageIndex].ShowInfo();
+            if (cageIndex >= _cages.Count)
+            {
+                Console.WriteLine("У нас нет такого вальера.");
+            }
+            else
+            {
+                _cages[cageIndex].ShowInfo();
+            }
+        }
+
+        public void ShowCages()
+        {
+            for (int i = 0; i < _cages.Count; i++)
+            {
+                Console.WriteLine((i + 1) + " " + _cages[i].Name);
+            }
         }
     }
 }

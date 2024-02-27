@@ -1,0 +1,254 @@
+namespace Garage
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Service service = new Service();
+            service.Work();
+        }
+    }
+
+    class Service
+    {
+        private List<Detail> _storeDetails = new List<Detail>();
+        private List<Detail> _carDetails = new List<Detail>();
+
+        public int Money { get; private set; } = 0;
+
+        public Service()
+        {
+            Car car = new Car(_carDetails);
+            StoreDetails();
+        }
+
+        public void Work()
+        {
+            const string RepaireCarCommand = "1";
+            const string ExitCommand = "0";
+
+            bool isWorking = true;
+
+
+            while (isWorking)
+            {
+                Console.WriteLine($"Починить машину - {RepaireCarCommand}.\n" +
+                                  $"Выйти - {ExitCommand}.");
+
+                Console.WriteLine("Балланс: " + Money);
+                Console.WriteLine("Нужно починить: " + SearchBadDetail(out Detail detail));
+
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case RepaireCarCommand:
+                        MakeRepair(detail);
+                        break;
+
+                    case ExitCommand:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Введена недосупная команда");
+                        break;
+                }
+
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        private void MakeRepair(Detail detail)
+        {
+            const string RepairCommand = "1";
+            const string RemoveCarCommand = "2";
+
+            Console.WriteLine($"Отремонтировать машину - {RepairCommand}.\n" +
+                              $"Отказаться от ремоната - {RemoveCarCommand}");
+
+            string userInput = Console.ReadLine();
+
+            switch (userInput)
+            {
+                case RepairCommand:
+                    Repair(detail);
+                    break;
+
+                case RemoveCarCommand:
+                    Console.WriteLine("Следующий");
+                    break;
+            }
+        }
+
+        private void Repair(Detail detail)
+        {
+            char symbol = '_';
+            int symbolCount = 60;
+
+            ShowStore();
+            Console.Write("Выберите деталь для замены: ");
+
+            RemoveStoreDetail(out Detail storeDetail);
+            
+            RemoveCarDetail(detail, storeDetail);
+
+            Salary(detail, storeDetail);
+
+            AddCarDetail(detail, storeDetail);
+
+            Console.WriteLine(new string(symbol, symbolCount));
+
+            ShowStore();
+        }
+
+        private void Salary(Detail detail, Detail storeDetail)
+        {
+            int fine = 300;
+
+            if (detail.Name == storeDetail.Name)
+            {
+                Money += detail.Price + detail.WorkPrice;
+            }
+            else
+            {
+                Money -= fine + storeDetail.Price + storeDetail.WorkPrice;
+            }
+        }
+
+        private void StoreDetails()
+        {
+            _storeDetails.Add(new Detail(1, "Двигатель", 10000, 1000));
+            _storeDetails.Add(new Detail(2, "Двигатель", 10000, 1000));
+            _storeDetails.Add(new Detail(3, "Трансмиссия", 8000, 800));
+            _storeDetails.Add(new Detail(4, "Трансмиссия", 8000, 800));
+            _storeDetails.Add(new Detail(5, "Колесо", 1000, 500));
+            _storeDetails.Add(new Detail(6, "Стеклоподъемник", 1800, 300));
+            _storeDetails.Add(new Detail(7, "Стеклоподъемник", 1800, 300));
+            _storeDetails.Add(new Detail(8, "Педаль газа", 7000, 300));
+            _storeDetails.Add(new Detail(9, "Педаль газа", 7000, 300));
+            _storeDetails.Add(new Detail(10, "Педаль газа", 7000, 300));
+        }
+
+        private string SearchBadDetail(out Detail detail)
+        {
+            int minCarDetailIdValue = 0;
+            int detailIndex = Utilites.GenerateInt(minCarDetailIdValue, _carDetails.Count);
+
+            detail = _carDetails[detailIndex];
+
+            return detail.Name;
+        }
+
+        private void RemoveStoreDetail(out Detail detail)
+        {
+            int id;
+            string storeName = Console.ReadLine();
+
+            while (int.TryParse(storeName, out id) == false)
+            {
+                Console.WriteLine("Что-то не то. Попробуй еще раз.");
+                storeName = Console.ReadLine();
+            }
+
+            detail = _storeDetails.Find(detail => detail.Id == id);
+
+            _storeDetails.Remove(detail);
+        }
+
+        private void RemoveCarDetail(Detail detail, Detail storeDetail)
+        {
+            if (detail == _carDetails.Find(detail => detail.Name == storeDetail.Name))
+            {
+                _carDetails.Remove(detail);
+            }
+            else
+            {
+                _carDetails.Remove(storeDetail);
+            }
+        }
+
+        private void AddCarDetail(Detail detail, Detail storeDetail)
+        {
+            detail = _carDetails.Find(detail => detail.Name == storeDetail.Name);
+
+            _carDetails.Add(storeDetail);
+        }
+
+        private void ShowStore()
+        {
+            for (int i = 0; i < _storeDetails.Count; i++)
+            {
+                _storeDetails[i].ShowInfo();
+            }
+        }
+
+        private void ShowCar()
+        {
+            for (int i = 0; i < _carDetails.Count; i++)
+            {
+                _carDetails[i].ShowInfo();
+            }
+        }
+    }
+
+    class Car
+    {
+        private List<Detail> _details = new List<Detail>();
+
+        public Car(List<Detail> details)
+        {
+            _details = details;
+            AddDetails();
+        }
+
+        private void AddDetails()
+        {
+            _details.Add(new Detail(1, "Двигатель", 10000, 1000));
+            _details.Add(new Detail(2, "Трансмиссия", 8000, 800));
+            _details.Add(new Detail(3, "Колесо", 1000, 500));
+            _details.Add(new Detail(4, "Стеклоподъемник", 1800, 300));
+            _details.Add(new Detail(5, "Педаль газа", 7000, 300));
+        }
+
+        public void ShowInfo()
+        {
+            foreach (Detail detail in _details)
+            {
+                detail.ShowInfo();
+            }
+        }
+    }
+
+    class Detail
+    {
+        public Detail(int id, string name, int price, int workPrice)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            WorkPrice = workPrice;
+        }
+
+        public int Id { get; private set; }
+        public string Name { get; private set; }
+        public int Price { get; private set; }
+        public int WorkPrice { get; private set; }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"{Id}. {Name}. Цена детали {Price}$. Цена ремонта {WorkPrice}$");
+        }
+    }
+
+    static class Utilites
+    {
+        static private Random s_random = new Random();
+
+        static public int GenerateInt(int minValue, int maxValue)
+        {
+            return s_random.Next(minValue, maxValue);
+        }
+    }
+}

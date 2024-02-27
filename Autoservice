@@ -43,7 +43,7 @@ namespace Garage
                 switch (userInput)
                 {
                     case RepaireCarCommand:
-                        MakeRepair(detail);
+                        MakeRepair(detail, isWorking);
                         break;
 
                     case ExitCommand:
@@ -60,10 +60,13 @@ namespace Garage
             }
         }
 
-        private void MakeRepair(Detail detail)
+        private void MakeRepair(Detail detail, bool isWorking)
         {
             const string RepairCommand = "1";
             const string RemoveCarCommand = "2";
+
+
+            EmptyStore(isWorking);
 
             Console.WriteLine($"Отремонтировать машину - {RepairCommand}.\n" +
                               $"Отказаться от ремоната - {RemoveCarCommand}");
@@ -184,11 +187,12 @@ namespace Garage
             }
         }
 
-        private void ShowCar()
+        private void EmptyStore(bool isWorking)
         {
-            for (int i = 0; i < _carDetails.Count; i++)
+            if(_storeDetails.Count == 0)
             {
-                _carDetails[i].ShowInfo();
+                Console.WriteLine("Магазин закрывается, заработок составляет: " + Money);
+                isWorking = false;
             }
         }
     }

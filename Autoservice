@@ -6,8 +6,8 @@ namespace Autoservice
         {
             Store store = new Store();
 
-            Service carService = new Service(store);
-            carService.Work();
+            Service service = new Service(store);
+            service.Work();
         }
     }
 

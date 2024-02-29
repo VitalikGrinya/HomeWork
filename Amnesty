@@ -1,0 +1,81 @@
+namespace Amnesty
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            DataBase data = new DataBase();
+
+            Search search = new Search(data.criminals);
+            search.Work();
+        }
+    }
+
+    class Criminal
+    {
+        public Criminal(string name, string crime)
+        {
+            Name = name;
+            Crime = crime;
+        }
+
+        public string Name { get; private set; }
+        public string Crime { get; private set; }
+    }
+
+    class Search
+    {
+        private List<Criminal> _criminals;
+
+        public Search(List<Criminal> criminal)
+        {
+            _criminals = criminal;
+        }
+        private void FindCriminals()
+        {
+            Console.WriteLine("Список заключенных: ");
+
+            ShowInfo();
+
+            string amnestyCrime = "Антиправительственное";
+
+            var amnestyCriminals = _criminals.Where(criminals => criminals.Crime == amnestyCrime).ToList();
+
+            var allCriminals = _criminals.Except(amnestyCriminals).ToList();
+
+            _criminals = allCriminals;
+
+            Console.WriteLine("\nСписок заключенных после амнистии: ");
+
+            ShowInfo();
+        }
+
+        private void ShowInfo()
+        {
+            foreach (Criminal criminal in _criminals)
+            {
+                Console.WriteLine(criminal.Name + " " + criminal.Crime);
+            }
+        }
+
+        public void Work()
+        {
+            FindCriminals();
+        }
+    }
+
+    class DataBase
+    {
+        public List<Criminal> criminals = new List<Criminal>
+        {
+            new Criminal("Зубенко Михаил Петрович","Кража"),
+            new Criminal("Маффиозник Петрович","Кража"),
+            new Criminal("Ганибал Лектер","Членовредительство"),
+            new Criminal("Робин Гуд", "Антиправительственное"),
+            new Criminal("Джокер", "Антиправительственное"),
+            new Criminal("Харли Квинн", "Антиправительственное"),
+            new Criminal("Айзен Соске", "Антиправительственное"),
+            new Criminal("Исачи Йойчи", "Антифутбольное")
+        };
+    }
+}

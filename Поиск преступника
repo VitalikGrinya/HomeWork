@@ -43,7 +43,7 @@ namespace SearchCriminal
             new Criminal("Исачи Йойчи","на свободе", 173, 64,"Японец")
             };
 
-            var findCriminals = criminals.Where(criminals => criminals.Height >= height).Where(criminals => criminals.Weight >= weight).Where(criminals => criminals.Nationality == nationality).Where(criminals => criminals.Status != "задержан");
+            var findCriminals = criminals.Where(criminals => criminals.Height >= height && criminals.Weight >= weight && criminals.Nationality == nationality && criminals.Status != "задержан");
 
             foreach (var criminal in findCriminals)
             {

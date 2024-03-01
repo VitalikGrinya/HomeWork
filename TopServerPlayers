@@ -26,6 +26,7 @@ namespace TopServerPlayers
     class Search
     {
         private List<Player> _players = new List<Player>();
+
         public Search()
         {
             UsersDataBase();   

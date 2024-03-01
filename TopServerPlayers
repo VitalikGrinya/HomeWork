@@ -1,0 +1,83 @@
+namespace TopServerPlayers
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            DataBase data = new DataBase();
+
+            Search search = new Search(data.Players);
+            search.OrderPlayers();
+        }
+    }
+
+    class Player
+    {
+        public Player(string name, int level, int power)
+        {
+            Name = name;
+            Level = level;
+            Power = power;
+        }
+
+        public string Name { get; private set; }
+        public int Level { get; private set; }
+        public int Power { get; private set; }
+    }
+
+    class Search
+    {
+        private List<Player> _players;
+
+        public Search(List<Player> players)
+        {
+            _players = players;
+        }
+
+        public void OrderPlayers()
+        {
+            char symbol = '_';
+
+            int symbolCount = 42;
+
+            int topPlayers = 3;
+
+            var orderedPlayersByLevel = _players.OrderByDescending(player => player.Level).Take(topPlayers);
+            
+            var orderedPlayersByPower = _players.OrderByDescending(player => player.Power).Take(topPlayers);
+
+            Console.WriteLine("Топ-3 игроков по уровню: ");
+
+            foreach (var player in orderedPlayersByLevel)
+            {
+                Console.WriteLine($"{player.Name}. Уровень - {player.Level}. Сила - {player.Power}");
+            }
+
+            Console.WriteLine(new string(symbol, symbolCount));
+
+            Console.WriteLine("\nТоп-3 игроков по силе: ");
+            
+            foreach (var player in orderedPlayersByPower)
+            {
+                Console.WriteLine($"{player.Name}. Уровень - {player.Level}. Сила - {player.Power}");
+            }
+        }
+    }
+
+    class DataBase
+    {
+        public List<Player> Players = new List<Player>
+        {
+            new Player("Zayka228", 199, 626),
+            new Player("s1mple", 999, 1100),
+            new Player("LuxuryGirl", 669, 696),
+            new Player("badman", 72, 83),
+            new Player("Plus_Ultra", 144, 362),
+            new Player("Onepunchman", 226, 426),
+            new Player("Ninja1", 616, 666),
+            new Player("bond007", 847, 890),
+            new Player("epicmomaster147", 8, 16),
+            new Player("_s_a_s_u_k_e_", 469, 488)
+        };
+    }
+}

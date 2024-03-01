@@ -33,6 +33,7 @@ namespace HospitalAnarchy
         {
             _patients = patients;
         }
+
         private void OrderedByName()
         {
             var orderedPatientsByName = _patients.OrderBy(patient => patient.Name);

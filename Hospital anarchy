@@ -54,7 +54,7 @@ namespace HospitalAnarchy
             }
         }
 
-        private void OrderedByIllness()
+        private void ShowpatientsIllness()
         {
             Console.Write("Введите название болезни: ");
 
@@ -63,6 +63,14 @@ namespace HospitalAnarchy
             var orderedPatientsByIllness = _patients.Where(patient => patient.Illness == userInput);
 
             foreach (var patient in orderedPatientsByIllness)
+            {
+                    Console.WriteLine($"{patient.Name}. Возраст - {patient.Age}. Болезнь - {patient.Illness}");
+            }
+        }
+
+        private void ShowInfo()
+        {
+            foreach(Patient patient in _patients)
             {
                 Console.WriteLine($"{patient.Name}. Возраст - {patient.Age}. Болезнь - {patient.Illness}");
             }
@@ -79,7 +87,11 @@ namespace HospitalAnarchy
 
             while (isWorking)
             {
-                Console.WriteLine($"Чтобы отсортировать больных по Фамилии, нажмите - {OrderedByNameCommand}.\n" +
+                Console.WriteLine("Список больных: ");
+
+                ShowInfo();
+
+                Console.WriteLine($"\nЧтобы отсортировать больных по Фамилии, нажмите - {OrderedByNameCommand}.\n" +
                                   $"Чтобы отсортировать больных по возрасту, нажмите - {OrderedByAgeCommand}.\n" +
                                   $"Чтобы отсортировать больных по болезням, нажмите - {OrderedByIllnessCommand}.\n" +
                                   $"Чтобы выйти из приложения, нажмите - {ExitCommand}.");
@@ -97,7 +109,7 @@ namespace HospitalAnarchy
                         break;
 
                     case OrderedByIllnessCommand:
-                        OrderedByIllness();
+                        ShowpatientsIllness();
                         break;
 
                     case ExitCommand:

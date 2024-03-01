@@ -4,9 +4,7 @@ namespace HospitalAnarchy
     {
         static void Main(string[] args)
         {
-            DataBase data = new DataBase();
-
-            Search search = new Search(data.Patients);
+            Search search = new Search();
             search.Work();
         }
     }
@@ -27,31 +25,44 @@ namespace HospitalAnarchy
 
     class Search
     {
-        private List<Patient> _patients;
-
-        public Search(List<Patient> patients)
+        private List<Patient> _patients = new List<Patient>
         {
-            _patients = patients;
+
+        };
+
+        public Search()
+        {
+            PatientDataBase();
+        }
+
+        private void PatientDataBase()
+        {
+            _patients.Add(new Patient("Зубенко Михаил Петрович", 34, "Диарея"));
+            _patients.Add(new Patient("Айболит Станислав Львович", 65, "Тошнота"));
+            _patients.Add(new Patient("Ганибал Лектер", 68, "Лейкимия"));
+            _patients.Add(new Patient("Робин Гуд", 32, "Перелом бедра"));
+            _patients.Add(new Patient("Уэйн Брюс", 44, "Перелом ключицы"));
+            _patients.Add(new Patient("Квин Харли", 26, "Диарея"));
+            _patients.Add(new Patient("Узумаки Наруто Минатович", 16, "Тошнота"));
+            _patients.Add(new Patient("Иванов Иван Иванович", 47, "Выпадание ануса"));
+            _patients.Add(new Patient("Степанов Иван Степанович", 48, "Выпадание ануса"));
+            _patients.Add(new Patient("Фоминов Иван Фомич", 49, "Выпадание ануса"));
+            _patients.Add(new Patient("Кузьмичов Иван Кузьмич", 50, "Переутомление"));
+
         }
 
         private void ShowOrderedByName()
         {
-            var orderedPatientsByName = _patients.OrderBy(patient => patient.Name);
+            var orderedPatientsByName = _patients.OrderBy(patient => patient.Name).ToList();
 
-            foreach (var patient in orderedPatientsByName)
-            {
-                Console.WriteLine($"{patient.Name}. Возраст - {patient.Age}. Болезнь - {patient.Illness}");
-            }
+            ShowInfo(orderedPatientsByName);
         }
 
         private void ShowOrderedByAge()
         {
-            var orderedPatientsByAge = _patients.OrderBy(patient => patient.Age);
+            var orderedPatientsByAge = _patients.OrderBy(patient => patient.Age).ToList();
 
-            foreach (var patient in orderedPatientsByAge)
-            {
-                Console.WriteLine($"{patient.Name}. Возраст - {patient.Age}. Болезнь - {patient.Illness}");
-            }
+            ShowInfo(orderedPatientsByAge);
         }
 
         private void ShowpatientsIllness()
@@ -60,17 +71,14 @@ namespace HospitalAnarchy
 
             string userInput = Console.ReadLine();
 
-            var orderedPatientsByIllness = _patients.Where(patient => patient.Illness == userInput);
+            var orderedPatientsByIllness = _patients.Where(patient => patient.Illness == userInput).ToList();
 
-            foreach (var patient in orderedPatientsByIllness)
-            {
-                    Console.WriteLine($"{patient.Name}. Возраст - {patient.Age}. Болезнь - {patient.Illness}");
-            }
+            ShowInfo(orderedPatientsByIllness);
         }
 
-        private void ShowInfo()
+        private void ShowInfo(List<Patient> orderedPatients)
         {
-            foreach(Patient patient in _patients)
+            foreach (Patient patient in orderedPatients)
             {
                 Console.WriteLine($"{patient.Name}. Возраст - {patient.Age}. Болезнь - {patient.Illness}");
             }
@@ -89,7 +97,7 @@ namespace HospitalAnarchy
             {
                 Console.WriteLine("Список больных: ");
 
-                ShowInfo();
+                ShowInfo(_patients);
 
                 Console.WriteLine($"\nЧтобы отсортировать больных по Фамилии, нажмите - {OrderedByNameCommand}.\n" +
                                   $"Чтобы отсортировать больных по возрасту, нажмите - {OrderedByAgeCommand}.\n" +
@@ -125,23 +133,5 @@ namespace HospitalAnarchy
                 Console.Clear();
             }
         }
-    }
-
-    class DataBase
-    {
-        public List<Patient> Patients = new List<Patient>
-        {
-            new Patient("Зубенко Михаил Петрович", 34, "Диарея"),
-            new Patient("Айболит Станислав Львович", 65, "Тошнота"),
-            new Patient("Ганибал Лектер", 68, "Лейкимия"),
-            new Patient("Робин Гуд", 32, "Перелом бедра"),
-            new Patient("Уэйн Брюс", 44, "Перелом ключицы"),
-            new Patient("Квин Харли", 26, "Диарея"),
-            new Patient("Узумаки Наруто Минатович", 16, "Тошнота"),
-            new Patient("Иванов Иван Иванович", 47, "Выпадание ануса"),
-            new Patient("Степанов Иван Степанович", 48, "Выпадание ануса"),
-            new Patient("Фоминов Иван Фомич", 49, "Выпадание ануса"),
-            new Patient("Кузьмичов Иван Кузьмич", 50, "Переутомление")
-        };
     }
 }

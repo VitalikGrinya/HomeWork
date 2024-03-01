@@ -40,22 +40,24 @@ namespace TopServerPlayers
 
             int topPlayers = 3;
 
-            var orderedPlayersByLevel = _players.OrderByDescending(player => player.Level).Take(topPlayers);
+            var orderedPlayersByLevel = _players.OrderByDescending(player => player.Level).Take(topPlayers).ToList();
 
-            var orderedPlayersByPower = _players.OrderByDescending(player => player.Power).Take(topPlayers);
+            var orderedPlayersByPower = _players.OrderByDescending(player => player.Power).Take(topPlayers).ToList();
 
             Console.WriteLine("Топ-3 игроков по уровню: ");
 
-            foreach (var player in orderedPlayersByLevel)
-            {
-                Console.WriteLine($"{player.Name}. Уровень - {player.Level}. Сила - {player.Power}");
-            }
+            ShowInfo(orderedPlayersByLevel);
 
             Console.WriteLine(new string(symbol, symbolCount));
 
             Console.WriteLine("\nТоп-3 игроков по силе: ");
 
-            foreach (var player in orderedPlayersByPower)
+            ShowInfo(orderedPlayersByPower);
+        }
+
+        private void ShowInfo(List<Player> players)
+        {
+            foreach (var player in players)
             {
                 Console.WriteLine($"{player.Name}. Уровень - {player.Level}. Сила - {player.Power}");
             }
@@ -63,7 +65,7 @@ namespace TopServerPlayers
 
         private void UsersDataBase()
         {
-            _players.Add(new Player("Zayka228", 199, 626));
+            _players.Add(new Player("Zayka228", 199, 926));
             _players.Add(new Player("s1mple", 999, 1100));
             _players.Add(new Player("LuxuryGirl", 669, 696));
             _players.Add(new Player("badman", 72, 83));

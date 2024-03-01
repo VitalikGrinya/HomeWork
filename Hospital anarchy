@@ -34,7 +34,7 @@ namespace HospitalAnarchy
             _patients = patients;
         }
 
-        private void OrderedByName()
+        private void ShowOrderedByName()
         {
             var orderedPatientsByName = _patients.OrderBy(patient => patient.Name);
 
@@ -44,7 +44,7 @@ namespace HospitalAnarchy
             }
         }
 
-        private void OrderedByAge()
+        private void ShowOrderedByAge()
         {
             var orderedPatientsByAge = _patients.OrderBy(patient => patient.Age);
 
@@ -56,7 +56,11 @@ namespace HospitalAnarchy
 
         private void OrderedByIllness()
         {
-            var orderedPatientsByIllness = _patients.OrderBy(patient => patient.Illness);
+            Console.Write("Введите название болезни: ");
+
+            string userInput = Console.ReadLine();
+
+            var orderedPatientsByIllness = _patients.Where(patient => patient.Illness == userInput);
 
             foreach (var patient in orderedPatientsByIllness)
             {
@@ -82,14 +86,14 @@ namespace HospitalAnarchy
 
                 string userInput = Console.ReadLine();
 
-                switch(userInput )
+                switch (userInput)
                 {
                     case OrderedByNameCommand:
-                        OrderedByName();
+                        ShowOrderedByName();
                         break;
 
                     case OrderedByAgeCommand:
-                        OrderedByAge();
+                        ShowOrderedByAge();
                         break;
 
                     case OrderedByIllnessCommand:

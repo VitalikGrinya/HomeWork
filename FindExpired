@@ -1,0 +1,79 @@
+namespace FindExpired
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            DataBase data = new DataBase();
+
+            Search search = new Search(data.Stews);
+            search.FindExpired();
+        }
+    }
+
+    class Stew
+    {
+        public Stew(string name, int productionDate, int expirationDate)
+        {
+            Name = name;
+            ProductionDate = productionDate;
+            ExpirationDate = expirationDate;
+        }
+
+        public string Name { get; private set; }
+        public int ProductionDate { get; private set; }
+        public int ExpirationDate { get; private set; }
+    }
+
+    class Search
+    {
+        private List<Stew> _stews;
+
+        public Search(List<Stew> stews)
+        {
+            _stews = stews;
+        }
+
+        public void FindExpired()
+        {
+            int thisYear;
+            int minYear = 1940;
+
+            Console.Write("То есть я впал в кому, потому что съел просроченную тушенку в 1940 году... Но какой сейчас год? ");
+
+            string userInput = Console.ReadLine();
+
+            while (int.TryParse(userInput, out thisYear) == false || thisYear < minYear)
+            {
+                Console.Write("Ты кого пытаешься налохматить, время назад не идет.Так какой сейчас год? ");
+                userInput = Console.ReadLine();
+            }
+
+            var badStew = _stews.Where(stew => stew.ExpirationDate + stew.ProductionDate >= thisYear);
+
+            Console.WriteLine("Всегда смотрите на срок годности и дату изготовления <3\n");
+
+            foreach (var stew in badStew)
+            {
+                Console.WriteLine($"{stew.Name}. Дата изготовления - {stew.ProductionDate}г. Время хранения - {stew.ExpirationDate} лет.");
+            }
+        }
+    }
+
+    class DataBase
+    {
+        public List<Stew> Stews = new List<Stew>
+        {
+            new Stew("BigPig", 2012, 5),
+            new Stew("GoldenCow", 1999, 110),
+            new Stew("Свинка Пеппа", 2006, 15),
+            new Stew("Хрючевошенка", 2014, 7),
+            new Stew("Говяжья радость", 2016, 8),
+            new Stew("Рога и копыта", 1400, 616),
+            new Stew("Мууушенка", 2023, 9),
+            new Stew("Кукарекушенка", 2023, 9),
+            new Stew("Хрюшенка", 2023, 9),
+            new Stew("Тушенка Армейская", 1940, 2000)
+        };
+    }
+}

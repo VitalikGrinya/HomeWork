@@ -1,0 +1,137 @@
+namespace Weapon
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Search search = new Search();
+            search.Work();
+        }
+    }
+
+    class Soldier
+    {
+        public Soldier(string name, string weapon, string rank, int serviceTime)
+        {
+            Name = name;
+            Weapon = weapon;
+            Rank = rank;
+            ServiceTime = serviceTime;
+        }
+
+        public string Name { get; private set; }
+        public string Weapon { get; private set; }
+        public string Rank { get; private set; }
+        public int ServiceTime { get; private set; }
+    }
+
+    class Search
+    {
+        private List<Soldier> _soldiers = new List<Soldier>();
+
+        public Search()
+        {
+            DataBase();
+        }
+
+        public void Work()
+        {
+            const string OrderedByServiceTimeCommand = "1";
+            const string OrderedByWeaponCommand = "2";
+            const string ExitCommand = "3";
+
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+                Console.WriteLine("Список больных: ");
+
+                ShowFullInfo();
+
+                Console.WriteLine($"\nЧтобы отсортировать солдат по сроку службы, нажмите - {OrderedByServiceTimeCommand}.\n" +
+                                  $"Чтобы отсортировать больных по вооружению, нажмите - {OrderedByWeaponCommand}.\n" +
+                                  $"Чтобы выйти из приложения, нажмите - {ExitCommand}.");
+
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case OrderedByServiceTimeCommand:
+                        ShowSoldierByServiceTime();
+                        break;
+
+                    case OrderedByWeaponCommand:
+                        ShowSoldierByWeapon();
+                        break;
+
+                    case ExitCommand:
+                        isWorking = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Такого варианта сортировки нет.");
+                        break;
+                }
+
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        private void DataBase()
+        {
+            _soldiers.Add(new Soldier("Дятлов Назар Сергеевич", "АК-74", "Сержант", 12));
+            _soldiers.Add(new Soldier("Варашилов Александр Игоревич", "АК-74", "Лейтенант", 18));
+            _soldiers.Add(new Soldier("Куприенко Иван Киреевич", "АКС-74У", "Рядовой", 6));
+            _soldiers.Add(new Soldier("Драгунов Артем Мечиславович", "АК-74", "Капитан", 24));
+            _soldiers.Add(new Soldier("Валуй Андрей Петрович", "АКС-74У", "Ефрейтор", 18));
+            _soldiers.Add(new Soldier("Медведев Александр Сергеевич", "АК-74", "Майор", 48));
+        }
+
+        private void ShowSoldierByWeapon()
+        {
+            Console.Write("Введите название оружия: ");
+
+            string userInput = Console.ReadLine().ToUpper();
+
+            var orderedSoldierByWeapon = _soldiers.Where(soldier => soldier.Weapon == userInput).ToList();
+
+            ShowInfo(orderedSoldierByWeapon);
+        }
+
+        private void ShowSoldierByServiceTime()
+        {
+            int serviceTime;
+
+            Console.Write("Введите срок службы: ");
+
+            string userInput = Console.ReadLine();
+
+            while(int.TryParse(userInput, out serviceTime) == false)
+            {
+                Console.WriteLine("Что-то пошло не так, попробуй еще раз.");
+                userInput = Console.ReadLine();
+            }
+
+            var orderedSoldierByServiceTime = _soldiers.Where(soldier => soldier.ServiceTime == serviceTime).ToList();
+
+            ShowInfo(orderedSoldierByServiceTime);
+        }
+
+        private void ShowInfo(List<Soldier> soldiers)
+        {
+            foreach (Soldier soldier in soldiers)
+            {
+                Console.WriteLine($"{soldier.Name}. Звание - {soldier.Rank}");
+            }
+        }
+        
+        private void ShowFullInfo()
+        {
+            foreach (Soldier soldier in _soldiers)
+            {
+                Console.WriteLine($"{soldier.Name}. Звание - {soldier.Rank}. Вооружение - {soldier.Weapon}. Срок службы - {soldier.ServiceTime}.");
+            }
+        }
+    }
+}

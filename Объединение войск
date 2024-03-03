@@ -42,16 +42,15 @@ namespace SoldiersCompany
         }
         private void ShowSoldiers()
         {
-            var orderedSoldierByNameToTransport = _firstCompany.Where(soldier => soldier.Name.ToUpper().StartsWith("Б")).ToList();
+            char firstLetter = 'Б';
+            var orderedSoldierByNameToTransport = _firstCompany.Where(soldier => soldier.Name.ToUpper().StartsWith(firstLetter)).ToList();
 
             var firstCompany = _firstCompany.Except(orderedSoldierByNameToTransport).ToList();
 
-            _firstCompany = firstCompany;
+            var secondCompany = _secondCompany.Union(orderedSoldierByNameToTransport).ToList();
 
-            foreach(var soldier in orderedSoldierByNameToTransport)
-            {
-                _secondCompany.Add(soldier);
-            }
+            _firstCompany = firstCompany;
+            _secondCompany = secondCompany;
 
             Console.WriteLine("Первая рота: ");
             ShowInfo(_firstCompany);

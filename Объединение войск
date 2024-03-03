@@ -1,0 +1,84 @@
+namespace SoldiersCompany
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Search search = new Search();
+            search.Work();
+        }
+    }
+
+    class Soldier
+    {
+        public Soldier(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; private set; }
+    }
+
+    class Search
+    {
+        private List<Soldier> _firstCompany = new List<Soldier>();
+        private List<Soldier> _secondCompany = new List<Soldier>();
+
+        public Search()
+        {
+            DataBase();
+        }
+
+        public void Work()
+        {
+            Console.WriteLine("Первая рота: ");
+            ShowInfo(_firstCompany);
+
+            Console.WriteLine("\nВторая рота: ");
+            ShowInfo(_secondCompany);
+
+            Console.WriteLine("\nРоты после перевода бойцов.\n");
+            ShowSoldiers();
+        }
+        private void ShowSoldiers()
+        {
+            var orderedSoldierByNameToTransport = _firstCompany.Where(soldier => soldier.Name.ToUpper().StartsWith("Б")).ToList();
+
+            var firstCompany = _firstCompany.Except(orderedSoldierByNameToTransport).ToList();
+
+            _firstCompany = firstCompany;
+
+            foreach(var soldier in orderedSoldierByNameToTransport)
+            {
+                _secondCompany.Add(soldier);
+            }
+
+            Console.WriteLine("Первая рота: ");
+            ShowInfo(_firstCompany);
+
+            Console.WriteLine("\nВторая рота: ");
+            ShowInfo(_secondCompany);
+        }
+
+        private void DataBase()
+        {
+            _firstCompany.Add(new Soldier("Дятлов Назар Сергеевич"));
+            _firstCompany.Add(new Soldier("Барваршилов Александр Игоревич"));
+            _firstCompany.Add(new Soldier("Куприенко Иван Киреевич"));
+            _firstCompany.Add(new Soldier("Драгунов Артем Мечиславович"));
+            _firstCompany.Add(new Soldier("Балуй Андрей Петрович"));
+            _firstCompany.Add(new Soldier("Бедледев Александр Сергеевич"));
+
+            _secondCompany.Add(new Soldier("Белкин Василий Витальевич"));
+            _secondCompany.Add(new Soldier("Белиберда Антон Алексеевич"));
+        }
+
+        private void ShowInfo(List<Soldier> soldiers)
+        {
+            foreach (Soldier soldier in soldiers)
+            {
+                Console.WriteLine($"{soldier.Name}.");
+            }
+        }
+    }
+}

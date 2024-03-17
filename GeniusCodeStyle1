@@ -23,10 +23,10 @@ public class Mover : MonoBehaviour
 
 
         if (transform.position == target.position) 
-            MoveLogic();
+            Moving();
     }
 
-    private Vector3 MoveLogic()
+    private Vector3 Moving()
     {
         _placeNumber++;
 

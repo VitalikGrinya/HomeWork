@@ -2,8 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-
-public class InstantiateBulletsShooting : MonoBehaviour
+public class Shooting : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Rigidbody _bullet;
@@ -12,14 +11,14 @@ public class InstantiateBulletsShooting : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Shooting());
+        StartCoroutine(Shoot());
     }
 
-    private IEnumerator Shooting()
+    private IEnumerator Shoot()
     {
-        bool isWorking = true;
+        bool isWork = true;
 
-        while (isWorking)
+        while (isWork)
         {
             var _bulletDirection = (_target.position - transform.position).normalized;
 

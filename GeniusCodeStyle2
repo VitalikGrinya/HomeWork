@@ -1,14 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class Shooting : MonoBehaviour
+public class Shooter : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private Rigidbody _bullet;
+    [SerializeField] private Rigidbody _bulletPrefab;
     [SerializeField] private Transform _target;
     [SerializeField] private float _timeWaitShooting;
-
+    
     private void Start()
     {
         StartCoroutine(Shoot());
@@ -18,15 +17,17 @@ public class Shooting : MonoBehaviour
     {
         bool isWork = true;
 
-        var _bulletDirection = (_target.position - transform.position).normalized;
-        var bullet = Instantiate(_bullet, transform.position + _bulletDirection, Quaternion.identity);
-
+        var wait = new WaitForSeconds(_timeWaitShooting);
+        
         while (isWork)
         {
+            var _bulletDirection = (_target.position - transform.position).normalized;
+            var bullet = Instantiate(_bulletPrefab, transform.position + _bulletDirection, Quaternion.identity);
+
             bullet.transform.up = _bulletDirection;
             bullet.velocity = _bulletDirection * _speed * Time.deltaTime;
 
-            yield return new WaitForSeconds(_timeWaitShooting);
+            yield return wait;
         }
     }
 }
